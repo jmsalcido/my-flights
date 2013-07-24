@@ -1,17 +1,25 @@
 package com.nearsoft.myflights.model;
 
-import java.sql.Time;
+import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class FlightDetail {
 
 	// Flight info
 	private Airport departureAirport;
 	private Airport arrivalAirport;
-	private Time departureTime;
-	private Time arrivalTime;
+	private String departureTime;
+	private String arrivalTime;
 	private int travelTime;
 	private Airline airline; // here.
 	private String equipment;
+	
+	public FlightDetail(FSFlightLeg flightLeg) {
+		this.arrivalAirport = Airport.createAirportFromFSCode(flightLeg.getArrivalAirportFsCode());
+		this.departureAirport = Airport.createAirportFromFSCode(flightLeg.getDepartureAirportFsCode());
+		this.departureTime = flightLeg.getDepartureTime();
+		this.arrivalTime = flightLeg.getArrivalTime();
+		this.travelTime = flightLeg.getFlightDurationMinutes();
+	}
 
 	public Airport getDepartureAirport() {
 		return departureAirport;
@@ -29,19 +37,19 @@ public class FlightDetail {
 		this.arrivalAirport = arrivalAirport;
 	}
 
-	public Time getDepartureTime() {
+	public String getDepartureTime() {
 		return departureTime;
 	}
 
-	public void setDepartureTime(Time departureTime) {
+	public void setDepartureTime(String departureTime) {
 		this.departureTime = departureTime;
 	}
 
-	public Time getArrivalTime() {
+	public String getArrivalTime() {
 		return arrivalTime;
 	}
 
-	public void setArrivalTime(Time arrivalTime) {
+	public void setArrivalTime(String arrivalTime) {
 		this.arrivalTime = arrivalTime;
 	}
 
@@ -68,5 +76,4 @@ public class FlightDetail {
 	public void setEquipment(String equipment) {
 		this.equipment = equipment;
 	}
-
 }

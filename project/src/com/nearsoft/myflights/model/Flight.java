@@ -1,7 +1,11 @@
 package com.nearsoft.myflights.model;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
+
+import com.nearsoft.myflights.model.fs.FSFlight;
+import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class Flight {
 
@@ -17,6 +21,15 @@ public class Flight {
 
 	public Flight(List<FlightDetail> flightDetail) {
 		this.flightDetail = flightDetail;
+	}
+	
+	public Flight(FSFlight fsFlight, Date date) {
+		List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
+		this.flightDetail = new ArrayList<>();
+		for(FSFlightLeg fsFlightLeg  : fsFlightDetails) { 
+			FlightDetail flightDetail = new FlightDetail(fsFlightLeg);
+			this.flightDetail.add(flightDetail);
+		}
 	}
 	
 	public Date getDate() {

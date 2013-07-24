@@ -1,5 +1,6 @@
 package com.nearsoft.myflights.model;
 
+import java.util.HashMap;
 import java.util.Map;
 
 public class Airport {
@@ -14,6 +15,14 @@ public class Airport {
 	private String name;
 	private String city;
 	private String country;
+	
+	public static Airport createAirportFromFSCode(String fsCode) {
+		Airport airport = new Airport();
+		Map<String, String> map = new HashMap<String, String>();
+		map.put(Airport.FS, fsCode);
+		airport.setCodes(map);
+		return airport;
+	}
 	
 	public int getId() {
 		return id;
