@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -28,10 +27,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.model.Flight;
-import com.nearsoft.myflights.model.FlightDetail;
 import com.nearsoft.myflights.model.fs.FSConnection;
 import com.nearsoft.myflights.model.fs.FSFlight;
-import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class FSFlightDao implements FlightDao {
 
@@ -59,8 +56,8 @@ public class FSFlightDao implements FlightDao {
 			return null;
 		}
 		FSConnection fsConn = getFSConnectionFromJson(json);
-		for(FSFlight fsFlight : fsConn.getAppendix().getFlights()) {
-			Flight flight = new Flight(fsFlight);
+		for(FSFlight fsFlight : fsConn.getFlights()) {
+			Flight flight = new Flight(fsFlight, date);
 			flightList.add(flight);
 		}
 		return flightList;
@@ -78,6 +75,7 @@ public class FSFlightDao implements FlightDao {
 	}
 	
 	public FSConnection getFSConnectionFromJson(String json) {
+		//logger.info(json); // ...
 		return gson.fromJson(json, FSConnection.class);
 	}
 	
@@ -98,7 +96,7 @@ public class FSFlightDao implements FlightDao {
 		Calendar calendar = new GregorianCalendar();
 		calendar.setTime(date);
 		String year = String.valueOf(calendar.get(Calendar.YEAR));
-		String month = String.valueOf(calendar.get(Calendar.MONTH));
+		String month = String.valueOf(calendar.get(Calendar.MONTH)+1);
 		String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
 		// create the url to request
@@ -111,6 +109,7 @@ public class FSFlightDao implements FlightDao {
 		try {
 			URL url = new URL(String.format(FS_URL, from, to, year, month, day,
 					appId, appKey));
+			logger.info(url.toString());
 			return url;
 		} catch (MalformedURLException e) {
 			
@@ -144,8 +143,7 @@ public class FSFlightDao implements FlightDao {
 							+ response.getStatusLine().getStatusCode());
 				}
 
-				reader = new BufferedReader(new InputStreamReader(response
-						.getEntity().getContent()));
+				reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
 
 				// read all the json obtained
 				StringBuilder builder = new StringBuilder();

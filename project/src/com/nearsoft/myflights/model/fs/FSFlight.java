@@ -161,6 +161,112 @@ public class FSFlight {
 				+ ", flightType=" + flightType + ", serviceType=" + serviceType
 				+ ", online=" + online + ", flightLegs=" + flightLegs + "]";
 	}
-	
-	
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime
+				* result
+				+ ((arrivalAirportFsCode == null) ? 0 : arrivalAirportFsCode
+						.hashCode());
+		result = prime * result + arrivalDateAdjustment;
+		result = prime * result
+				+ ((arrivalTime == null) ? 0 : arrivalTime.hashCode());
+		result = prime
+				* result
+				+ ((departureAirportFsCode == null) ? 0
+						: departureAirportFsCode.hashCode());
+		result = prime
+				* result
+				+ ((departureDateFrom == null) ? 0 : departureDateFrom
+						.hashCode());
+		result = prime * result
+				+ ((departureDateTo == null) ? 0 : departureDateTo.hashCode());
+		result = prime
+				* result
+				+ ((departureDaysOfWeek == null) ? 0 : departureDaysOfWeek
+						.hashCode());
+		result = prime * result
+				+ ((departureTime == null) ? 0 : departureTime.hashCode());
+		result = prime * result + distanceMiles;
+		result = prime * result + flightDurationMinutes;
+		result = prime * result
+				+ ((flightType == null) ? 0 : flightType.hashCode());
+		result = prime * result + layoverDurationMinutes;
+		result = prime * result + (online ? 1231 : 1237);
+		result = prime * result
+				+ ((serviceType == null) ? 0 : serviceType.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		FSFlight other = (FSFlight) obj;
+		if (arrivalAirportFsCode == null) {
+			if (other.arrivalAirportFsCode != null)
+				return false;
+		} else if (!arrivalAirportFsCode.equals(other.arrivalAirportFsCode))
+			return false;
+		if (arrivalDateAdjustment != other.arrivalDateAdjustment)
+			return false;
+		if (arrivalTime == null) {
+			if (other.arrivalTime != null)
+				return false;
+		} else if (!arrivalTime.equals(other.arrivalTime))
+			return false;
+		if (departureAirportFsCode == null) {
+			if (other.departureAirportFsCode != null)
+				return false;
+		} else if (!departureAirportFsCode.equals(other.departureAirportFsCode))
+			return false;
+		if (departureDateFrom == null) {
+			if (other.departureDateFrom != null)
+				return false;
+		} else if (!departureDateFrom.equals(other.departureDateFrom))
+			return false;
+		if (departureDateTo == null) {
+			if (other.departureDateTo != null)
+				return false;
+		} else if (!departureDateTo.equals(other.departureDateTo))
+			return false;
+		if (departureDaysOfWeek == null) {
+			if (other.departureDaysOfWeek != null)
+				return false;
+		} else if (!departureDaysOfWeek.equals(other.departureDaysOfWeek))
+			return false;
+		if (departureTime == null) {
+			if (other.departureTime != null)
+				return false;
+		} else if (!departureTime.equals(other.departureTime))
+			return false;
+		if (distanceMiles != other.distanceMiles)
+			return false;
+		if (flightDurationMinutes != other.flightDurationMinutes)
+			return false;
+		if (flightType == null) {
+			if (other.flightType != null)
+				return false;
+		} else if (!flightType.equals(other.flightType))
+			return false;
+		if (layoverDurationMinutes != other.layoverDurationMinutes)
+			return false;
+		if (online != other.online)
+			return false;
+		if (flightLegs.size() != other.flightLegs.size())
+			return false;
+		if (serviceType == null) {
+			if (other.serviceType != null)
+				return false;
+		} else if (!serviceType.equals(other.serviceType))
+			return false;
+		return true;
+	}
+
 }

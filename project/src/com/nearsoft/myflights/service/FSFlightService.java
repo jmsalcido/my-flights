@@ -7,10 +7,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.nearsoft.myflights.dao.FlightDao;
 import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.model.Flight;
 
+@Service
 public class FSFlightService implements FlightService {
 
 	private final static String SEPARATOR = "-";
@@ -18,8 +22,12 @@ public class FSFlightService implements FlightService {
 	private final static int ARRAY_MONTH = 1;
 	private final static int ARRAY_DAY = 2;
 	
-	
+	@Autowired
 	FlightDao flightDao;
+	
+	public void setFlightDao(FlightDao flightDao) {
+		this.flightDao = flightDao;
+	}
 	
 	@Override
 	public List<Flight> getFlights(String from, String to, String date) {

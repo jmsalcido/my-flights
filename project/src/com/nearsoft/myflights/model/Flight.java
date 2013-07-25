@@ -1,6 +1,6 @@
 package com.nearsoft.myflights.model;
 
-import java.sql.Date;
+import java.util.Date;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,6 +24,11 @@ public class Flight {
 	}
 	
 	public Flight(FSFlight fsFlight, Date date) {
+		this.date = date;
+		this.departureAirport = Airport.createAirportFromFSCode(fsFlight.getDepartureAirportFsCode());
+		this.arrivalAirport = Airport.createAirportFromFSCode(fsFlight.getArrivalAirportFsCode());
+		this.travelTime = fsFlight.getFlightDurationMinutes();
+		this.flightType = fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP : CONNECTION;
 		List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
 		this.flightDetail = new ArrayList<>();
 		for(FSFlightLeg fsFlightLeg  : fsFlightDetails) { 

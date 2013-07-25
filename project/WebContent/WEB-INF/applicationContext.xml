@@ -18,6 +18,13 @@
 	<bean id="airportService" class="com.nearsoft.myflights.service.JdbcAirportService">
 		<property name="airportDao" ref="airportDao" />
 	</bean>
+	
+	<bean id="flightDao" class="com.nearsoft.myflights.dao.FSFlightDao">
+    </bean>
+	
+	<bean id="flightService" class="com.nearsoft.myflights.service.FSFlightService">
+        <property name="flightDao" ref="flightDao" />
+    </bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

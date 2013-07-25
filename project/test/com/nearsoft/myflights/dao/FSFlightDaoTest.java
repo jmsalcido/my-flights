@@ -7,6 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.nearsoft.myflights.model.fs.FSConnection;
+import com.nearsoft.myflights.model.fs.FSConnectionTest;
 
 public class FSFlightDaoTest {
 	
@@ -31,18 +32,21 @@ public class FSFlightDaoTest {
 	
 	@SuppressWarnings("deprecation")
 	@Test
-	public void testMapFromJson() {
-		String json = dao.getJson("TUS", "JFK", "2013", "11", "21");
+	public void testMapFromJson() throws Exception {
+		String json = FSConnectionTest.createJsonString(getClass(), "flights-json.txt");
 		Map<String, Object> map = dao.getMapFromJson(json);
 		Assert.assertEquals(true, map.containsKey("appendix"));
 		System.out.println(map.get("appendix"));
 	}
 	
 	@Test
-	public void testFSConnectionFromJson() {
-		String json = dao.getJson("TUS", "JFK", "2013", "11", "21");
+	public void testFSConnectionFromJson() throws Exception {
+		String json = FSConnectionTest.createJsonString(getClass(), "flights-json.txt");
 		FSConnection connection = dao.getFSConnectionFromJson(json);
 		Assert.assertNotNull(connection);
+		Assert.assertNotNull(connection.getRequest());
+		Assert.assertNotNull(connection.getAppendix());
+		Assert.assertNotNull(connection.getFlights());
 	}
 	
 }
