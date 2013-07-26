@@ -13,33 +13,35 @@ import com.nearsoft.myflights.model.Airport;
 @Service
 public class JdbcAirportService implements AirportService {
 
-	@Autowired
-	private AirportDao airportDao;
-	
-	public void setAirportDao(AirportDao airportDao) {
-		this.airportDao = airportDao;
-	}
-	
-	@Override
-	public List<Airport> getAllAirports() {
-		return airportDao.getAllAirports();
-	}
+    @Autowired
+    private AirportDao airportDao;
 
-	@Override
-	public Airport getAirportByName(String name) {
-		return airportDao.getAirportByName(name);
-	}
+    public void setAirportDao(AirportDao airportDao) {
+        this.airportDao = airportDao;
+    }
 
-	@Override
-	public Airport getAirportByCode(String name) {
-		return airportDao.getAirportByCode(name);
-	}
+    @Override
+    public List<Airport> getAllAirports() {
+        return airportDao.getAllAirports();
+    }
 
-	@Override
-	public Map<String, List<Airport>> getAirportsByKeyword(String keyword) {
-		Map<String,List<Airport>> airports = new HashMap<String, List<Airport>>();
-		airports.put("airports", airportDao.getAirportsByKeyword(keyword)); // Oh God Please.
-		return airports;
-	}
+    @Override
+    public Airport getAirportByName(String name) {
+        return airportDao.getAirportByName(name);
+    }
+
+    @Override
+    public Airport getAirportByCode(String name) {
+        return airportDao.getAirportByCode(name);
+    }
+
+    @Override
+    public Map<String, List<Airport>> getAirportsByKeyword(String keyword) {
+        Map<String, List<Airport>> airports = new HashMap<String, List<Airport>>();
+        airports.put("airports", airportDao.getAirportsByKeyword(keyword)); // Oh
+                                                                            // God
+                                                                            // Please.
+        return airports;
+    }
 
 }

@@ -18,39 +18,36 @@ import com.nearsoft.myflights.service.AirportService;
 @RequestMapping("/")
 public class AirportController {
 
-	@Autowired
-	AirportService airportService;
-	
-	public AirportController() {
-		// TODO Auto-generated constructor stub
-	}
-//	public AirportController(AirportService airportService) {
-//		this.airportService = airportService;
-//	}
-	
-	@RequestMapping("airportHi")
-	@ResponseBody
-	public Airport hi() {
-		Airport airport = new Airport();
-		airport.setId(1);
-		return airport;
-	}
-	
-	@RequestMapping(value = {"code"}, params = {"c"}, method = {RequestMethod.GET})
-	@ResponseBody
-	public Airport airportByCode(@RequestParam(value ="c")  String name) {
-		return airportService.getAirportByCode(name);
-	}
-	
-	@RequestMapping(value = {"airports/{word}"}, method = {RequestMethod.GET})
-	@ResponseBody
-	public Map<String, List<Airport>> listAirportsByKeyword(@PathVariable String word) {
-		if(word.equalsIgnoreCase("")) {
-			return null;
-		} else {
-			Map<String, List<Airport>> airports = airportService.getAirportsByKeyword(word);
-			return airports;
-		}
-	}
-	
+    @Autowired
+    AirportService airportService;
+
+    public AirportController() {
+    }
+
+    @RequestMapping("airportHi")
+    @ResponseBody
+    public Airport hi() {
+        Airport airport = new Airport();
+        airport.setId(1);
+        return airport;
+    }
+
+    @RequestMapping(value = { "code" }, params = { "c" }, method = { RequestMethod.GET })
+    @ResponseBody
+    public Airport airportByCode(@RequestParam(value = "c") String name) {
+        return airportService.getAirportByCode(name);
+    }
+
+    @RequestMapping(value = { "airports/{word}" }, method = { RequestMethod.GET })
+    @ResponseBody
+    public Map<String, List<Airport>> listAirportsByKeyword(
+            @PathVariable String word) {
+        if (word.equalsIgnoreCase("")) {
+            return null;
+        }
+        Map<String, List<Airport>> airports = airportService
+                .getAirportsByKeyword(word);
+        return airports;
+    }
+
 }

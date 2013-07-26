@@ -7,7 +7,7 @@ import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.model.Flight;
 
 public interface FlightDao {
-	
-	public List<Flight> getFlights(Airport from, Airport to, Date date);
+
+    public List<Flight> getFlights(Airport from, Airport to, Date date);
 
 }

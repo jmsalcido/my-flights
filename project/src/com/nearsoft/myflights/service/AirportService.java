@@ -7,12 +7,12 @@ import com.nearsoft.myflights.model.Airport;
 
 public interface AirportService {
 
-	public List<Airport> getAllAirports();
+    public List<Airport> getAllAirports();
 
-	public Airport getAirportByName(String name);
+    public Airport getAirportByName(String name);
 
-	public Airport getAirportByCode(String name);
+    public Airport getAirportByCode(String name);
 
-	public Map<String, List<Airport>> getAirportsByKeyword(String keyword);
+    public Map<String, List<Airport>> getAirportsByKeyword(String keyword);
 
 }

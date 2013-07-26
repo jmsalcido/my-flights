@@ -9,80 +9,83 @@ import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class Flight {
 
-	public final static int NON_STOP = 0;
-	public final static int CONNECTION = 1;
+    public final static int NON_STOP = 0;
+    public final static int CONNECTION = 1;
 
-	private Date date;
-	private Airport departureAirport;
-	private Airport arrivalAirport;
-	private int travelTime;
-	private int flightType;
-	private List<FlightDetail> flightDetail;
+    private Date date;
+    private Airport departureAirport;
+    private Airport arrivalAirport;
+    private int travelTime;
+    private int flightType;
+    private List<FlightDetail> flightDetail;
 
-	public Flight(List<FlightDetail> flightDetail) {
-		this.flightDetail = flightDetail;
-	}
-	
-	public Flight(FSFlight fsFlight, Date date) {
-		this.date = date;
-		this.departureAirport = Airport.createAirportFromFSCode(fsFlight.getDepartureAirportFsCode());
-		this.arrivalAirport = Airport.createAirportFromFSCode(fsFlight.getArrivalAirportFsCode());
-		this.travelTime = fsFlight.getFlightDurationMinutes();
-		this.flightType = fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP : CONNECTION;
-		List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
-		this.flightDetail = new ArrayList<>();
-		for(FSFlightLeg fsFlightLeg  : fsFlightDetails) { 
-			FlightDetail flightDetail = new FlightDetail(fsFlightLeg);
-			this.flightDetail.add(flightDetail);
-		}
-	}
-	
-	public Date getDate() {
-		return date;
-	}
+    public Flight(List<FlightDetail> flightDetail) {
+        this.flightDetail = flightDetail;
+    }
 
-	public void setDate(Date date) {
-		this.date = date;
-	}
+    public Flight(FSFlight fsFlight, Date date) {
+        this.date = date;
+        this.departureAirport = Airport.createAirportFromFSCode(fsFlight
+                .getDepartureAirportFsCode());
+        this.arrivalAirport = Airport.createAirportFromFSCode(fsFlight
+                .getArrivalAirportFsCode());
+        this.travelTime = fsFlight.getFlightDurationMinutes();
+        this.flightType = fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP
+                : CONNECTION;
+        List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
+        this.flightDetail = new ArrayList<>();
+        for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
+            FlightDetail flightDetail = new FlightDetail(fsFlightLeg);
+            this.flightDetail.add(flightDetail);
+        }
+    }
 
-	public Airport getDepartureAirport() {
-		return departureAirport;
-	}
+    public Date getDate() {
+        return date;
+    }
 
-	public void setDepartureAirport(Airport departureAirport) {
-		this.departureAirport = departureAirport;
-	}
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
-	public Airport getArrivalAirport() {
-		return arrivalAirport;
-	}
+    public Airport getDepartureAirport() {
+        return departureAirport;
+    }
 
-	public void setArrivalAirport(Airport arrivalAirport) {
-		this.arrivalAirport = arrivalAirport;
-	}
+    public void setDepartureAirport(Airport departureAirport) {
+        this.departureAirport = departureAirport;
+    }
 
-	public int getTravelTime() {
-		return travelTime;
-	}
+    public Airport getArrivalAirport() {
+        return arrivalAirport;
+    }
 
-	public void setTravelTime(int travelTime) {
-		this.travelTime = travelTime;
-	}
+    public void setArrivalAirport(Airport arrivalAirport) {
+        this.arrivalAirport = arrivalAirport;
+    }
 
-	public int getFlightType() {
-		return flightType;
-	}
+    public int getTravelTime() {
+        return travelTime;
+    }
 
-	public void setFlightType(int flightType) {
-		this.flightType = flightType;
-	}
+    public void setTravelTime(int travelTime) {
+        this.travelTime = travelTime;
+    }
 
-	public List<FlightDetail> getFlightDetail() {
-		return flightDetail;
-	}
+    public int getFlightType() {
+        return flightType;
+    }
 
-	public void setFlightDetail(List<FlightDetail> flightDetail) {
-		this.flightDetail = flightDetail;
-	}
+    public void setFlightType(int flightType) {
+        this.flightType = flightType;
+    }
+
+    public List<FlightDetail> getFlightDetail() {
+        return flightDetail;
+    }
+
+    public void setFlightDetail(List<FlightDetail> flightDetail) {
+        this.flightDetail = flightDetail;
+    }
 
 }

@@ -6,6 +6,6 @@ import com.nearsoft.myflights.model.Flight;
 
 public interface FlightService {
 
-	public List<Flight> getFlights(String from, String to, String date);
-	
+    public List<Flight> getFlights(String from, String to, String date);
+
 }

@@ -6,12 +6,12 @@ import com.nearsoft.myflights.model.Airport;
 
 public interface AirportDao {
 
-	public List<Airport> getAllAirports();
+    public List<Airport> getAllAirports();
 
-	public Airport getAirportByName(String name);
+    public Airport getAirportByName(String name);
 
-	public Airport getAirportByCode(String name);
+    public Airport getAirportByCode(String name);
 
-	public List<Airport> getAirportsByKeyword(String keyword);
+    public List<Airport> getAirportsByKeyword(String keyword);
 
 }

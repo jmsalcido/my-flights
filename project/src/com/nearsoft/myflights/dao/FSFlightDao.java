@@ -32,144 +32,149 @@ import com.nearsoft.myflights.model.fs.FSFlight;
 
 public class FSFlightDao implements FlightDao {
 
-	// =================================
-	// FLIGHTSTATS API ID & KEY
-	// =================================
-	private final static String appId = "fddf4ecf";
-	private final static String appKey = "d2a01014237e20af21d8c7a146e5bbf2";
-	private final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
+    // =================================
+    // FLIGHTSTATS API ID & KEY
+    // =================================
+    private final static String APPID = "fddf4ecf";
+    private final static String APPKEY = "d2a01014237e20af21d8c7a146e5bbf2";
+    private final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
 
-	private final static Log logger = LogFactory.getLog(FSFlightDao.class);
-	
-	private Gson gson;
+    private final static Log logger = LogFactory.getLog(FSFlightDao.class);
 
-	public FSFlightDao() {
-		gson = new GsonBuilder()
-		   .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
-	}
+    private Gson gson;
 
-	@Override
-	public List<Flight> getFlights(Airport from, Airport to, Date date) {
-		List<Flight> flightList = new ArrayList<>();
-		String json = getJsonFromParameters(from, to, date);
-		if (json == null) {
-			return null;
-		}
-		FSConnection fsConn = getFSConnectionFromJson(json);
-		for(FSFlight fsFlight : fsConn.getFlights()) {
-			Flight flight = new Flight(fsFlight, date);
-			flightList.add(flight);
-		}
-		return flightList;
-	}
-	
-	/**
-	 * Use {@link getFSConnectionFromJson}
-	 * @param json
-	 * @return
-	 */
-	@Deprecated
-	public Map<String, Object> getMapFromJson(String json) {
-		Map<String, Object> map = gson.fromJson(json, new TypeToken<Map<String, Object>>() {}.getType());
-		return map;
-	}
-	
-	public FSConnection getFSConnectionFromJson(String json) {
-		//logger.info(json); // ...
-		return gson.fromJson(json, FSConnection.class);
-	}
-	
-	public String getJson(String codeFrom, String codeTo, String year, String month, String day) {
-		URL url = createtUrl(codeFrom, codeTo, year, month, day);
-		return getJsonFromUrl(url);
-	}
+    public FSFlightDao() {
+        gson = new GsonBuilder()
+                .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
+    }
 
-	private String getJsonFromParameters(Airport from, Airport to, Date date) {
-		Map<String, String> codesFrom = from.getCodes();
+    @Override
+    public List<Flight> getFlights(Airport from, Airport to, Date date) {
+        List<Flight> flightList = new ArrayList<>();
+        String json = getJsonFromParameters(from, to, date);
+        if (json == null) {
+            return null;
+        }
+        FSConnection fsConn = getFSConnectionFromJson(json);
+        for (FSFlight fsFlight : fsConn.getFlights()) {
+            Flight flight = new Flight(fsFlight, date);
+            flightList.add(flight);
+        }
+        return flightList;
+    }
 
-		// get only the FS aiport codes.
-		String codeFrom = codesFrom.get(Airport.FS);
-		Map<String, String> codesTo = to.getCodes();
-		String codeTo = codesTo.get(Airport.FS);
+    /**
+     * Use {@link getFSConnectionFromJson}
+     * 
+     * @param json
+     * @return
+     */
+    @Deprecated
+    public Map<String, Object> getMapFromJson(String json) {
+        Map<String, Object> map = gson.fromJson(json,
+                new TypeToken<Map<String, Object>>() {
+                }.getType());
+        return map;
+    }
 
-		// get the date.
-		Calendar calendar = new GregorianCalendar();
-		calendar.setTime(date);
-		String year = String.valueOf(calendar.get(Calendar.YEAR));
-		String month = String.valueOf(calendar.get(Calendar.MONTH)+1);
-		String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
+    public FSConnection getFSConnectionFromJson(String json) {
+        // logger.info(json); // ...
+        return gson.fromJson(json, FSConnection.class);
+    }
 
-		// create the url to request
-		URL urlRequest = createtUrl(codeFrom, codeTo, year, month, day);
-		return getJsonFromUrl(urlRequest);
-	}
-	
-	private URL createtUrl(String from, String to, String year, String month,
-			String day) {
-		try {
-			URL url = new URL(String.format(FS_URL, from, to, year, month, day,
-					appId, appKey));
-			logger.info(url.toString());
-			return url;
-		} catch (MalformedURLException e) {
-			
-			logger.error(e.getLocalizedMessage());
-			
-			// if the url is malformed return null.
-			return null;
-		}
-	}
-	
-	private String getJsonFromUrl(URL url) {
+    public String getJson(String codeFrom, String codeTo, String year,
+            String month, String day) {
+        URL url = createtUrl(codeFrom, codeTo, year, month, day);
+        return getJsonFromUrl(url);
+    }
 
-		DefaultHttpClient client = null;
-		HttpGet getRequest = null;
-		HttpResponse response = null;
-		BufferedReader reader = null;
-		String json = null;
+    private String getJsonFromParameters(Airport from, Airport to, Date date) {
+        Map<String, String> codesFrom = from.getCodes();
 
-		if (url == null) {
-			return null;
-		} else {
-			try {
-				client = new DefaultHttpClient();
-				getRequest = new HttpGet(url.toURI());
-				getRequest.addHeader("accept", "application/json");
+        // get only the FS aiport codes.
+        String codeFrom = codesFrom.get(Airport.FS);
+        Map<String, String> codesTo = to.getCodes();
+        String codeTo = codesTo.get(Airport.FS);
 
-				response = client.execute(getRequest);
+        // get the date.
+        Calendar calendar = new GregorianCalendar();
+        calendar.setTime(date);
+        String year = String.valueOf(calendar.get(Calendar.YEAR));
+        String month = String.valueOf(calendar.get(Calendar.MONTH) + 1);
+        String day = String.valueOf(calendar.get(Calendar.DAY_OF_MONTH));
 
-				if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-					throw new HttpException("Failed : HTTP error code : "
-							+ response.getStatusLine().getStatusCode());
-				}
+        // create the url to request
+        URL urlRequest = createtUrl(codeFrom, codeTo, year, month, day);
+        return getJsonFromUrl(urlRequest);
+    }
 
-				reader = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
+    private URL createtUrl(String from, String to, String year, String month,
+            String day) {
+        try {
+            URL url = new URL(String.format(FS_URL, from, to, year, month, day,
+                    APPID, APPKEY));
+            logger.info(url.toString());
+            return url;
+        } catch (MalformedURLException e) {
 
-				// read all the json obtained
-				StringBuilder builder = new StringBuilder();
-				String aux = "";
+            logger.error(e.getLocalizedMessage());
 
-				while ((aux = reader.readLine()) != null) {
-					builder.append(aux);
-				}
-				json = builder.toString();
+            // if the url is malformed return null.
+            return null;
+        }
+    }
 
-				// shutdown httpclient
-				client.getConnectionManager().shutdown();
+    private String getJsonFromUrl(URL url) {
 
-			} catch (IOException e) {
-				logger.error(e.getLocalizedMessage());
-				return null;
-			} catch (URISyntaxException e) {
-				logger.error(e.getLocalizedMessage());
-				return null;
-			} catch (HttpException e) {
-				logger.error(e.getLocalizedMessage());
-				return null;
-			}
-		}
+        DefaultHttpClient client = null;
+        HttpGet getRequest = null;
+        HttpResponse response = null;
+        BufferedReader reader = null;
+        String json = null;
 
-		return json;
-	}
+        if (url == null) {
+            return null;
+        } else {
+            try {
+                client = new DefaultHttpClient();
+                getRequest = new HttpGet(url.toURI());
+                getRequest.addHeader("accept", "application/json");
+
+                response = client.execute(getRequest);
+
+                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                    throw new HttpException("Failed : HTTP error code : "
+                            + response.getStatusLine().getStatusCode());
+                }
+
+                reader = new BufferedReader(new InputStreamReader(response
+                        .getEntity().getContent()));
+
+                // read all the json obtained
+                StringBuilder builder = new StringBuilder();
+                String aux = "";
+
+                while ((aux = reader.readLine()) != null) {
+                    builder.append(aux);
+                }
+                json = builder.toString();
+
+                // shutdown httpclient
+                client.getConnectionManager().shutdown();
+
+            } catch (IOException e) {
+                logger.error(e.getLocalizedMessage());
+                return null;
+            } catch (URISyntaxException e) {
+                logger.error(e.getLocalizedMessage());
+                return null;
+            } catch (HttpException e) {
+                logger.error(e.getLocalizedMessage());
+                return null;
+            }
+        }
+
+        return json;
+    }
 
 }

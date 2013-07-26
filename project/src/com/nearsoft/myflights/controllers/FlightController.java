@@ -15,25 +15,31 @@ import com.nearsoft.myflights.service.FlightService;
 @Controller
 @RequestMapping("flights")
 public class FlightController {
-	
-	@Autowired
-	FlightService flightService;
-	
-	public Flight flightByFsFlightId(int fsFlightId) {
-		return null;
-	}
-	
-	@RequestMapping(value = "search", params = {"f", "t", "d"}, method = {RequestMethod.GET})
-	@ResponseBody
-	public List<Flight> flightsByDepartureAndArrival(@RequestParam(value ="f") String departureAirportCode,
-			@RequestParam(value ="t") String arrivalAirportCode, @RequestParam(value ="d")String date) {
-		return flightService.getFlights(departureAirportCode, arrivalAirportCode, date);
-	}
-	
-	@RequestMapping(value = "searchq", params = {"f", "t", "d"}, method = {RequestMethod.GET})
-	@ResponseBody
-	public List<Flight> flightsByDepartureAndArrivals(String departureAirportCode, String[] arrivalAirportCodes, String date) {
-		return null;
-	}
-	
+
+    @Autowired
+    FlightService flightService;
+
+    public Flight flightByFsFlightId(int fsFlightId) {
+        return null;
+    }
+
+    @RequestMapping(value = "search", params = { "f", "t", "d" }, method = { RequestMethod.GET })
+    @ResponseBody
+    public List<Flight> flightsByDepartureAndArrival(
+            @RequestParam(value = "f") String departureAirportCode,
+            @RequestParam(value = "t") String arrivalAirportCode,
+            @RequestParam(value = "d") String date) {
+        return flightService.getFlights(departureAirportCode,
+                arrivalAirportCode, date);
+    }
+
+    // TODO will change to become easier to develop in Ember.
+    @RequestMapping(value = "searchq", params = { "f", "t", "d" }, method = { RequestMethod.GET })
+    @ResponseBody
+    public List<Flight> flightsByDepartureAndArrivals(
+            String departureAirportCode, String[] arrivalAirportCodes,
+            String date) {
+        return null;
+    }
+
 }
