@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.service.AirportService;
 
 @Controller
-@RequestMapping("/airports")
+@RequestMapping("/")
 public class AirportController {
 
 	@Autowired
@@ -27,7 +28,7 @@ public class AirportController {
 //		this.airportService = airportService;
 //	}
 	
-	@RequestMapping("index")
+	@RequestMapping("airportHi")
 	@ResponseBody
 	public Airport hi() {
 		Airport airport = new Airport();
@@ -41,9 +42,9 @@ public class AirportController {
 		return airportService.getAirportByCode(name);
 	}
 	
-	@RequestMapping(value = {"word"}, params = {"w"}, method = {RequestMethod.GET})
+	@RequestMapping(value = {"airports/{word}"}, method = {RequestMethod.GET})
 	@ResponseBody
-	public Map<String, List<Airport>> listAirportsByKeyword(@RequestParam(value ="w")  String word) {
+	public Map<String, List<Airport>> listAirportsByKeyword(@PathVariable String word) {
 		if(word.equalsIgnoreCase("")) {
 			return null;
 		} else {
