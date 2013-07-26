@@ -19,6 +19,7 @@ import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.DefaultHttpClient;
 
@@ -49,7 +50,9 @@ public class FSFlightDao implements FlightDao {
     }
 
     @Override
-    public List<Flight> getFlights(Airport from, Airport to, Date date) {
+    public List<Flight> getFlights(Airport from, Airport to, Date date)
+            throws ClientProtocolException, URISyntaxException, IOException,
+            HttpException {
         List<Flight> flightList = new ArrayList<>();
         String json = getJsonFromParameters(from, to, date);
         if (json == null) {
@@ -83,12 +86,15 @@ public class FSFlightDao implements FlightDao {
     }
 
     public String getJson(String codeFrom, String codeTo, String year,
-            String month, String day) {
+            String month, String day) throws ClientProtocolException,
+            URISyntaxException, IOException, HttpException {
         URL url = createtUrl(codeFrom, codeTo, year, month, day);
         return getJsonFromUrl(url);
     }
 
-    private String getJsonFromParameters(Airport from, Airport to, Date date) {
+    private String getJsonFromParameters(Airport from, Airport to, Date date)
+            throws ClientProtocolException, URISyntaxException, IOException,
+            HttpException {
         Map<String, String> codesFrom = from.getCodes();
 
         // get only the FS aiport codes.
@@ -109,22 +115,15 @@ public class FSFlightDao implements FlightDao {
     }
 
     private URL createtUrl(String from, String to, String year, String month,
-            String day) {
-        try {
-            URL url = new URL(String.format(FS_URL, from, to, year, month, day,
-                    APPID, APPKEY));
-            logger.info(url.toString());
-            return url;
-        } catch (MalformedURLException e) {
-
-            logger.error(e.getLocalizedMessage());
-
-            // if the url is malformed return null.
-            return null;
-        }
+            String day) throws MalformedURLException {
+        URL url = new URL(String.format(FS_URL, from, to, year, month, day,
+                APPID, APPKEY));
+        logger.info(url.toString());
+        return url;
     }
 
-    private String getJsonFromUrl(URL url) {
+    private String getJsonFromUrl(URL url) throws URISyntaxException,
+            ClientProtocolException, IOException, HttpException {
 
         DefaultHttpClient client = null;
         HttpGet getRequest = null;
@@ -135,43 +134,31 @@ public class FSFlightDao implements FlightDao {
         if (url == null) {
             return null;
         } else {
-            try {
-                client = new DefaultHttpClient();
-                getRequest = new HttpGet(url.toURI());
-                getRequest.addHeader("accept", "application/json");
+            client = new DefaultHttpClient();
+            getRequest = new HttpGet(url.toURI());
+            getRequest.addHeader("accept", "application/json");
 
-                response = client.execute(getRequest);
+            response = client.execute(getRequest);
 
-                if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-                    throw new HttpException("Failed : HTTP error code : "
-                            + response.getStatusLine().getStatusCode());
-                }
-
-                reader = new BufferedReader(new InputStreamReader(response
-                        .getEntity().getContent()));
-
-                // read all the json obtained
-                StringBuilder builder = new StringBuilder();
-                String aux = "";
-
-                while ((aux = reader.readLine()) != null) {
-                    builder.append(aux);
-                }
-                json = builder.toString();
-
-                // shutdown httpclient
-                client.getConnectionManager().shutdown();
-
-            } catch (IOException e) {
-                logger.error(e.getLocalizedMessage());
-                return null;
-            } catch (URISyntaxException e) {
-                logger.error(e.getLocalizedMessage());
-                return null;
-            } catch (HttpException e) {
-                logger.error(e.getLocalizedMessage());
-                return null;
+            if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+                throw new HttpException("Failed : HTTP error code : "
+                        + response.getStatusLine().getStatusCode());
             }
+
+            reader = new BufferedReader(new InputStreamReader(response
+                    .getEntity().getContent()));
+
+            // read all the json obtained
+            StringBuilder builder = new StringBuilder();
+            String aux = "";
+
+            while ((aux = reader.readLine()) != null) {
+                builder.append(aux);
+            }
+            json = builder.toString();
+
+            // shutdown httpclient
+            client.getConnectionManager().shutdown();
         }
 
         return json;

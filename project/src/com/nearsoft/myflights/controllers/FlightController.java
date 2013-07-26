@@ -1,6 +1,7 @@
 package com.nearsoft.myflights.controllers;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,23 +24,23 @@ public class FlightController {
         return null;
     }
 
+    // TODO this method will change to be ember-data RESTAdapter friendly
     @RequestMapping(value = "search", params = { "f", "t", "d" }, method = { RequestMethod.GET })
     @ResponseBody
-    public List<Flight> flightsByDepartureAndArrival(
+    public Map<String, Object> flightsByDepartureAndArrival(
             @RequestParam(value = "f") String departureAirportCode,
             @RequestParam(value = "t") String arrivalAirportCode,
             @RequestParam(value = "d") String date) {
-        return flightService.getFlights(departureAirportCode,
-                arrivalAirportCode, date);
-    }
-
-    // TODO will change to become easier to develop in Ember.
-    @RequestMapping(value = "searchq", params = { "f", "t", "d" }, method = { RequestMethod.GET })
-    @ResponseBody
-    public List<Flight> flightsByDepartureAndArrivals(
-            String departureAirportCode, String[] arrivalAirportCodes,
-            String date) {
-        return null;
+        Map<String, Object> map = new HashMap<String, Object>();
+        Object message = null;
+        try {
+            message = flightService.getFlights(departureAirportCode, arrivalAirportCode, date);
+            map.put("flights", message);
+        } catch (Exception e) {
+            message = e.getMessage();
+            map.put("error", message);
+        }
+        return map;
     }
 
 }

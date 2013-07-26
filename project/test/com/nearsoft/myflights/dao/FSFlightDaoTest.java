@@ -19,14 +19,14 @@ public class FSFlightDaoTest {
     }
 
     @Test
-    public void testGetJson() {
+    public void testGetJson() throws Exception {
         String json = dao.getJson("TUS", "JFK", "2013", "11", "21");
         Assert.assertNotNull(json); // Just wanted to be sure it didnt come
                                     // null.
     }
 
     @Test
-    public void testGetJsonWithNullFields() {
+    public void testGetJsonWithNullFields() throws Exception {
         String json = dao.getJson(null, "JFK", null, null, null);
         Assert.assertNull(json); // Just wanted to be sure it did come null.
     }
