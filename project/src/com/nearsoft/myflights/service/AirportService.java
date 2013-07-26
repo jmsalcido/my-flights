@@ -1,6 +1,7 @@
 package com.nearsoft.myflights.service;
 
 import java.util.List;
+import java.util.Map;
 
 import com.nearsoft.myflights.model.Airport;
 
@@ -12,6 +13,6 @@ public interface AirportService {
 
 	public Airport getAirportByCode(String name);
 
-	public List<Airport> getAirportsByKeyword(String keyword);
+	public Map<String, List<Airport>> getAirportsByKeyword(String keyword);
 
 }

@@ -1,6 +1,7 @@
 package com.nearsoft.myflights.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -42,11 +43,11 @@ public class AirportController {
 	
 	@RequestMapping(value = {"word"}, params = {"w"}, method = {RequestMethod.GET})
 	@ResponseBody
-	public List<Airport> listAirportsByKeyword(@RequestParam(value ="w")  String word) {
+	public Map<String, List<Airport>> listAirportsByKeyword(@RequestParam(value ="w")  String word) {
 		if(word.equalsIgnoreCase("")) {
 			return null;
 		} else {
-			List<Airport> airports = airportService.getAirportsByKeyword(word);
+			Map<String, List<Airport>> airports = airportService.getAirportsByKeyword(word);
 			return airports;
 		}
 	}

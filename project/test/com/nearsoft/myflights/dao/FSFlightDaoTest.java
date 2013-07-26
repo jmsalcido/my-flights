@@ -36,7 +36,6 @@ public class FSFlightDaoTest {
 		String json = FSConnectionTest.createJsonString(getClass(), "flights-json.txt");
 		Map<String, Object> map = dao.getMapFromJson(json);
 		Assert.assertEquals(true, map.containsKey("appendix"));
-		System.out.println(map.get("appendix"));
 	}
 	
 	@Test
