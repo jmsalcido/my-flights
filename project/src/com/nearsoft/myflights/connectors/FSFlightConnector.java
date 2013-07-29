@@ -1,8 +1,6 @@
-package com.nearsoft.myflights.dao;
+package com.nearsoft.myflights.connectors;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -16,31 +14,27 @@ import java.util.List;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.apache.http.HttpException;
-import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nearsoft.myflights.connectors.util.FlightConnectorUtil;
 import com.nearsoft.myflights.model.Flight;
 import com.nearsoft.myflights.model.fs.FSConnection;
 import com.nearsoft.myflights.model.fs.FSFlight;
 
-public class FSFlightDao implements FlightDao {
+public class FSFlightConnector implements FlightConnector {
 
     private final static String FS_APPID = "fddf4ecf";
     private final static String FS_APPKEY = "d2a01014237e20af21d8c7a146e5bbf2";
     private final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
 
-    private final static Log logger = LogFactory.getLog(FSFlightDao.class);
+    private final static Log logger = LogFactory.getLog(FSFlightConnector.class);
 
     private Gson gson;
 
-    public FSFlightDao() {
-        gson = new GsonBuilder()
-                .setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
+    public FSFlightConnector() {
+        gson = new GsonBuilder().setDateFormat(DateFormat.FULL, DateFormat.FULL).create();
     }
 
     @Override
@@ -65,13 +59,6 @@ public class FSFlightDao implements FlightDao {
         return gson.fromJson(json, FSConnection.class);
     }
 
-    public String getJson(String codeFrom, String codeTo, String year,
-            String month, String day) throws ClientProtocolException,
-            URISyntaxException, IOException, HttpException {
-        URL url = createtUrl(codeFrom, codeTo, year, month, day);
-        return getJsonFromUrl(url);
-    }
-
     private String getJsonFromParameters(String fromAirport, String toAirport, Date date)
             throws URISyntaxException, IOException,
             HttpException {
@@ -87,7 +74,7 @@ public class FSFlightDao implements FlightDao {
         URL urlRequest = createtUrl(fromAirport, toAirport, year, month, day);
         
         // return the json
-        return getJsonFromUrl(urlRequest);
+        return FlightConnectorUtil.getJsonFromUrl(urlRequest);
     }
 
     private URL createtUrl(String fromAirportCode, String toAirportCode, String year, String month,
@@ -96,44 +83,6 @@ public class FSFlightDao implements FlightDao {
                 FS_APPID, FS_APPKEY));
         logger.info(url.toString());
         return url;
-    }
-
-    private String getJsonFromUrl(URL url) throws URISyntaxException,
-            ClientProtocolException, IOException, HttpException {
-
-        DefaultHttpClient client = null;
-        HttpGet getRequest = null;
-        HttpResponse response = null;
-        BufferedReader reader = null;
-        String json = null;
-        
-        client = new DefaultHttpClient();
-        getRequest = new HttpGet(url.toURI());
-        getRequest.addHeader("accept", "application/json");
-
-        response = client.execute(getRequest);
-
-        if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
-            throw new HttpException("Failed : HTTP error code : "
-                    + response.getStatusLine().getStatusCode());
-        }
-
-        reader = new BufferedReader(new InputStreamReader(response
-                .getEntity().getContent()));
-
-        // read all the json obtained
-        StringBuilder builder = new StringBuilder();
-        String aux = "";
-
-        while ((aux = reader.readLine()) != null) {
-            builder.append(aux);
-        }
-        json = builder.toString();
-
-        // shutdown httpclient
-        client.getConnectionManager().shutdown();
-        
-        return json;
     }
 
 }

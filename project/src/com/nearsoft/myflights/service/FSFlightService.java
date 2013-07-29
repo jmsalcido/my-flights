@@ -12,19 +12,19 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.nearsoft.myflights.dao.FlightDao;
+import com.nearsoft.myflights.connectors.FlightConnector;
 import com.nearsoft.myflights.model.Flight;
 
 @Service
 public class FSFlightService implements FlightService {
 
     @Autowired
-    FlightDao flightDao;
+    FlightConnector flightConnector;
 
     private static Log logger = LogFactory.getLog(FSFlightService.class);
 
-    public void setFlightDao(FlightDao flightDao) {
-        this.flightDao = flightDao;
+    public void setFlightDao(FlightConnector flightConnector) {
+        this.flightConnector = flightConnector;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class FSFlightService implements FlightService {
             throws Exception {
         try {
             Date dateObject = createDateFromString(date);
-            return flightDao.getFlights(fromAirportCode, toAirportCode, dateObject);
+            return flightConnector.getFlights(fromAirportCode, toAirportCode, dateObject);
         } catch (ParseException e) {
             throw new Exception("[DATE d] " + e.getMessage());
         } catch (Exception e) {
@@ -45,6 +45,14 @@ public class FSFlightService implements FlightService {
         Date date = formatter.parse(dateString);
         logger.info(String.format("%s produced: %s", dateString, date.toString()));
         return date;
+    }
+
+    public FlightConnector getFlightConnector() {
+        return flightConnector;
+    }
+
+    public void setFlightConnector(FlightConnector flightConnector) {
+        this.flightConnector = flightConnector;
     }
 
 }

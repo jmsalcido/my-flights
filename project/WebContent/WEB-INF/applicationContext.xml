@@ -18,13 +18,13 @@
 	<bean id="airportService" class="com.nearsoft.myflights.service.JdbcAirportService">
 		<property name="airportDao" ref="airportDao" />
 	</bean>
-	
-	<bean id="flightDao" class="com.nearsoft.myflights.dao.FSFlightDao">
-    </bean>
-	
+
+	<bean id="flightConnector" class="com.nearsoft.myflights.connectors.FSFlightConnector">
+	</bean>
+
 	<bean id="flightService" class="com.nearsoft.myflights.service.FSFlightService">
-        <property name="flightDao" ref="flightDao" />
-    </bean>
+		<property name="flightConnector" ref="flightConnector" />
+	</bean>
 
 	<bean id="transactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
@@ -47,16 +47,5 @@
 			</list>
 		</property>
 	</bean>
-
-	<aop:config>
-		<aop:advisor pointcut="execution(* *..ProductManager.*(..))"
-			advice-ref="txAdvice" />
-	</aop:config>
-
-	<tx:advice id="txAdvice">
-		<tx:attributes>
-			<tx:method name="*" read-only="true" />
-		</tx:attributes>
-	</tx:advice>
 
 </beans>

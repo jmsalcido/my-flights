@@ -1,38 +1,27 @@
-package com.nearsoft.myflights.dao;
+package com.nearsoft.myflights.connectors;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.nearsoft.myflights.connectors.FSFlightConnector;
 import com.nearsoft.myflights.model.fs.FSConnection;
 import com.nearsoft.myflights.util.JsonUtils;
 
-public class FSFlightDaoTest {
+public class FSFlightConnectorTest {
 
-    private FSFlightDao dao;
+    private FSFlightConnector connector;
 
     @Before
     public void setUp() {
-        dao = new FSFlightDao();
-    }
-
-    @Test
-    public void testGetJson() throws Exception {
-        String json = dao.getJson("TUS", "JFK", "2013", "11", "21");
-        Assert.assertNotNull(json);
-    }
-
-    @Test
-    public void testGetJsonWithNullFields() throws Exception {
-        String json = dao.getJson(null, "JFK", null, null, null);
-        Assert.assertNull(json);
+        connector = new FSFlightConnector();
     }
 
     @Test
     public void testFSConnectionFromJson() throws Exception {
         String json = JsonUtils.createJsonString(getClass(),
                 "flights-json.txt");
-        FSConnection connection = dao.getFSConnectionFromJson(json);
+        FSConnection connection = connector.getFSConnectionFromJson(json);
         Assert.assertNotNull(connection);
         Assert.assertNotNull(connection.getRequest());
         Assert.assertNotNull(connection.getAppendix());
