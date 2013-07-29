@@ -1,13 +1,11 @@
 package com.nearsoft.myflights.dao;
 
-import java.util.Map;
-
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import com.nearsoft.myflights.model.fs.FSConnection;
-import com.nearsoft.myflights.model.fs.FSConnectionTest;
+import com.nearsoft.myflights.util.JsonUtils;
 
 public class FSFlightDaoTest {
 
@@ -21,28 +19,18 @@ public class FSFlightDaoTest {
     @Test
     public void testGetJson() throws Exception {
         String json = dao.getJson("TUS", "JFK", "2013", "11", "21");
-        Assert.assertNotNull(json); // Just wanted to be sure it didnt come
-                                    // null.
+        Assert.assertNotNull(json);
     }
 
     @Test
     public void testGetJsonWithNullFields() throws Exception {
         String json = dao.getJson(null, "JFK", null, null, null);
-        Assert.assertNull(json); // Just wanted to be sure it did come null.
-    }
-
-    @SuppressWarnings("deprecation")
-    @Test
-    public void testMapFromJson() throws Exception {
-        String json = FSConnectionTest.createJsonString(getClass(),
-                "flights-json.txt");
-        Map<String, Object> map = dao.getMapFromJson(json);
-        Assert.assertEquals(true, map.containsKey("appendix"));
+        Assert.assertNull(json);
     }
 
     @Test
     public void testFSConnectionFromJson() throws Exception {
-        String json = FSConnectionTest.createJsonString(getClass(),
+        String json = JsonUtils.createJsonString(getClass(),
                 "flights-json.txt");
         FSConnection connection = dao.getFSConnectionFromJson(json);
         Assert.assertNotNull(connection);

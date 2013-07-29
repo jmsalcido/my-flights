@@ -5,10 +5,10 @@ import java.util.Map;
 
 public class Airport {
 
-    public final static String FS = "fs"; // only flightsats?
-    public final static String IATA = "iata";
-    public final static String ICAO = "icao";
-    public final static String FAA = "faa";
+    public final static String FS_CODE = "fs";
+    public final static String IATA_CODE = "iata";
+    public final static String ICAO_CODE = "icao";
+    public final static String FAA_CODE = "faa";
 
     private int id;
     private Map<String, String> codes;
@@ -19,7 +19,7 @@ public class Airport {
     public static Airport createAirportFromFSCode(String fsCode) {
         Airport airport = new Airport();
         Map<String, String> map = new HashMap<String, String>();
-        map.put(Airport.FS, fsCode);
+        map.put(Airport.FS_CODE, fsCode);
         airport.setCodes(map);
         return airport;
     }

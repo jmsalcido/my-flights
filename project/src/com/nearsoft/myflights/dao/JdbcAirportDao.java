@@ -37,34 +37,17 @@ public class JdbcAirportDao implements AirportDao {
     }
 
     @Override
-    public Airport getAirportByName(String name) {
-        return null;
-    }
-
-    @Override
-    public Airport getAirportByCode(String name) {
-        final String sql = "SELECT id, fs, iata, icao, faa, name, city, countryName FROM airports WHERE fs = ?;";
-        jdbcTemplate = new JdbcTemplate(dataSource);
-        Object[] params = new Object[] { name };
-        List<Airport> airports = jdbcTemplate.query(sql, params,
-                new AirportMapper());
-        if (airports.size() > 0) {
-            return airports.get(0);
-        }
-        return null;
-    }
-
-    @Override
     public List<Airport> getAirportsByKeyword(String keyword) {
-        List<Airport> airportList = new ArrayList<>();
         final String sql = "SELECT id, fs, iata, icao, faa, name, city, countryName FROM airports WHERE fs LIKE ? OR name LIKE ? OR city LIKE ? ORDER BY classification LIMIT 5;";
         jdbcTemplate = new JdbcTemplate(dataSource);
+        
+        // create the '%param%' string for LIKE statement
         StringBuilder sb = new StringBuilder();
         sb.append("%").append(keyword).append("%");
         String param = sb.toString();
+        
         Object[] params = new Object[] { param, param, param };
-        airportList = jdbcTemplate.query(sql, params, new AirportMapper());
-        return airportList;
+        return jdbcTemplate.query(sql, params, new AirportMapper());
     }
 
     private static class AirportMapper implements

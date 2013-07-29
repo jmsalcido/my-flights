@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.nearsoft.myflights.util.JsonUtils;
 
 public class FSFlightTest {
 
@@ -103,7 +104,7 @@ public class FSFlightTest {
 
     @Test
     public void testParseFromJsonFile() throws IOException {
-        String json = FSConnectionTest.createJsonString(getClass(),
+        String json = JsonUtils.createJsonString(getClass(),
                 "flights-json.txt");
         fsFlight = gson.fromJson(json, FSFlight.class);
         assertNotNull(fsFlight);

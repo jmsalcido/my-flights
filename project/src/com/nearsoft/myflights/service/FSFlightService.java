@@ -13,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.nearsoft.myflights.dao.FlightDao;
-import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.model.Flight;
 
 @Service
@@ -29,13 +28,11 @@ public class FSFlightService implements FlightService {
     }
 
     @Override
-    public List<Flight> getFlights(String from, String to, String date)
+    public List<Flight> getFlights(String fromAirportCode, String toAirportCode, String date)
             throws Exception {
         try {
-            Airport airportFrom = Airport.createAirportFromFSCode(from);
-            Airport airportTo = Airport.createAirportFromFSCode(to);
             Date dateObject = createDateFromString(date);
-            return flightDao.getFlights(airportFrom, airportTo, dateObject);
+            return flightDao.getFlights(fromAirportCode, toAirportCode, dateObject);
         } catch (ParseException e) {
             throw new Exception("[DATE d] " + e.getMessage());
         } catch (Exception e) {

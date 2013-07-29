@@ -1,17 +1,16 @@
 package com.nearsoft.myflights.controllers;
 
-import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.service.AirportService;
 
 @Controller
@@ -24,30 +23,17 @@ public class AirportController {
     public AirportController() {
     }
 
-    @RequestMapping("airportHi")
-    @ResponseBody
-    public Airport hi() {
-        Airport airport = new Airport();
-        airport.setId(1);
-        return airport;
-    }
-
-    @RequestMapping(value = { "code" }, params = { "c" }, method = { RequestMethod.GET })
-    @ResponseBody
-    public Airport airportByCode(@RequestParam(value = "c") String name) {
-        return airportService.getAirportByCode(name);
-    }
-
     @RequestMapping(value = { "airports/{word}" }, method = { RequestMethod.GET })
     @ResponseBody
-    public Map<String, List<Airport>> listAirportsByKeyword(
+    public Map<String, Object> listAirportsByKeyword(
             @PathVariable String word) {
-        if (word.equalsIgnoreCase("")) {
-            return null;
+        Map<String, Object> map = new HashMap<String, Object>(); 
+        if(StringUtils.isEmpty(word)) {
+            map.put("error", "'word' can't be empty");
+        } else {
+            map.put("airports", airportService.getAirportsByKeyword(word));
         }
-        Map<String, List<Airport>> airports = airportService
-                .getAirportsByKeyword(word);
-        return airports;
+        return map;
     }
 
 }

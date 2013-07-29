@@ -1,8 +1,6 @@
 package com.nearsoft.myflights.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,22 +24,8 @@ public class JdbcAirportService implements AirportService {
     }
 
     @Override
-    public Airport getAirportByName(String name) {
-        return airportDao.getAirportByName(name);
-    }
-
-    @Override
-    public Airport getAirportByCode(String name) {
-        return airportDao.getAirportByCode(name);
-    }
-
-    @Override
-    public Map<String, List<Airport>> getAirportsByKeyword(String keyword) {
-        Map<String, List<Airport>> airports = new HashMap<String, List<Airport>>();
-        airports.put("airports", airportDao.getAirportsByKeyword(keyword)); // Oh
-                                                                            // God
-                                                                            // Please.
-        return airports;
+    public List<Airport> getAirportsByKeyword(String keyword) {
+        return airportDao.getAirportsByKeyword(keyword);
     }
 
 }

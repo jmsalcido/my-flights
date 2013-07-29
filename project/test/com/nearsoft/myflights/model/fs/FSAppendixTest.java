@@ -10,6 +10,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import com.google.gson.Gson;
+import com.nearsoft.myflights.util.JsonUtils;
 
 public class FSAppendixTest {
 
@@ -42,7 +43,7 @@ public class FSAppendixTest {
 
     @Test
     public void testParseFromJsonFile() throws IOException {
-        String json = FSConnectionTest.createJsonString(getClass(),
+        String json = JsonUtils.createJsonString(getClass(),
                 "flights-json.txt");
         FSAppendix test = gson.fromJson(json, FSAppendix.class);
         assertNotNull(test);
