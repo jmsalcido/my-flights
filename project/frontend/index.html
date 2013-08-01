@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>My Flights</title>
+  <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+  <script type="text/x-handlebars" data-template-name="application">
+    <h2>My Flights</h2>
+    {{render "routes"}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="routes">
+  <div>
+    {{input value=departureText type="text" placeholder="Departure..."}} to
+    {{input value=arrivalText type="text" placeholder="Arrival..."}}
+  </div>
+  <div>
+    {{view App.ButtonView label="Click only once."}}
+  </div>
+  <div>
+    {{view App.AutoComplete valueBinding="testText" id="tags" placeholder="Test..."}}
+    <ul id="results">
+    </ul>
+  </div>
+  <br/>
+    {{#each airport in searchResults}}
+      ({{airport.code}}) {{airport.city}} - {{airport.name}}</br>
+    {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="applicationMyFlights">
+    <h2>My Flights</h2>
+    {{input placeholder="Departure..." classNames="departureText"}} to {{input placeholder="Arrival..." classNames="arrivalText"}}<br/>
+    {{view App.DateField valueBinding="controller.startDate" classNames="startDate"}}
+    {{view App.DateField valueBinding="controller.endDate" classNames="endDate"}}
+    <button {{action "search" target='controller'}}>Search</button>
+  </script>
+
+  <script src="js/libs/jquery-1.9.1.js"></script>
+  <script src="js/libs/jquery-ui-1.10.2.js"></script>
+  <script src="js/libs/sprintf.js"></script>
+  <script src="js/libs/handlebars-1.0.0-rc.4.js"></script>
+  <script src="js/libs/ember-1.0.0-rc.6.1.js"></script>
+  <script src="js/libs/ember-data.js"></script>
+  <script src="js/jquery-ui-ember.js"></script>
+  <script src="js/app.js"></script>
+
+</body>
+</html>

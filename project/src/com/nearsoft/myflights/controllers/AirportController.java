@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
+import com.nearsoft.myflights.model.Airport;
 import com.nearsoft.myflights.service.AirportService;
 
 @Controller
@@ -33,17 +34,57 @@ public class AirportController {
 
     public AirportController() {
     }
+    
+    @RequestMapping(value = { "airports" }, method = { RequestMethod.GET })
+    @ResponseBody
+    public ResponseEntity<String> listAirportsByKeyword(HttpServletRequest request) {
+        Map<String, Object> responseMap = new HashMap<String, Object>();
+        Airport airport = new Airport();
+        airport.setCity("Hermosillo");
+        airport.setCode("HMO");
+        airport.setCountry("Mexico");
+        airport.setName("No idea Hermosillo Airport");
+        airport.setId(1);
+        java.util.List<Airport> list = new java.util.ArrayList<>();
+        list.add(airport);
+        airport = new Airport();
+        airport.setCity("Los Mochis");
+        airport.setCode("LMM");
+        airport.setCountry("Mexico");
+        airport.setName("Los Mochis Federal");
+        airport.setId(2);
+        list.add(airport);
+        // this could be on an util class for every controller that returns JSON.
+        HttpHeaders responseHeaders = new HttpHeaders();
 
-    @RequestMapping(value = { "airports/{word}" }, method = { RequestMethod.GET })
+        Enumeration<String> headerNames = request.getHeaderNames();
+        while (headerNames.hasMoreElements()) {
+            String nextElement = (String) headerNames.nextElement();
+            //System.out.println(nextElement + "=" + request.getHeaders(nextElement).toString()); 
+            responseHeaders.set(nextElement, request.getHeader(nextElement));
+        }
+        
+        responseMap.put("airports", list);
+
+        // populating the header required for CORS
+        responseHeaders.set("Access-Control-Allow-Origin", "http://localhost:3000");
+
+        logger.info(String.format("Incoming request from %s :)",request.getLocalAddr()));
+        Gson gson = new Gson();
+        return new ResponseEntity<String>(gson.toJson(responseMap), responseHeaders, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = { "search/{word}" }, method = { RequestMethod.GET })
     @ResponseBody
     public ResponseEntity<String> listAirportsByKeyword(@PathVariable String word,
             HttpServletRequest request) {
         logger.info(String.format("Incoming request from %s :)",request.getLocalAddr()));
+        logger.info(String.format("Word received: %s", word));
         Map<String, Object> responseMap = new HashMap<String, Object>();
         if (StringUtils.isEmpty(word)) {
             responseMap.put("error", "'word' can't be empty");
         } else {
-            responseMap.put("airports", airportService.getAirportsByKeyword(word));
+            responseMap = airportService.getAirportsByKeyword(word);
         }
 
         // this could be on an util class for every controller that returns JSON.
@@ -57,7 +98,7 @@ public class AirportController {
         }
 
         // populating the header required for CORS
-        responseHeaders.set("Access-Control-Allow-Origin", "http://localhost:3000");
+        responseHeaders.set("Access-Control-Allow-Origin", "*");
 
         Gson gson = new Gson();
         

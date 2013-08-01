@@ -11,7 +11,8 @@ public class Airport {
     public final static String FAA_CODE = "faa";
 
     private int id;
-    private Map<String, String> codes;
+    //private Map<String, String> codes;
+    private String code;
     private String name;
     private String city;
     private String country;
@@ -20,7 +21,8 @@ public class Airport {
         Airport airport = new Airport();
         Map<String, String> map = new HashMap<String, String>();
         map.put(Airport.FS_CODE, fsCode);
-        airport.setCodes(map);
+        airport.setCode(fsCode);
+        //airport.setCodes(map);
         return airport;
     }
 
@@ -32,12 +34,12 @@ public class Airport {
         this.id = id;
     }
 
-    public Map<String, String> getCodes() {
-        return codes;
+    public String getCode() {
+        return code;
     }
 
-    public void setCodes(Map<String, String> codes) {
-        this.codes = codes;
+    public void setCode(String code) {
+        this.code = code;
     }
 
     public String getName() {

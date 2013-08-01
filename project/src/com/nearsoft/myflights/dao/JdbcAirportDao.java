@@ -86,7 +86,7 @@ public class JdbcAirportDao implements AirportDao {
             airport.setName(rs.getString(COLUMN_NAME));
             airport.setCity(rs.getString(COLUMN_CITY));
             airport.setCountry(rs.getString(COLUMN_COUNTRY));
-            airport.setCodes(createCodesMap(fs, iata, icao, faa));
+            airport.setCode(fs);//createCodesMap(fs, iata, icao, faa));
             return airport;
         }
 
