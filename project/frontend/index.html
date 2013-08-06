@@ -4,32 +4,68 @@
 <meta charset="utf-8">
 <title>My Flights</title>
   <link rel="stylesheet" href="css/normalize.css">
+  <link rel="stylesheet" href="css/bootstrap.css">
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
   <script type="text/x-handlebars" data-template-name="application">
-    <h2>My Flights</h2>
-    {{render "routes"}}
+    <header>
+      <h1><span class="label">My Flights</span></h1>
+      {{view Bootstrap.AlertMessage type="warning" message="MyFlights - This is a very early build!"}}
+    </header>
+    <div>
+      {{render routes}}
+    </div>
+    <footer>
+      <p> No footer </p>
+    </footer>
   </script>
 
   <script type="text/x-handlebars" data-template-name="routes">
-  <div>
-    {{input value=departureText type="text" placeholder="Departure..."}} to
-    {{input value=arrivalText type="text" placeholder="Arrival..."}}
+  <div id="route">
+    <h3>{{title}}</h3>
+    {{view Ember.TextField valueBinding=departureText placeholder="Departure..."}} to
+    {{view Ember.TextField valueBinding=arrivalText placeholder="Arrival..."}}
   </div>
-  <div>
-    {{view App.ButtonView label="Click only once."}}
-  </div>
-  <div>
-    {{view App.AutoComplete valueBinding="testText" id="tags" placeholder="Test..."}}
-    <ul id="results">
-    </ul>
-  </div>
-  <br/>
+  {{#view App.AutocompleteView classBinding="isInvisible"}}>
     {{#each airport in searchResults}}
-      ({{airport.code}}) {{airport.city}} - {{airport.name}}</br>
+      <a {{action "select" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</a></br>
     {{/each}}
+  {{/view}}
+    <br />
+    {{render test}}
+  </script>
+
+  <!-- remove -->
+  <!-- remove -->
+  <!-- remove -->
+  <script type="text/x-handlebars" data-template-name="test">
+    {{input valueBinding="tmpFirstName" placeholder="first name..."}}
+    <label>
+      {{view Ember.Checkbox disabledBinding="checkBox_disabled" checkedBinding="createPerson"}}
+      Create?
+    </label>
+    <br/>
+    {{input valueBinding="tmpLastName" placeholder="last name..."}}
+    <button {{action "usePerson" createPerson }}>Use Person</button> 
+    {{view Ember.Select viewName="select"
+                    contentBinding="people"
+                    optionLabelPath="content.fullName"
+                    optionValuePath="content.first_name"
+                    prompt="Pick someone:"
+                    selectionBinding="selected"}}
+                    <br/>
+    {{#view App.OTFusionLinkView}}unnecesary link{{/view}}<br/>
+    <h3>People in PeopleArray:</h3>
+    <ul>
+      {{#each person in people}}
+        <li>{{person.fullName}}</li>
+        {{else}}
+        <p>None</p>
+      {{/each}}
+    </ul>
+</label>
   </script>
 
   <script type="text/x-handlebars" data-template-name="applicationMyFlights">
@@ -42,11 +78,12 @@
 
   <script src="js/libs/jquery-1.9.1.js"></script>
   <script src="js/libs/jquery-ui-1.10.2.js"></script>
-  <script src="js/libs/sprintf.js"></script>
+  <script src="js/libs/bootstrap.js"></script>
+  <!--<script src="js/libs/sprintf.js"></script>-->
   <script src="js/libs/handlebars-1.0.0-rc.4.js"></script>
   <script src="js/libs/ember-1.0.0-rc.6.1.js"></script>
+  <script src="js/libs/ember-bootstrap.js"></script>
   <script src="js/libs/ember-data.js"></script>
-  <script src="js/jquery-ui-ember.js"></script>
   <script src="js/app.js"></script>
 
 </body>

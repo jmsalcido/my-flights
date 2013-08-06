@@ -1,5 +1,17 @@
 /* Put your CSS here */
 html, body {
     margin: 20px;
-    font-family: arial;
+}
+
+.autocomplete {
+    padding: 0.1em;
+    background-color: white;
+    border-color: black;
+    border-width: 0.1em;
+    border-style: solid;
+
+}
+
+.invisible {
+    visibility: hidden;
 }
