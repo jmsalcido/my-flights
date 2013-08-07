@@ -5,7 +5,7 @@
   <title>My Flights</title>
   <link rel="stylesheet" href="css/normalize.css">
   <link rel="stylesheet" href="css/bootstrap.css">
-  <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.0.2/css/bootstrap-datepicker.min.css" type="text/css"/>
+  <link rel="stylesheet" href="css/datepicker.css" type="text/css"/>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -38,14 +38,10 @@
             <p>Could not find airports with that keyword...</p>
           {{/each}}
         </ul>
-      {{/view}}
-        {{view App.DatePickerField class="inline" valueBinding='controller.departureDate'}}
-        {{outlet}}
-        {{view App.DatePickerField class="inline" valueBinding='controller.arrivalDate'}}
-        {{outlet}}
-      </span>
+        {{/view}}
+          {{view App.DatePicker dateBinding="departureDate"}}
+        </span>
     </div>
-    {{render test}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="datepicker" >
@@ -89,7 +85,7 @@
   <script src="js/libs/jquery-1.9.1.js"></script>
   <script src="js/libs/jquery-ui-1.10.2.js"></script>
   <script src="js/libs/bootstrap.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.0.2/js/bootstrap-datepicker.min.js"></script>
+  <script src="js/libs/bootstrap-datepicker.js"></script>
   <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
   <script src="js/libs/handlebars-1.0.0-rc.4.js"></script>
   <script src="js/libs/ember-1.0.0-rc.6.1.js"></script>

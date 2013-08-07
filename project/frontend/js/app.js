@@ -5,19 +5,64 @@ App.TextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required']
 });
 
-App.DatePickerField = Em.View.extend({
-  templateName: 'datepicker',
-  didInsertElement: function() {
-    var onChangeDate, self;
-    self = this;
-    onChangeDate = function(ev) {
-      return self.set("value", moment.utc(ev.date).format("YYYY-MM-DD"));
-    };
-    var date = this.$('.datepicker').datepicker({
-      separator: "-"
-    }).on("changeDate", onChangeDate);
-    return date;
-  }
+App.DatePicker = Ember.TextField.extend({
+    classNames: ['date-picker'],
+    textToDateTransform: (function(key, value) {
+        var date, month, parts;
+        if (arguments.length === 2) {
+            if (value instanceof Date) {
+                this.set('date', date);
+                return this.close();
+            } else if (value && /\d{4}-\d{2}-\d{2}/.test(value)) {
+                parts = value.split('-');
+                date = new Date();
+                date.setYear(parts[0]);
+                date.setMonth(parts[1] - 1);
+                date.setDate(parts[2]);
+                this.set('date', date);
+                return this.close();
+            } else {
+                return this.set('date', null);
+            }
+        } else if (arguments.length === 1 && this.get('date')) {
+            month = this.get('date').getMonth() + 1;
+            date = this.get('date').getDate();
+            if (month < 10) {
+                month = "0" + month;
+            }
+            if (date < 10) {
+                date = "0" + date;
+            }
+            return "%@-%@-%@".fmt(this.get('date').getFullYear(), month, date);
+        }
+    }).property(),
+    format: "yyyy-mm-dd",
+    placeholder: Ember.computed.alias('format'),
+    size: 8,
+    valueBinding: "textToDateTransform",
+    yesterday: (function() {
+        var date;
+        date = new Date();
+        date.setDate(date.getDate() - 1);
+        return date;
+    }).property(),
+    didInsertElement: function() {
+        var _this = this;
+        return this.$().datepicker({
+            format: this.get('format'),
+            autoclose: true,
+            startDate: "today",
+            todayHighlight: true,
+            keyboardNavigation: true
+        }).on('changeDate', function(ev) {
+            _this.set('date', ev.date);
+            console.log(_this.get('startDate'));
+            return _this.$().datepicker('setValue', ev.date);
+        });
+    },
+    close: function() {
+        return this.$().datepicker('hide');
+    }
 });
 
 App.RoutesView = Ember.View.extend();
@@ -39,8 +84,7 @@ App.RoutesController = Ember.Controller.extend({
         if(!searchText) { return; }
         // server request
         var search = App.Search.find(searchText);
-        var airports = search.get('airports');
-        return airports;
+        return search.get('airports');
     }.property('departureText', 'arrivalText'),
     select: function(airport) {
         this.set('departureText', airport.get('code'));
@@ -76,81 +120,52 @@ App.Person = Ember.Object.extend({
     }.property('first_name', 'last_name')
 });
 
-App.TestController = Ember.Controller.extend({
-    selected: null,
-    select: null,
-    checkBox_disabled: true,
-    disableCheckBox: function() {
-        console.log(checkBox_disabled);
-    }.observes('checkBox_disabled'),
-    people: [],
-    tmpFirstName: null,
-    tmpLastName: null,
-    // check box
-    createPerson: false,
-    _createPerson: function() {
-        var createPerson = this.get('createPerson');
-        console.log('createPerson changed to %@'.fmt(createPerson));
-    }.observes('createPerson'),
-    moveAlong: function() {
-        var first_name = this.get('selected').get('first_name');
-        var last_name = this.get('selected').get('last_name');
-        this.set('tmpFirstName', first_name);
-        this.set('tmpLastName', last_name);
-    }.observes('selected'),
-    usePerson: function(createPerson) {
-        if(createPerson) {
-            var person = App.Person.create();
-            person.set('first_name', this.get('tmpFirstName'));
-            person.set('last_name', this.get('tmpLastName'));
-            person.addObserver('fullName', function() {
-                console.log("%@: Y U CHANGE MUH NAME?".fmt(this.get('fullName')));
-            });
-            // PUSHOBJECT() here.
-            this.get('people').pushObject(person);
-            console.log(person.get('fullName') + " says: hello!");
+// App.TestController = Ember.Controller.extend({
+//     selected: null,
+//     select: null,
+//     checkBox_disabled: true,
+//     disableCheckBox: function() {
+//         console.log(checkBox_disabled);
+//     }.observes('checkBox_disabled'),
+//     people: [],
+//     tmpFirstName: null,
+//     tmpLastName: null,
+//     // check box
+//     createPerson: false,
+//     _createPerson: function() {
+//         var createPerson = this.get('createPerson');
+//         console.log('createPerson changed to %@'.fmt(createPerson));
+//     }.observes('createPerson'),
+//     moveAlong: function() {
+//         var first_name = this.get('selected').get('first_name');
+//         var last_name = this.get('selected').get('last_name');
+//         this.set('tmpFirstName', first_name);
+//         this.set('tmpLastName', last_name);
+//     }.observes('selected'),
+//     usePerson: function(createPerson) {
+//         if(createPerson) {
+//             var person = App.Person.create();
+//             person.set('first_name', this.get('tmpFirstName'));
+//             person.set('last_name', this.get('tmpLastName'));
+//             person.addObserver('fullName', function() {
+//                 console.log("%@: Y U CHANGE MUH NAME?".fmt(this.get('fullName')));
+//             });
+//             // PUSHOBJECT() here.
+//             this.get('people').pushObject(person);
+//             console.log(person.get('fullName') + " says: hello!");
 
-            // reset inputs.
-            this.set('tmpFirstName', null);
-            this.set('tmpLastName', null);
-            this.set('createPerson', false);
-        } else {
-            console.log(this.get('checkBox'));
-            console.log('fuck you')
-        }
-    }
-});
-
-App.OTFusionLinkView = Ember.View.extend({
-    tagName: "a",
-    attributeBindings: ['href'],
-    href: "http://otfusion.org"
-});
-
-App.ApplicationController = Ember.Controller.extend({
-});
-
-// App.AutoComplete = JQ.AutoComplete.extend({
-//     source: function (e) {
-//         var query = $('#tags').val(),
-//             resultList = $('#results'),
-//             print = function (res_obj){
-//                 var array = res_obj.airports,
-//                     length = res_obj.airports.length;
-//
-//                 for(var i = 0; i < length; i += 1){
-//                     var country = array[i].name;
-//                     console.log(array[i]);
-//                     //TODO: replace this approach... Better if you clone the node, append all that shit and then, replace the original...
-//                     resultList.append($('<li></li>').text(country));
-//                 }
-//                 $('#tags').autocomplete({
-//             source: array
-//         });
-//             };
-//         resultList.html('');
-//         jQuery.App.SearchFn(query, print);
+//             // reset inputs.
+//             this.set('tmpFirstName', null);
+//             this.set('tmpLastName', null);
+//             this.set('createPerson', false);
+//         } else {
+//             console.log(this.get('checkBox'));
+//             console.log('fuck you')
+//         }
 //     }
+// });
+
+// App.ApplicationController = Ember.Controller.extend({
 // });
 
 App.RESTSerializer = DS.RESTSerializer.extend({
