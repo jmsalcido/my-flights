@@ -5,14 +5,36 @@ App.TextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required']
 });
 
+App.DatePickerField = Em.View.extend({
+  templateName: 'datepicker',
+  didInsertElement: function() {
+    var onChangeDate, self;
+    self = this;
+    onChangeDate = function(ev) {
+      return self.set("value", moment.utc(ev.date).format("YYYY-MM-DD"));
+    };
+    var date = this.$('.datepicker').datepicker({
+      separator: "-"
+    }).on("changeDate", onChangeDate);
+    return date;
+  }
+});
+
 App.RoutesView = Ember.View.extend();
 
 App.RoutesController = Ember.Controller.extend({
+    title: 'Select your route',
     airports: null,
     departureText: null,
     arrivalText: null,
-    title: 'Select your route',
-    searchResults: function(){
+    departureSelected: false,
+    arrivalSelected: false,
+    departureDate: new Date(),
+    arrivalDate: '',
+    searchResults:  function(){
+        if(this.get('departureSelected')) {
+            return;
+        }
         var searchText = this.get('departureText') || this.get('arrivalText');
         if(!searchText) { return; }
         // server request
@@ -23,14 +45,23 @@ App.RoutesController = Ember.Controller.extend({
     select: function(airport) {
         this.set('departureText', airport.get('code'));
         this.get('departureText').enabled = 'false';
+        this.set('departureSelected', true);
+    },
+    search: function() {
+        console.log("departureCode: " + this.get('departureText'));
+        console.log("arrivalCode: " + this.get('arrivalText'));
+        console.log("departureDate: " + this.get('departureDate'));
+        console.log("arrivalDate: " + this.get('arrivalDate'));
     }
 });
 
 App.AutocompleteView = Ember.View.extend({
-    isInvisible: function() {
-        var searchResults = this.get('searchResults');
-        return searchResults !== null ? "invisible" : "visible";
-    }
+    classNameBindings:['isInvisible:invisible'],
+    isInvisible: function(e) {
+        var searchResults = this.get('controller').get('searchResults');
+        var result = searchResults === undefined;
+        return result;
+    }.property('controller.searchResults', 'controller.departureSelected', 'controller.arrivalSelected')
 });
 
 // PLEASE DELETE ME
