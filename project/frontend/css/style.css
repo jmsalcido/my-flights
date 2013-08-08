@@ -33,16 +33,23 @@ footer {
     font-size: 14px;
 }
 
-.form-control{
+.to {
+    font-size: 18px;
+}
+
+.form-control {
+    border-radius: 0;
     display: inline;
-    width: 200px;
+    width: 303px;
+    min-width: 303px;
+
 }
 
 .btn {
     margin-bottom: 0.9em;
 }
 
-.datepicker {
+.datepicker input[type="text"] {
     display: inline;
 }
 
@@ -50,31 +57,36 @@ footer {
     width: 176px;
 }
 
-.autocomplete {
-    position: absolute;
-    z-index:10;
-    padding: 0.1em;
-    background-color: white;
-    border-color: black;
-    border-width: 0.1em;
-    border-style: solid;
-    width: 25%;
+.autocomplete-view {
+    position: relative;
 }
 
-.autocomplete li, ul {
-    background-color: #FFFFCC;
-    margin: 0;
-    padding: 0;
-    width: 100%;
-    list-style: none;
+.autocomplete {
+    position: absolute;
+    z-index:3;
+    background-color: white;
+    border-color: #FFF2DF;
+    border-width: 0.1em;
+    border-style: solid;
+    min-width: 303px;
+    min-height: 50px;
+}
+
+.autocomplete div {
+    background-color: white;
 }
 
 .autocomplete a {
     width: 100%;
 }
 
-.autocomplete li:hover {
+.autocomplete div:hover {
     background-color: blue;
+    cursor: pointer;
+}
+
+.autocomplete span {
+    height: 100px;
 }
 
 .invisible {

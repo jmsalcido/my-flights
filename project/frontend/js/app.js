@@ -1,10 +1,12 @@
+function isEmpty(str) {
+    return (!str || 0 === str.length);
+}
+
 App = Ember.Application.create();
 
-// extend ember textfield to accept autocomplete and other attributes
-App.TextField = Ember.TextField.extend({
-    attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required']
-});
-
+// ===============================
+// VIEWS.JS
+// ===============================
 App.DatePicker = Ember.TextField.extend({
     classNames: ['date-picker'],
     textToDateTransform: (function(key, value) {
@@ -65,109 +67,84 @@ App.DatePicker = Ember.TextField.extend({
     }
 });
 
-App.RoutesView = Ember.View.extend();
+App.AutocompleteTextField = Ember.TextField.extend({
+    attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
+    keyUp: function(e) {
+        if(e.keyCode == 27) {
+            this.get('controller').set('isAutoCompletedInvisible', true);
+        }
+    },
+    keyDown: function(e) {
+        if(e.keyCode == 40) {
+            console.log('fuckYou');
+        }
+        if(e.keyCode == 38) {
+            console.log('fuckYou');
+        }
+    }
+});
 
+App.AutocompleteView = Ember.View.extend({
+    templateName: 'autocomplete',
+    classNameBindings:['isInvisible:invisible'],
+    mouseEnter: function(e) {
+        // console.log(e);
+    },
+    isInvisible: function(params) {
+        return this.get('controller').get('isAutoCompletedInvisible');
+    }.property('controller.isAutoCompletedInvisible')
+});
+
+// ===============================
+// ROUTES.JS (change)
+// ===============================
 App.RoutesController = Ember.Controller.extend({
     title: 'Select your route',
-    airports: null,
     departureText: null,
     arrivalText: null,
     departureSelected: false,
     arrivalSelected: false,
     departureDate: new Date(),
+    isAutoCompletedInvisible: true,
     arrivalDate: '',
-    searchResults:  function(){
-        if(this.get('departureSelected')) {
-            return;
+    test: "test",
+    searchResultsAlternativeText: function() {
+        var search = this.get('searchResults');
+        if(!search) {
+            return "Could not find airports with that keyword..."
+        } else {
+            return "Loading..."
         }
+    }.property(),
+    searchResults:  function(){
         var searchText = this.get('departureText') || this.get('arrivalText');
-        if(!searchText) { return; }
+        if(!searchText || isEmpty(searchText)) {
+            this.set('isAutoCompletedInvisible', true);
+            return;
+        } else {
+            this.set('isAutoCompletedInvisible', false);
+        }
         // server request
         var search = App.Search.find(searchText);
-        return search.get('airports');
+        return search.get('airports')
     }.property('departureText', 'arrivalText'),
-    select: function(airport) {
-        this.set('departureText', airport.get('code'));
-        this.get('departureText').enabled = 'false';
-        this.set('departureSelected', true);
-    },
     search: function() {
         console.log("departureCode: " + this.get('departureText'));
         console.log("arrivalCode: " + this.get('arrivalText'));
         console.log("departureDate: " + this.get('departureDate'));
         console.log("arrivalDate: " + this.get('arrivalDate'));
+    },
+    select: function(airport) {
+        this.set('isAutoCompletedInvisible', true); 
+        this.set('departureText', airport.get('code'));
+        this.get('departureText').enabled = 'false';
+        this.set('departureSelected', true);
     }
 });
 
-App.AutocompleteView = Ember.View.extend({
-    classNameBindings:['isInvisible:invisible'],
-    isInvisible: function(e) {
-        var searchResults = this.get('controller').get('searchResults');
-        var result = searchResults === undefined;
-        return result;
-    }.property('controller.searchResults', 'controller.departureSelected', 'controller.arrivalSelected')
-});
-
-// PLEASE DELETE ME
-// PLEASE DELETE ME
-// PLEASE DELETE ME
-App.Person = Ember.Object.extend({
-    id: 0,
-    first_name: null,
-    last_name: null,
-    fullName: function() {
-        return this.get('first_name') + " " + this.get('last_name');
-    }.property('first_name', 'last_name')
-});
-
-// App.TestController = Ember.Controller.extend({
-//     selected: null,
-//     select: null,
-//     checkBox_disabled: true,
-//     disableCheckBox: function() {
-//         console.log(checkBox_disabled);
-//     }.observes('checkBox_disabled'),
-//     people: [],
-//     tmpFirstName: null,
-//     tmpLastName: null,
-//     // check box
-//     createPerson: false,
-//     _createPerson: function() {
-//         var createPerson = this.get('createPerson');
-//         console.log('createPerson changed to %@'.fmt(createPerson));
-//     }.observes('createPerson'),
-//     moveAlong: function() {
-//         var first_name = this.get('selected').get('first_name');
-//         var last_name = this.get('selected').get('last_name');
-//         this.set('tmpFirstName', first_name);
-//         this.set('tmpLastName', last_name);
-//     }.observes('selected'),
-//     usePerson: function(createPerson) {
-//         if(createPerson) {
-//             var person = App.Person.create();
-//             person.set('first_name', this.get('tmpFirstName'));
-//             person.set('last_name', this.get('tmpLastName'));
-//             person.addObserver('fullName', function() {
-//                 console.log("%@: Y U CHANGE MUH NAME?".fmt(this.get('fullName')));
-//             });
-//             // PUSHOBJECT() here.
-//             this.get('people').pushObject(person);
-//             console.log(person.get('fullName') + " says: hello!");
-
-//             // reset inputs.
-//             this.set('tmpFirstName', null);
-//             this.set('tmpLastName', null);
-//             this.set('createPerson', false);
-//         } else {
-//             console.log(this.get('checkBox'));
-//             console.log('fuck you')
-//         }
-//     }
-// });
-
-// App.ApplicationController = Ember.Controller.extend({
-// });
-
+// ===============================
+// MYFLIGHTS-DATA.js
+// ===============================
 App.RESTSerializer = DS.RESTSerializer.extend({
   init: function() {
     this._super();
@@ -208,19 +185,3 @@ App.Store = DS.Store.extend({
   serializer: App.RESTSerializer
 })
 });
-
-// $(function($){
-
-//     $.App = $.App || {};
-
-//     $.App.SearchFn = function (query, fn) {
-//         $.ajax({
-//                 url: 'http://localhost:8080/MyFlights/search/' + query
-//             })
-//             .done(function (e){
-//                 fn.call(this, JSON.parse(e));
-//             })
-//             .error(function (e){});
-//     };
-
-// }(jQuery));

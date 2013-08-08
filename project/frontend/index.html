@@ -11,7 +11,7 @@
 <body>
   <script type="text/x-handlebars" data-template-name="application">
     <header>
-      <h1>My Flights</h1>
+    <h1>My Flights</h1>
       {{view Bootstrap.AlertMessage type="warning" message="MyFlights - This is a very early build!"}}
     </header>
     <div id="body">
@@ -25,30 +25,26 @@
   <script type="text/x-handlebars" data-template-name="routes">
     <div id="route">
       <h3>{{title}}</h3>
-      <span class="route-form">
-        {{view Ember.TextField valueBinding=departureText placeholder="Departure..." class="form-control"}} >
-        {{view Ember.TextField valueBinding=arrivalText placeholder="Arrival..." class="form-control"}}
+      <div class="route-form">
+        {{view App.AutocompleteTextField valueBinding=departureText placeholder="Departure..." class="form-control"}}
+        <span class="to"> to  </span>
+        {{view App.AutocompleteTextField valueBinding=arrivalText placeholder="Arrival..." class="form-control"}}
         <a class='btn btn-search' {{action "search"}}>Search my flight</a>
         <br/>
-        {{#view App.AutocompleteView class="autocomplete" classBinding="isInvisible"}}
-        <ul>
-          {{#each airport in searchResults}}
-            <li {{action "select" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</li>
-          {{else}}
-            <p>Could not find airports with that keyword...</p>
-          {{/each}}
-        </ul>
-        {{/view}}
-          {{view App.DatePicker dateBinding="departureDate"}}
-        </span>
+        {{view App.AutocompleteView class="autocomplete-view" classBinding="isInvisible" keyPressBinding="keyPress"}}
+        {{view App.DatePicker dateBinding="departureDate"}}
+      </div>
     </div>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="datepicker" >
-  <div class="input-append date datepicker" data-date-format="yyyy-mm-dd">
-    {{!log view.date_string}}
-      <input size="16" type="text" readonly placeholder="Select a date..."}><span class="add-on"><i class="icon-th"></i></span>
-  </div>
+  <script type="text/x-handlebars" data-template-name="autocomplete">
+    <div class="autocomplete">
+      {{#each airport in searchResults}}
+        <div {{action "select" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</div>
+      {{else}}
+        <span>{{searchResultsAlternativeText}}</span>
+      {{/each}}
+    </div>
   </script>
 
   <!-- remove -->
@@ -72,13 +68,13 @@
     <br/>
     {{#view App.OTFusionLinkView}}unnecesary link{{/view}}<br/>
     <h3>People in PeopleArray:</h3>
-      <ul>
+    <ul>
       {{#each person in people}}
         <li>{{person.fullName}}</li>
       {{else}}
         <p>None</p>
       {{/each}}
-      </ul>
+    </ul>
     </label>
   </script>
 
