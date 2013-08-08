@@ -47,42 +47,11 @@
     </div>
   </script>
 
-  <!-- remove -->
-  <!-- remove -->
-  <!-- remove -->
-  <script type="text/x-handlebars" data-template-name="test">
-    {{input valueBinding="tmpFirstName" placeholder="first name..."}}
-    <label>
-    {{view Ember.Checkbox disabledBinding="checkBox_disabled" checkedBinding="createPerson"}}
-    Create?
-    </label>
-    <br/>
-    {{input valueBinding="tmpLastName" placeholder="last name..."}}
-    <button {{action "usePerson" createPerson }}>Use Person</button> 
-    {{view Ember.Select viewName="select"
-                        contentBinding="people"
-                        optionLabelPath="content.fullName"
-                        optionValuePath="content.first_name"
-                        prompt="Pick someone:"
-                        selectionBinding="selected"}}
-    <br/>
-    {{#view App.OTFusionLinkView}}unnecesary link{{/view}}<br/>
-    <h3>People in PeopleArray:</h3>
-    <ul>
-      {{#each person in people}}
-        <li>{{person.fullName}}</li>
-      {{else}}
-        <p>None</p>
-      {{/each}}
-    </ul>
-    </label>
-  </script>
-
   <script src="js/libs/jquery-1.9.1.js"></script>
   <script src="js/libs/jquery-ui-1.10.2.js"></script>
   <script src="js/libs/bootstrap.js"></script>
   <script src="js/libs/bootstrap-datepicker.js"></script>
-  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.0.0/moment.min.js"></script>
+  <script src="js/libs/moment.js"></script>
   <script src="js/libs/handlebars-1.0.0-rc.4.js"></script>
   <script src="js/libs/ember-1.0.0-rc.6.1.js"></script>
   <script src="js/libs/ember-bootstrap.js"></script>

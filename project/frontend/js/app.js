@@ -58,7 +58,6 @@ App.DatePicker = Ember.TextField.extend({
             keyboardNavigation: true
         }).on('changeDate', function(ev) {
             _this.set('date', ev.date);
-            console.log(_this.get('startDate'));
             return _this.$().datepicker('setValue', ev.date);
         });
     },
@@ -69,30 +68,36 @@ App.DatePicker = Ember.TextField.extend({
 
 App.AutocompleteTextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
+    focusOut: function(e) {
+        //this.get('controller').set('isAutoCompletedInvisible', true);
+        // this kills the event at the controller.
+    },
     keyUp: function(e) {
         if(e.keyCode == 27) {
             this.get('controller').set('isAutoCompletedInvisible', true);
         }
     },
     keyDown: function(e) {
-        if(e.keyCode == 40) {
-            console.log('fuckYou');
-        }
-        if(e.keyCode == 38) {
-            console.log('fuckYou');
-        }
+        // if(e.keyCode == 40) {
+        //     console.log('fuckYou');
+        // }
+        // if(e.keyCode == 38) {
+        //     console.log('fuckYou');
+        // }
+    },
+    didInsertElement: function() {
     }
 });
 
 App.AutocompleteView = Ember.View.extend({
     templateName: 'autocomplete',
     classNameBindings:['isInvisible:invisible'],
-    mouseEnter: function(e) {
-        // console.log(e);
-    },
     isInvisible: function(params) {
         return this.get('controller').get('isAutoCompletedInvisible');
-    }.property('controller.isAutoCompletedInvisible')
+    }.property('controller.isAutoCompletedInvisible'),
+    click: function(e) {
+        console.log(e);
+    }
 });
 
 // ===============================
@@ -105,9 +110,10 @@ App.RoutesController = Ember.Controller.extend({
     departureSelected: false,
     arrivalSelected: false,
     departureDate: new Date(),
+    arrivalDate: null,
     isAutoCompletedInvisible: true,
+    isAutoCompletedFocused: false,
     arrivalDate: '',
-    test: "test",
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
@@ -117,6 +123,16 @@ App.RoutesController = Ember.Controller.extend({
         }
     }.property(),
     searchResults:  function(){
+        if(this.get('departureSelected')) {
+            this.set('departureSelected', false);
+            this.set('isAutoCompletedInvisible', true);
+            return;
+        }
+        if(this.get('arrivalSelected')) {
+            this.set('arrivalSelected', false);
+            this.set('isAutoCompletedInvisible', true);
+            return;
+        }
         var searchText = this.get('departureText') || this.get('arrivalText');
         if(!searchText || isEmpty(searchText)) {
             this.set('isAutoCompletedInvisible', true);
@@ -135,10 +151,10 @@ App.RoutesController = Ember.Controller.extend({
         console.log("arrivalDate: " + this.get('arrivalDate'));
     },
     select: function(airport) {
-        this.set('isAutoCompletedInvisible', true); 
         this.set('departureText', airport.get('code'));
         this.get('departureText').enabled = 'false';
         this.set('departureSelected', true);
+        this.set('isAutoCompletedInvisible', true);
     }
 });
 

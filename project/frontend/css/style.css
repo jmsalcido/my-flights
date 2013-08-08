@@ -40,8 +40,8 @@ footer {
 .form-control {
     border-radius: 0;
     display: inline;
-    width: 303px;
-    min-width: 303px;
+    width: 103px;
+    min-width: 103px;
 
 }
 
@@ -81,6 +81,7 @@ footer {
 }
 
 .autocomplete div:hover {
+    color: white;
     background-color: blue;
     cursor: pointer;
 }
