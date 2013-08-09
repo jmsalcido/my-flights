@@ -30,8 +30,7 @@
         <span class="to"> to </span>
         {{view App.AutocompleteTextField valueBinding=arrivalText placeholder="Arrival..." class="form-control"}}
         <br/>
-        {{view App.AutocompleteView nameBinding="departure" class="autocomplete-view" classBinding="isInvisible"}}
-        {{view App.AutocompleteView nameBinding="arrival" class="autocomplete-view" classBinding="isInvisible"}}
+        {{view App.AutocompleteView class="autocomplete-view" classBinding="isInvisible"}}
         {{view App.DatePicker dateBinding="departureDate"}}
         <span class="to"> to </span>
         {{view App.DatePicker dateBinding="arrivalDate"}}
@@ -45,7 +44,7 @@
   <script type="text/x-handlebars" data-template-name="autocomplete">
     <div class="autocomplete">
       {{#each airport in searchResults}}
-        <div class="airport" {{action "selectAirportCode" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</div>
+        <div class="airport" {{action "selectAirport" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</div>
       {{else}}
         <span>{{searchResultsAlternativeText}}</span>
       {{/each}}

@@ -77,46 +77,46 @@ App.AutocompleteTextField = Ember.TextField.extend({
             this.get('controller').set('isAutoCompletedInvisible', true);
         }
     },
-    searchDepartures: function(x) {
-        var controller = this.get('controller');
-        var departureCode = controller.get('departureCode');
-        var departureText = controller.get('departureText');
-        var departureSelected = controller.get('departureSelected');
-
-        if(departureCode === departureText) {
+    searchInTextFields: function(controller, code, text, selected) {
+        if(code === text) {
             controller.set('isAutoCompletedInvisible', true);
             return;
         }
+        controller.send('searchAirports', text);
+    },
+    searchDepartures: function(x) {
+        var controller = this.get('controller');
 
-        // finally I hope this works.
-        controller.send('searchAirports', departureText);
+        controller.set('isDeparture', true);
+
+        this.searchInTextFields(controller,
+            controller.get('departureCode'),
+            controller.get('departureText'),
+            controller.get('departureSelected'));
     }.observes('controller.departureText'),
     searchArrivals: function(x) {
         var controller = this.get('controller');
-        var arrivalCode = controller.get('arrivalCode');
-        var arrivalText = controller.get('arrivalText');
-        var arrivalSelected = controller.get('arrivalSelected');
 
-        if(arrivalCode === arrivalText) {
-            controller.set('isAutoCompletedInvisible', true);
-            return;
-        }
+        controller.set('isDeparture', false);
 
-        // finally I hope this works.
-        controller.send('searchAirports', arrivalText);
+        this.searchInTextFields(controller,
+            controller.get('arrivalCode'),
+            controller.get('arrivalText'),
+            controller.get('arrivalSelected'));
     }.observes('controller.arrivalText'),
     keyPress: function(e) {
     }
 });
 
 App.AutocompleteView = Ember.View.extend({
-    attributeBindings: ['name'],
-    name: null,
     templateName: 'autocomplete',
     classNameBindings:['isInvisible:invisible'],
     isInvisible: function(params) {
         return this.get('controller').get('isAutoCompletedInvisible');
-    }.property('controller.isAutoCompletedInvisible')
+    }.property('controller.isAutoCompletedInvisible'),
+    click: function() {
+
+    }
 });
 
 // ===============================
@@ -134,10 +134,9 @@ App.RoutesController = Ember.Controller.extend({
         var search = App.Search.find(text);
         this.set('searchResults', search.get('airports'));
     },
-    selectAirport: function(text) {
-
-    },
+    // TODO check this with models.
     title: 'Select your route',
+    isDeparture: null,
     departureText: null,
     arrivalText: null,
     departureSelected: false,
@@ -164,25 +163,18 @@ App.RoutesController = Ember.Controller.extend({
         console.log("departureDate: " + this.get('departureDate'));
         console.log("arrivalDate: " + this.get('arrivalDate'));
     },
-    selectAirportCode: function(airport, isOrigin) {
-        
+    selectAirport: function(airport) {
         this.set('isAutoCompletedInvisible', true);
         var code = airport.get('code');
         var selected = this.get('departureSelected');
-        if(!selected) {
+        if(this.get('isDeparture')) {
             this.set('departureCode', code);
             this.set('departureSelected', true);
             this.set('departureText', code);
-            return;
-        }
-
-        selected = this.get('arrivalSelected');
-
-        if(!selected) {
+        } else {
             this.set('arrivalCode', code);
             this.set('arrivalSelected', true);
             this.set('arrivalText', code);
-            return;
         }
     }
 });
