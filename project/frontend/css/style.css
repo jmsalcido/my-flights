@@ -37,24 +37,12 @@ footer {
     font-size: 18px;
 }
 
-.form-control {
-    border-radius: 0;
-    display: inline;
-    width: 103px;
-    min-width: 103px;
-
-}
-
 .btn {
     margin-bottom: 0.9em;
 }
 
-.datepicker input[type="text"] {
-    display: inline;
-}
-
-.datepicker input{
-    width: 176px;
+.date-picker {
+    width: 103px;
 }
 
 .autocomplete-view {
@@ -65,7 +53,7 @@ footer {
     position: absolute;
     z-index:3;
     background-color: white;
-    border-color: #FFF2DF;
+    border-color: #DCE5D2;
     border-width: 0.1em;
     border-style: solid;
     min-width: 303px;
@@ -82,7 +70,7 @@ footer {
 
 .autocomplete div:hover {
     color: white;
-    background-color: blue;
+    background-color: #03405D;
     cursor: pointer;
 }
 
@@ -92,4 +80,18 @@ footer {
 
 .invisible {
     visibility: none;
+}
+
+.airport {
+    font-weight: bold;
+    font-size: 1em;
+    height: 2em;
+    padding: 0.3em;
+}
+
+.form-control {
+    display: inline;
+    width: 103px;
+    min-width: 103px;
+    border-radius: 0;
 }

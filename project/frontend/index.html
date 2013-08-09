@@ -27,20 +27,25 @@
       <h3>{{title}}</h3>
       <div class="route-form">
         {{view App.AutocompleteTextField valueBinding=departureText placeholder="Departure..." class="form-control"}}
-        <span class="to"> to  </span>
+        <span class="to"> to </span>
         {{view App.AutocompleteTextField valueBinding=arrivalText placeholder="Arrival..." class="form-control"}}
-        <a class='btn btn-search' {{action "search"}}>Search my flight</a>
         <br/>
-        {{view App.AutocompleteView class="autocomplete-view" classBinding="isInvisible" keyPressBinding="keyPress"}}
+        {{view App.AutocompleteView nameBinding="departure" class="autocomplete-view" classBinding="isInvisible"}}
+        {{view App.AutocompleteView nameBinding="arrival" class="autocomplete-view" classBinding="isInvisible"}}
         {{view App.DatePicker dateBinding="departureDate"}}
+        <span class="to"> to </span>
+        {{view App.DatePicker dateBinding="arrivalDate"}}
+        <br/>
+        <a class='btn btn-search' {{action "searchFlights"}}>Search my flight</a>
       </div>
+
     </div>
   </script>
 
   <script type="text/x-handlebars" data-template-name="autocomplete">
     <div class="autocomplete">
       {{#each airport in searchResults}}
-        <div {{action "select" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</div>
+        <div class="airport" {{action "selectAirportCode" airport}}>({{airport.code}}) {{airport.city}} - {{airport.name}}</div>
       {{else}}
         <span>{{searchResultsAlternativeText}}</span>
       {{/each}}

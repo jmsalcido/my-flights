@@ -77,33 +77,66 @@ App.AutocompleteTextField = Ember.TextField.extend({
             this.get('controller').set('isAutoCompletedInvisible', true);
         }
     },
-    keyDown: function(e) {
-        // if(e.keyCode == 40) {
-        //     console.log('fuckYou');
-        // }
-        // if(e.keyCode == 38) {
-        //     console.log('fuckYou');
-        // }
-    },
-    didInsertElement: function() {
+    searchDepartures: function(x) {
+        var controller = this.get('controller');
+        var departureCode = controller.get('departureCode');
+        var departureText = controller.get('departureText');
+        var departureSelected = controller.get('departureSelected');
+
+        if(departureCode === departureText) {
+            controller.set('isAutoCompletedInvisible', true);
+            return;
+        }
+
+        // finally I hope this works.
+        controller.send('searchAirports', departureText);
+    }.observes('controller.departureText'),
+    searchArrivals: function(x) {
+        var controller = this.get('controller');
+        var arrivalCode = controller.get('arrivalCode');
+        var arrivalText = controller.get('arrivalText');
+        var arrivalSelected = controller.get('arrivalSelected');
+
+        if(arrivalCode === arrivalText) {
+            controller.set('isAutoCompletedInvisible', true);
+            return;
+        }
+
+        // finally I hope this works.
+        controller.send('searchAirports', arrivalText);
+    }.observes('controller.arrivalText'),
+    keyPress: function(e) {
     }
 });
 
 App.AutocompleteView = Ember.View.extend({
+    attributeBindings: ['name'],
+    name: null,
     templateName: 'autocomplete',
     classNameBindings:['isInvisible:invisible'],
     isInvisible: function(params) {
         return this.get('controller').get('isAutoCompletedInvisible');
-    }.property('controller.isAutoCompletedInvisible'),
-    click: function(e) {
-        console.log(e);
-    }
+    }.property('controller.isAutoCompletedInvisible')
 });
 
 // ===============================
 // ROUTES.JS (change)
 // ===============================
 App.RoutesController = Ember.Controller.extend({
+    searchAirports: function(text) {
+        if(!text || isEmpty(text)) {
+            this.set('isAutoCompletedInvisible', true);
+            return;
+        } else {
+            this.set('isAutoCompletedInvisible', false);
+        }
+        // server request
+        var search = App.Search.find(text);
+        this.set('searchResults', search.get('airports'));
+    },
+    selectAirport: function(text) {
+
+    },
     title: 'Select your route',
     departureText: null,
     arrivalText: null,
@@ -111,9 +144,12 @@ App.RoutesController = Ember.Controller.extend({
     arrivalSelected: false,
     departureDate: new Date(),
     arrivalDate: null,
+    departureCode: '',
+    arrivalCode: '',
     isAutoCompletedInvisible: true,
     isAutoCompletedFocused: false,
-    arrivalDate: '',
+    arrivalDate: null,
+    searchResults:  '',
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
@@ -122,39 +158,32 @@ App.RoutesController = Ember.Controller.extend({
             return "Loading..."
         }
     }.property(),
-    searchResults:  function(){
-        if(this.get('departureSelected')) {
-            this.set('departureSelected', false);
-            this.set('isAutoCompletedInvisible', true);
-            return;
-        }
-        if(this.get('arrivalSelected')) {
-            this.set('arrivalSelected', false);
-            this.set('isAutoCompletedInvisible', true);
-            return;
-        }
-        var searchText = this.get('departureText') || this.get('arrivalText');
-        if(!searchText || isEmpty(searchText)) {
-            this.set('isAutoCompletedInvisible', true);
-            return;
-        } else {
-            this.set('isAutoCompletedInvisible', false);
-        }
-        // server request
-        var search = App.Search.find(searchText);
-        return search.get('airports')
-    }.property('departureText', 'arrivalText'),
-    search: function() {
-        console.log("departureCode: " + this.get('departureText'));
-        console.log("arrivalCode: " + this.get('arrivalText'));
+    searchFlights: function() {
+        console.log("departureCode: " + this.get('departureCode'));
+        console.log("arrivalCode: " + this.get('arrivalCode'));
         console.log("departureDate: " + this.get('departureDate'));
         console.log("arrivalDate: " + this.get('arrivalDate'));
     },
-    select: function(airport) {
-        this.set('departureText', airport.get('code'));
-        this.get('departureText').enabled = 'false';
-        this.set('departureSelected', true);
+    selectAirportCode: function(airport, isOrigin) {
+        
         this.set('isAutoCompletedInvisible', true);
+        var code = airport.get('code');
+        var selected = this.get('departureSelected');
+        if(!selected) {
+            this.set('departureCode', code);
+            this.set('departureSelected', true);
+            this.set('departureText', code);
+            return;
+        }
+
+        selected = this.get('arrivalSelected');
+
+        if(!selected) {
+            this.set('arrivalCode', code);
+            this.set('arrivalSelected', true);
+            this.set('arrivalText', code);
+            return;
+        }
     }
 });
 
