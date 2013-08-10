@@ -16,6 +16,7 @@
     </header>
     <div id="body">
       {{render routes}}
+      {{render flights}}
     </div>
     <footer>
       <p>MyFlights 2013</p>
@@ -23,7 +24,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="routes">
-    <div id="route">
+    {{#view App.RouteView id="route"}}
       <h3>{{title}}</h3>
       <div class="route-form">
         {{view App.AutocompleteTextField valueBinding=departureText placeholder="Departure..." class="form-control"}}
@@ -37,8 +38,7 @@
         <br/>
         <a class='btn btn-search' {{action "searchFlights"}}>Search my flight</a>
       </div>
-
-    </div>
+    {{/view}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="autocomplete">
@@ -49,6 +49,12 @@
         <span>{{searchResultsAlternativeText}}</span>
       {{/each}}
     </div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flights">
+    {{#view App.FlightView id="flights" }}
+      <h3>{{title}}</h3>
+    {{/view}}
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>

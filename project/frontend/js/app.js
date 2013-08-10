@@ -1,8 +1,12 @@
-function isEmpty(str) {
-    return (!str || 0 === str.length);
-}
+App = Ember.Application.create({
+    isEmpty: function isEmpty(str) {
+        return (!str || 0 === str.length);
+    }
+});
 
-App = Ember.Application.create();
+App.Router.map(function() {
+});
+
 
 // ===============================
 // VIEWS.JS
@@ -66,6 +70,10 @@ App.DatePicker = Ember.TextField.extend({
     }
 });
 
+App.RouteView = Ember.View.extend({
+
+});
+
 App.AutocompleteTextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
     focusOut: function(e) {
@@ -103,9 +111,7 @@ App.AutocompleteTextField = Ember.TextField.extend({
             controller.get('arrivalCode'),
             controller.get('arrivalText'),
             controller.get('arrivalSelected'));
-    }.observes('controller.arrivalText'),
-    keyPress: function(e) {
-    }
+    }.observes('controller.arrivalText')
 });
 
 App.AutocompleteView = Ember.View.extend({
@@ -119,12 +125,23 @@ App.AutocompleteView = Ember.View.extend({
     }
 });
 
+App.FlightView = Ember.View.extend({
+    classNameBindings:['isInvisible:invisible'],
+    isInvisible: function() {
+        return this.get('controller').get('isInvisible');
+    }.property('controller.isInvisible')
+})
+
 // ===============================
 // ROUTES.JS (change)
 // ===============================
+App.IndexController = Ember.Controller.extend({
+});
+
 App.RoutesController = Ember.Controller.extend({
+    needs: ['flights'],
     searchAirports: function(text) {
-        if(!text || isEmpty(text)) {
+        if(!text || App.isEmpty(text)) {
             this.set('isAutoCompletedInvisible', true);
             return;
         } else {
@@ -162,11 +179,13 @@ App.RoutesController = Ember.Controller.extend({
         console.log("arrivalCode: " + this.get('arrivalCode'));
         console.log("departureDate: " + this.get('departureDate'));
         console.log("arrivalDate: " + this.get('arrivalDate'));
+        this.get('controllers.flights').set("isInvisible", false);
     },
     selectAirport: function(airport) {
         this.set('isAutoCompletedInvisible', true);
         var code = airport.get('code');
         var selected = this.get('departureSelected');
+        var airport = null;
         if(this.get('isDeparture')) {
             this.set('departureCode', code);
             this.set('departureSelected', true);
@@ -177,6 +196,15 @@ App.RoutesController = Ember.Controller.extend({
             this.set('arrivalText', code);
         }
     }
+});
+
+App.FlightsController = Ember.Controller.extend({
+    needs: ['routes'],
+    title: 'Flights',
+    isInvisible: true,
+    flightResults: function() {
+
+    }.property()
 });
 
 // ===============================
