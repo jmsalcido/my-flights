@@ -5,6 +5,7 @@ App = Ember.Application.create({
 });
 
 App.Router.map(function() {
+    // if adding routes, add them here.
 });
 
 
@@ -76,8 +77,8 @@ App.AutocompleteTextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
     focusOut: function(e) {
         // TODO
-        //this.get('controller').set('isAutoCompletedInvisible', true);
         // this kills the event at the controller.
+        // this.get('controller').set('isAutoCompletedInvisible', true);
     },
     keyUp: function(e) {
         if(e.keyCode == 27) {
@@ -118,9 +119,7 @@ App.AutocompleteView = Ember.View.extend({
     classNameBindings:['isInvisible:invisible'],
     isInvisible: function(params) {
         return this.get('controller').get('isAutoCompletedInvisible');
-    }.property('controller.isAutoCompletedInvisible'),
-    click: function() {
-    }
+    }.property('controller.isAutoCompletedInvisible')
 });
 
 App.FlightView = Ember.View.extend({

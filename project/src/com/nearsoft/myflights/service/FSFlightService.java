@@ -4,8 +4,11 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -28,11 +31,21 @@ public class FSFlightService implements FlightService {
     }
 
     @Override
-    public List<Flight> getFlights(String fromAirportCode, String toAirportCode, String date)
+    public Map<String, Object> getFlights(String fromAirportCode, String toAirportCode, String date)
             throws Exception {
+        Map<String, Object> filtered_map = new LinkedHashMap<>();
         try {
             Date dateObject = createDateFromString(date);
-            return flightConnector.getFlights(fromAirportCode, toAirportCode, dateObject);
+            List<Flight> flightList = flightConnector.getFlights(fromAirportCode, toAirportCode, dateObject);
+            List<Long> flightIdList = new LinkedList<>();
+            for(Flight f : flightList) {
+                flightIdList.add(f.getId());
+            }
+            Map<String, Object> search_map = new LinkedHashMap<>();
+            search_map.put("flight_ids", flightIdList);
+            filtered_map.put("search_flight", search_map);
+            filtered_map.put("flights", flightList);
+            return filtered_map;
         } catch (ParseException e) {
             throw new Exception("[DATE d] " + e.getMessage());
         } catch (Exception e) {

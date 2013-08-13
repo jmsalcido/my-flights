@@ -10,6 +10,7 @@ import java.util.List;
  */
 public class FSFlight {
 
+    
     private String departureAirportFsCode;
     private String arrivalAirportFsCode;
     private String departureDateFrom;

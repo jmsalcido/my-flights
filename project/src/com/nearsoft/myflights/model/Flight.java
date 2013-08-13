@@ -12,34 +12,44 @@ public class Flight {
     public final static int NON_STOP = 0;
     public final static int CONNECTION = 1;
 
+    private Long id;
     private Date date;
-    private Airport departureAirport;
-    private Airport arrivalAirport;
-    private int travelTime;
-    private int flightType;
-    private List<FlightDetail> flightDetail;
+    private String departure_airport;
+    private String arrival_airport;
+    private int travel_time;
+    private int flight_type;
+    private List<FlightDetail> flight_detail;
 
     public Flight(List<FlightDetail> flightDetail) {
-        this.flightDetail = flightDetail;
+        this.flight_detail = flightDetail;
     }
 
     public Flight(FSFlight fsFlight, Date date) {
-        this.date = date;
-        this.departureAirport = Airport.createAirportFromFSCode(fsFlight
-                .getDepartureAirportFsCode());
-        this.arrivalAirport = Airport.createAirportFromFSCode(fsFlight
-                .getArrivalAirportFsCode());
-        this.travelTime = fsFlight.getFlightDurationMinutes();
-        this.flightType = fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP
-                : CONNECTION;
+        this.setDate(date);
+        this.setDepartureAirport(fsFlight.getDepartureAirportFsCode());
+        this.setArrivalAirport(fsFlight.getArrivalAirportFsCode());
+        this.setTravelTime(fsFlight.getFlightDurationMinutes());
+        this.setFlightType(fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP
+                : CONNECTION);
         List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
-        this.flightDetail = new ArrayList<>();
+        this.flight_detail = new ArrayList<>();
+        StringBuilder sb = new StringBuilder();
         for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
             FlightDetail flightDetail = new FlightDetail(fsFlightLeg);
-            this.flightDetail.add(flightDetail);
+            this.flight_detail.add(flightDetail);
+            sb.append(flightDetail.getFlightNumber());
         }
+        this.setId(Long.parseLong(sb.toString()));   
+    }
+    
+    public Long getId() {
+        return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
     public Date getDate() {
         return date;
     }
@@ -48,44 +58,44 @@ public class Flight {
         this.date = date;
     }
 
-    public Airport getDepartureAirport() {
-        return departureAirport;
+    public String getDepartureAirport() {
+        return departure_airport;
     }
 
-    public void setDepartureAirport(Airport departureAirport) {
-        this.departureAirport = departureAirport;
+    public void setDepartureAirport(String departureAirport) {
+        this.departure_airport = departureAirport;
     }
 
-    public Airport getArrivalAirport() {
-        return arrivalAirport;
+    public String getArrivalAirport() {
+        return arrival_airport;
     }
 
-    public void setArrivalAirport(Airport arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
+    public void setArrivalAirport(String arrivalAirport) {
+        this.arrival_airport = arrivalAirport;
     }
 
     public int getTravelTime() {
-        return travelTime;
+        return travel_time;
     }
 
     public void setTravelTime(int travelTime) {
-        this.travelTime = travelTime;
+        this.travel_time = travelTime;
     }
 
     public int getFlightType() {
-        return flightType;
+        return flight_type;
     }
 
     public void setFlightType(int flightType) {
-        this.flightType = flightType;
+        this.flight_type = flightType;
     }
 
     public List<FlightDetail> getFlightDetail() {
-        return flightDetail;
+        return flight_detail;
     }
 
     public void setFlightDetail(List<FlightDetail> flightDetail) {
-        this.flightDetail = flightDetail;
+        this.flight_detail = flightDetail;
     }
 
 }

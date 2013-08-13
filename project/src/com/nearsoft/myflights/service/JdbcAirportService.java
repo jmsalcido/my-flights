@@ -37,7 +37,7 @@ public class JdbcAirportService implements AirportService {
             idAirportList.add(a.getId());
         }
         search_map.put("airport_ids", idAirportList);
-        filtered_map.put("search", search_map);
+        filtered_map.put("search_airport", search_map);
         filtered_map.put("airports", airportList);
         return filtered_map;
     }

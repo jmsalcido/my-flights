@@ -5,37 +5,37 @@ import com.nearsoft.myflights.model.fs.FSFlightLeg;
 public class FlightDetail {
 
     // Flight info
-    private Airport departureAirport;
-    private Airport arrivalAirport;
+    private String departureAirport;
+    private String arrivalAirport;
     private String departureTime;
     private String arrivalTime;
     private int travelTime;
+    private String flightNumber;
     private Airline airline; // here.
     private String equipment;
 
     public FlightDetail(FSFlightLeg flightLeg) {
-        this.arrivalAirport = Airport.createAirportFromFSCode(flightLeg
-                .getArrivalAirportFsCode());
-        this.departureAirport = Airport.createAirportFromFSCode(flightLeg
-                .getDepartureAirportFsCode());
+        this.arrivalAirport = flightLeg.getArrivalAirportFsCode();
+        this.departureAirport = flightLeg.getDepartureAirportFsCode();
         this.departureTime = flightLeg.getDepartureTime();
         this.arrivalTime = flightLeg.getArrivalTime();
         this.travelTime = flightLeg.getFlightDurationMinutes();
+        this.setFlightNumber(flightLeg.getFlightNumber());
     }
 
-    public Airport getDepartureAirport() {
+    public String getDepartureAirport() {
         return departureAirport;
     }
 
-    public void setDepartureAirport(Airport departureAirport) {
+    public void setDepartureAirport(String departureAirport) {
         this.departureAirport = departureAirport;
     }
 
-    public Airport getArrivalAirport() {
+    public String getArrivalAirport() {
         return arrivalAirport;
     }
 
-    public void setArrivalAirport(Airport arrivalAirport) {
+    public void setArrivalAirport(String arrivalAirport) {
         this.arrivalAirport = arrivalAirport;
     }
 
@@ -61,6 +61,14 @@ public class FlightDetail {
 
     public void setTravelTime(int travelTime) {
         this.travelTime = travelTime;
+    }
+
+    public String getFlightNumber() {
+        return flightNumber;
+    }
+
+    public void setFlightNumber(String flightNumber) {
+        this.flightNumber = flightNumber;
     }
 
     public Airline getAirline() {
