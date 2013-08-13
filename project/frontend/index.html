@@ -11,20 +11,24 @@
 <body>
   <script type="text/x-handlebars" data-template-name="application">
     <header>
-    <h1>My Flights</h1>
-      {{view Bootstrap.AlertMessage type="warning" message="MyFlights - This is a very early build!"}}
+      {{render header}}
     </header>
     <div id="body">
-      {{render routes}}
+      {{render router}}
       {{render flights}}
     </div>
     <footer>
-      <p>MyFlights 2013</p>
+      <p>Kill me please</p>
     </footer>
   </script>
 
-  <script type="text/x-handlebars" data-template-name="routes">
-    {{#view App.RouteView id="route"}}
+  <script type="text/x-handlebars" data-template-name="header">
+    <h1>My Flights</h1>
+    {{view Bootstrap.AlertMessage type="warning" message="MyFlights - This is a very early build!"}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="router">
+    {{#view App.RoutesView id="routes"}}
       <h3>{{title}}</h3>
       <div class="route-form">
         {{view App.AutocompleteTextField valueBinding=departureText placeholder="Departure..." class="form-control"}}
@@ -54,7 +58,20 @@
   <script type="text/x-handlebars" data-template-name="flights">
     {{#view App.FlightView id="flights" }}
       <h3>{{title}}</h3>
+      {{view App.FlightsListView id="flightsList"}}
     {{/view}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightsList">
+    {{#each flight in flightResults}}
+      {{view App.FlightDetailView contentBinding=flight class="flightDetail"}}
+    {{else}}
+      <span>{{alternativeText}}</span>
+    {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightDetail">
+    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - <a class="btn" {{action "book" view.content}}>Book Me</a></p>
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>

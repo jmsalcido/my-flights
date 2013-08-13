@@ -70,13 +70,12 @@ App.DatePicker = Ember.TextField.extend({
     }
 });
 
-App.RouteView = Ember.View.extend({
-
-});
+App.RoutesView = Ember.View.extend({});
 
 App.AutocompleteTextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
     focusOut: function(e) {
+        // TODO
         //this.get('controller').set('isAutoCompletedInvisible', true);
         // this kills the event at the controller.
     },
@@ -121,7 +120,6 @@ App.AutocompleteView = Ember.View.extend({
         return this.get('controller').get('isAutoCompletedInvisible');
     }.property('controller.isAutoCompletedInvisible'),
     click: function() {
-
     }
 });
 
@@ -130,7 +128,15 @@ App.FlightView = Ember.View.extend({
     isInvisible: function() {
         return this.get('controller').get('isInvisible');
     }.property('controller.isInvisible')
-})
+});
+
+App.FlightsListView = Ember.View.extend({
+    templateName: "flightsList"
+});
+
+App.FlightDetailView = Ember.View.extend({
+    templateName: "flightDetail"
+});
 
 // ===============================
 // ROUTES.JS (change)
@@ -138,7 +144,7 @@ App.FlightView = Ember.View.extend({
 App.IndexController = Ember.Controller.extend({
 });
 
-App.RoutesController = Ember.Controller.extend({
+App.RouterController = Ember.Controller.extend({
     needs: ['flights'],
     searchAirports: function(text) {
         if(!text || App.isEmpty(text)) {
@@ -148,10 +154,9 @@ App.RoutesController = Ember.Controller.extend({
             this.set('isAutoCompletedInvisible', false);
         }
         // server request
-        var search = App.Search.find(text);
-        this.set('searchResults', search.get('airports'));
+        var airportSearch = App.SearchAirport.find(text);
+        this.set('searchResults', airportSearch.get('airports'));
     },
-    // TODO check this with models.
     title: 'Select your route',
     isDeparture: null,
     departureText: null,
@@ -174,13 +179,6 @@ App.RoutesController = Ember.Controller.extend({
             return "Loading..."
         }
     }.property(),
-    searchFlights: function() {
-        console.log("departureCode: " + this.get('departureCode'));
-        console.log("arrivalCode: " + this.get('arrivalCode'));
-        console.log("departureDate: " + this.get('departureDate'));
-        console.log("arrivalDate: " + this.get('arrivalDate'));
-        this.get('controllers.flights').set("isInvisible", false);
-    },
     selectAirport: function(airport) {
         this.set('isAutoCompletedInvisible', true);
         var code = airport.get('code');
@@ -195,29 +193,73 @@ App.RoutesController = Ember.Controller.extend({
             this.set('arrivalSelected', true);
             this.set('arrivalText', code);
         }
+    },
+    searchFlights: function() {
+        // create the flight model.
+        console.log("departureCode: " + this.get('departureCode'));
+        console.log("arrivalCode: " + this.get('arrivalCode'));
+        console.log("departureDate: " + this.get('departureDate'));
+        console.log("arrivalDate: " + this.get('arrivalDate'));
+
+        var route = App.RouteModel.create({
+            departureCode: this.get('departureCode'),
+            arrivalCode: this.get('arrivalCode'),
+            departureDate: this.get('departureDate'),
+            arrivalDate: this.get('arrivalDate')
+        });
+
+        // set visible the flight view.
+        this.get('controllers.flights').set('model', route);
     }
 });
 
 App.FlightsController = Ember.Controller.extend({
-    needs: ['routes'],
+    needs: ['router'],
     title: 'Flights',
     isInvisible: true,
     flightResults: function() {
-
-    }.property()
+        var model = this.get('model');
+        if(typeof model == 'undefined') {
+            return;
+        }
+        var date = moment(model.get('departureDate')).format('YYYY-MM-DD');
+        var flights = [];
+        var search_params = "help";
+        var search_params = 'search?f=%@&t=%@&d=%@'.fmt(
+                            model.get('departureCode'),
+                            model.get('arrivalCode'),
+                            date);
+        flights = App.SearchFlight.find(search_params);
+        this.set("isInvisible", false);
+        return flights.get('flights');
+    }.property('model'),
+    testModel: function() {
+        console.log(this.get('model').get('departureCode'));
+    }
 });
 
 // ===============================
 // MYFLIGHTS-DATA.js
 // ===============================
-App.RESTSerializer = DS.RESTSerializer.extend({
-  init: function() {
-    this._super();
-}
+App.RouteModel = Ember.Object.extend({
+    departureCode: '',
+    arrivalCode: '',
+    departureDate: '',
+    arrivalDate: ''
 });
 
-App.Search = DS.Model.extend({
+App.RESTSerializer = DS.RESTSerializer.extend({
+    init: function() {
+        this._super();
+    }
+});
+
+App.SearchAirport = DS.Model.extend({
   airports: DS.hasMany('App.Airport')
+});
+
+App.SearchFlight = DS.Model.extend({
+  flights: DS.hasMany('App.Flight')
 });
 
 App.Airport = DS.Model.extend({
@@ -227,12 +269,40 @@ App.Airport = DS.Model.extend({
   country: DS.attr('string')
 });
 
+App.FlightDetail = DS.Model.extend({
+    departure_airport: DS.attr('string'),
+    arrival_airport: DS.attr('string'),
+    departure_time: DS.attr('string'),
+    arrival_time: DS.attr('string'),
+    travel_time: DS.attr('number'),
+    flight_number: DS.attr('string')
+});
+
+// App.Flight = DS.Model.extend({
+//     code: DS.attr('string')
+//});
+
+App.Flight = DS.Model.extend({
+    date: DS.attr('string'),
+    departureAirport: DS.attr('string'),
+    arrivalAirport: DS.attr('string'),
+    travelTime: DS.attr('number'),
+    flightType: DS.attr('number'),
+    flightDetail: DS.hasMany('App.FlightDetail')
+});
+
 DS.RESTAdapter.configure("plurals", {
-  search: "search"
+  search_airport: "search_airports",
+  search_flight: "search_flights",
+  flight: "flights"
 });
 
 DS.RESTAdapter.configure('App.Airport', {
   sideloadsAs: 'airports'
+});
+
+DS.RESTAdapter.configure('App.Flight', {
+  sideloadsAs: 'flights'
 });
 
 App.Adapter = DS.RESTAdapter.extend();
@@ -243,7 +313,10 @@ App.Store = DS.Store.extend({
   adapter: App.Adapter.create({
     mappings: { 
       airports: App.Airport,
-      search: App.Search
+      flights: App.Flight,
+      flight_detail: App.FlightDetail,
+      search_airport: App.SearchAirport,
+      search_flight: App.SearchFlight
   },
   url: 'http://localhost:8080',
   namespace: 'MyFlights',
