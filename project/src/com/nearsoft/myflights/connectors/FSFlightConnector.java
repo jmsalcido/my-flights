@@ -10,6 +10,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -47,15 +48,16 @@ public class FSFlightConnector implements FlightConnector {
             return null;
         }
         FSConnection fsConn = getFSConnectionFromJson(json);
+        
+        Map<String, String> airlines = FlightConnectorUtil.convertFSAirlinesListToMap(fsConn.getAppendix().getAirlines());
         for (FSFlight fsFlight : fsConn.getFlights()) {
-            Flight flight = new Flight(fsFlight, date);
+            Flight flight = FlightConnectorUtil.createFlightFromFSFlight(fsFlight, airlines, date);
             flightList.add(flight);
         }
         return flightList;
     }
 
     public FSConnection getFSConnectionFromJson(String json) {
-        // logger.info(json); // ...
         return gson.fromJson(json, FSConnection.class);
     }
 

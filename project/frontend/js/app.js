@@ -134,7 +134,20 @@ App.FlightsListView = Ember.View.extend({
 });
 
 App.FlightDetailView = Ember.View.extend({
-    templateName: "flightDetail"
+    templateName: "flightDetail",
+});
+
+App.BookButtonView = Ember.View.extend({
+    tagName: 'a',
+    templateName: "bookButton",
+    classNameBindings: ["isHover:btn"],
+    isHover: false,
+    mouseEnter: function() {
+        this.set('isHover', true);
+    },
+    mouseLeave: function() {
+        this.set('isHover', false);
+    }
 });
 
 // ===============================
@@ -193,12 +206,8 @@ App.RouterController = Ember.Controller.extend({
             this.set('arrivalText', code);
         }
     },
-    searchFlights: function() {
+    searchFlightsAction: function() {
         // create the flight model.
-        console.log("departureCode: " + this.get('departureCode'));
-        console.log("arrivalCode: " + this.get('arrivalCode'));
-        console.log("departureDate: " + this.get('departureDate'));
-        console.log("arrivalDate: " + this.get('arrivalDate'));
 
         var route = App.RouteModel.create({
             departureCode: this.get('departureCode'),
@@ -229,6 +238,7 @@ App.FlightsController = Ember.Controller.extend({
                             model.get('arrivalCode'),
                             date);
         flights = App.SearchFlight.find(search_params);
+        debugger;
         this.set("isInvisible", false);
         return flights.get('flights');
     }.property('model'),
@@ -241,10 +251,12 @@ App.FlightsController = Ember.Controller.extend({
 // MYFLIGHTS-DATA.js
 // ===============================
 App.RouteModel = Ember.Object.extend({
-    departureCode: '',
-    arrivalCode: '',
-    departureDate: '',
-    arrivalDate: ''
+    departureCode: null,
+    arrivalCode: null,
+    departureDate: null,
+    arrivalDate: null,
+    departureCityName: null,
+    arrivalCityName: null
 });
 
 App.RESTSerializer = DS.RESTSerializer.extend({
@@ -254,18 +266,22 @@ App.RESTSerializer = DS.RESTSerializer.extend({
 });
 
 App.SearchAirport = DS.Model.extend({
-  airports: DS.hasMany('App.Airport')
+    airports: DS.hasMany('App.Airport')
+});
+
+App.ErrorModel = DS.Model.extend({
+    error: DS.attr('string')
 });
 
 App.SearchFlight = DS.Model.extend({
-  flights: DS.hasMany('App.Flight')
+    flights: DS.hasMany('App.Flight')
 });
 
 App.Airport = DS.Model.extend({
-  code: DS.attr('string'),
-  name: DS.attr('string'),
-  city: DS.attr('string'),
-  country: DS.attr('string')
+    code: DS.attr('string'),
+    name: DS.attr('string'),
+    city: DS.attr('string'),
+    country: DS.attr('string')
 });
 
 App.FlightDetail = DS.Model.extend({
@@ -274,12 +290,9 @@ App.FlightDetail = DS.Model.extend({
     departure_time: DS.attr('string'),
     arrival_time: DS.attr('string'),
     travel_time: DS.attr('number'),
-    flight_number: DS.attr('string')
+    flight_number: DS.attr('string'),
+    airline: DS.attr('string')
 });
-
-// App.Flight = DS.Model.extend({
-//     code: DS.attr('string')
-//});
 
 App.Flight = DS.Model.extend({
     date: DS.attr('string'),
@@ -306,7 +319,6 @@ DS.RESTAdapter.configure('App.Flight', {
 
 App.Adapter = DS.RESTAdapter.extend();
 
-
 App.Store = DS.Store.extend({
   revision: 12,
   adapter: App.Adapter.create({
@@ -315,10 +327,11 @@ App.Store = DS.Store.extend({
       flights: App.Flight,
       flight_detail: App.FlightDetail,
       search_airport: App.SearchAirport,
-      search_flight: App.SearchFlight
+      search_flight: App.SearchFlight,
+      error: App.ErrorModel
   },
   url: 'http://localhost:8080',
   namespace: 'MyFlights',
   serializer: App.RESTSerializer
-})
+  })
 });

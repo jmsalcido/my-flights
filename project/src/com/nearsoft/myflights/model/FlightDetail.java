@@ -1,5 +1,8 @@
 package com.nearsoft.myflights.model;
 
+import java.util.List;
+
+import com.nearsoft.myflights.model.fs.FSAirline;
 import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class FlightDetail {
@@ -11,17 +14,8 @@ public class FlightDetail {
     private String arrivalTime;
     private int travelTime;
     private String flightNumber;
-    private Airline airline; // here.
+    private String airline; // here.
     private String equipment;
-
-    public FlightDetail(FSFlightLeg flightLeg) {
-        this.arrivalAirport = flightLeg.getArrivalAirportFsCode();
-        this.departureAirport = flightLeg.getDepartureAirportFsCode();
-        this.departureTime = flightLeg.getDepartureTime();
-        this.arrivalTime = flightLeg.getArrivalTime();
-        this.travelTime = flightLeg.getFlightDurationMinutes();
-        this.setFlightNumber(flightLeg.getFlightNumber());
-    }
 
     public String getDepartureAirport() {
         return departureAirport;
@@ -71,11 +65,11 @@ public class FlightDetail {
         this.flightNumber = flightNumber;
     }
 
-    public Airline getAirline() {
+    public String getAirline() {
         return airline;
     }
 
-    public void setAirline(Airline airline) {
+    public void setAirline(String airline) {
         this.airline = airline;
     }
 

@@ -1,11 +1,7 @@
 package com.nearsoft.myflights.model;
 
 import java.util.Date;
-import java.util.ArrayList;
 import java.util.List;
-
-import com.nearsoft.myflights.model.fs.FSFlight;
-import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class Flight {
 
@@ -18,28 +14,13 @@ public class Flight {
     private String arrival_airport;
     private int travel_time;
     private int flight_type;
+    private String airline;
     private List<FlightDetail> flight_detail;
 
+    public Flight() {}
+    
     public Flight(List<FlightDetail> flightDetail) {
         this.flight_detail = flightDetail;
-    }
-
-    public Flight(FSFlight fsFlight, Date date) {
-        this.setDate(date);
-        this.setDepartureAirport(fsFlight.getDepartureAirportFsCode());
-        this.setArrivalAirport(fsFlight.getArrivalAirportFsCode());
-        this.setTravelTime(fsFlight.getFlightDurationMinutes());
-        this.setFlightType(fsFlight.getFlightType().equalsIgnoreCase("DIRECT") ? NON_STOP
-                : CONNECTION);
-        List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
-        this.flight_detail = new ArrayList<>();
-        StringBuilder sb = new StringBuilder();
-        for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
-            FlightDetail flightDetail = new FlightDetail(fsFlightLeg);
-            this.flight_detail.add(flightDetail);
-            sb.append(flightDetail.getFlightNumber());
-        }
-        this.setId(Long.parseLong(sb.toString()));   
     }
     
     public Long getId() {
@@ -88,6 +69,14 @@ public class Flight {
 
     public void setFlightType(int flightType) {
         this.flight_type = flightType;
+    }
+
+    public String getAirline() {
+        return airline;
+    }
+
+    public void setAirline(String airline) {
+        this.airline = airline;
     }
 
     public List<FlightDetail> getFlightDetail() {

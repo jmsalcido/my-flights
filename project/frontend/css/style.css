@@ -96,3 +96,7 @@ footer {
     min-width: 103px;
     border-radius: 0;
 }
+
+.over-z{
+    z-index: 4;
+}

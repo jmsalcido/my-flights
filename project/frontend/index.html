@@ -40,7 +40,7 @@
         <span class="to"> to </span>
         {{view App.DatePicker dateBinding="arrivalDate"}}
         <br/>
-        <a class='btn btn-search' {{action "searchFlights"}}>Search my flight</a>
+        <a class='btn btn-search' {{action "searchFlightsAction"}}>Search my flight</a>
       </div>
     {{/view}}
   </script>
@@ -66,12 +66,16 @@
     {{#each flight in flightResults}}
       {{view App.FlightDetailView contentBinding=flight class="flightDetail"}}
     {{else}}
-      <span>{{alternativeText}}</span>
+      <span>Hehe</span>
     {{/each}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
-    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - <a class="btn" {{action "book" view.content}}>Book Me</a></p>
+    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - {{view.content.flightDetail.airline}} - {{view App.BookButtonView classBinding="isHover" contentBinding=view.content}}</p>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="bookButton">
+    <span {{action "book" view.content}}>{{view.content.id}}</span>
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>
