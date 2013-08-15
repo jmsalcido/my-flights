@@ -207,7 +207,6 @@ App.RouterController = Ember.Controller.extend({
         }
     },
     searchFlightsAction: function() {
-        // create the flight model.
 
         var route = App.RouteModel.create({
             departureCode: this.get('departureCode'),
@@ -225,23 +224,26 @@ App.FlightsController = Ember.Controller.extend({
     needs: ['router'],
     title: 'Flights',
     isInvisible: true,
-    flightResults: function() {
+    flightResults: null,
+    flightResultsObserver: function() {
         var model = this.get('model');
         if(typeof model == 'undefined') {
             return;
         }
-        var date = moment(model.get('departureDate')).format('YYYY-MM-DD');
-        var flights = [];
-        var search_params = "help";
-        var search_params = 'search?f=%@&t=%@&d=%@'.fmt(
+        var search,
+            date = moment(model.get('departureDate')).format('YYYY-MM-DD'),
+            self = this,
+            search_params = "help",
+            search_params = 'search?f=%@&t=%@&d=%@'.fmt(
                             model.get('departureCode'),
                             model.get('arrivalCode'),
                             date);
-        flights = App.SearchFlight.find(search_params);
-        debugger;
-        this.set("isInvisible", false);
-        return flights.get('flights');
-    }.property('model'),
+        App.SearchFlight.find(search_params).then(function(searchModel) {
+            self.set("isInvisible", false);
+            self.set('flightResults', searchModel.get('flights'));
+        });
+        
+    }.observes('model'),
     testModel: function() {
         console.log(this.get('model').get('departureCode'));
     }
@@ -285,12 +287,12 @@ App.Airport = DS.Model.extend({
 });
 
 App.FlightDetail = DS.Model.extend({
-    departure_airport: DS.attr('string'),
-    arrival_airport: DS.attr('string'),
-    departure_time: DS.attr('string'),
-    arrival_time: DS.attr('string'),
-    travel_time: DS.attr('number'),
-    flight_number: DS.attr('string'),
+    departureAirport: DS.attr('string'),
+    arrivalAirport: DS.attr('string'),
+    departureTime: DS.attr('string'),
+    arrivalTime: DS.attr('string'),
+    travelTime: DS.attr('number'),
+    flightNumber: DS.attr('string'),
     airline: DS.attr('string')
 });
 
@@ -300,13 +302,14 @@ App.Flight = DS.Model.extend({
     arrivalAirport: DS.attr('string'),
     travelTime: DS.attr('number'),
     flightType: DS.attr('number'),
-    flightDetail: DS.hasMany('App.FlightDetail')
+    flightDetails: DS.hasMany('App.FlightDetail')
 });
 
 DS.RESTAdapter.configure("plurals", {
   search_airport: "search_airports",
   search_flight: "search_flights",
-  flight: "flights"
+  flight: "flights",
+  flight_detail: "flight_details"
 });
 
 DS.RESTAdapter.configure('App.Airport', {
@@ -317,6 +320,10 @@ DS.RESTAdapter.configure('App.Flight', {
   sideloadsAs: 'flights'
 });
 
+DS.RESTAdapter.map('App.Flight', {
+    flightDetails: { embedded: 'always' }
+});
+
 App.Adapter = DS.RESTAdapter.extend();
 
 App.Store = DS.Store.extend({
@@ -325,7 +332,6 @@ App.Store = DS.Store.extend({
     mappings: { 
       airports: App.Airport,
       flights: App.Flight,
-      flight_detail: App.FlightDetail,
       search_airport: App.SearchAirport,
       search_flight: App.SearchFlight,
       error: App.ErrorModel

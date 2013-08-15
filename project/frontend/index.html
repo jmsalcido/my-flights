@@ -66,12 +66,12 @@
     {{#each flight in flightResults}}
       {{view App.FlightDetailView contentBinding=flight class="flightDetail"}}
     {{else}}
-      <span>Hehe</span>
+      <span>Loading flights</span>
     {{/each}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
-    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - {{view.content.flightDetail.airline}} - {{view App.BookButtonView classBinding="isHover" contentBinding=view.content}}</p>
+    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - {{view.content.flightDetail}} - {{view App.BookButtonView classBinding="isHover" contentBinding=view.content}}</p>
   </script>
 
   <script type="text/x-handlebars" data-template-name="bookButton">
