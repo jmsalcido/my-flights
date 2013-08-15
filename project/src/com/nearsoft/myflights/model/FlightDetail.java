@@ -1,68 +1,78 @@
 package com.nearsoft.myflights.model;
 
-import java.util.List;
-
-import com.nearsoft.myflights.model.fs.FSAirline;
-import com.nearsoft.myflights.model.fs.FSFlightLeg;
-
 public class FlightDetail {
 
     // Flight info
-    private String departureAirport;
-    private String arrivalAirport;
-    private String departureTime;
-    private String arrivalTime;
-    private int travelTime;
-    private String flightNumber;
-    private String airline; // here.
+    private Integer id;
+    private String departure_airport;
+    private String arrival_airport;
+    private String departure_time;
+    private String arrival_time;
+    private int travel_time;
+    private String flight_number;
+    private String airline;
     private String equipment;
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public String getDepartureAirport() {
-        return departureAirport;
+        return departure_airport;
     }
 
     public void setDepartureAirport(String departureAirport) {
-        this.departureAirport = departureAirport;
+        this.departure_airport = departureAirport;
     }
 
     public String getArrivalAirport() {
-        return arrivalAirport;
+        return arrival_airport;
     }
 
     public void setArrivalAirport(String arrivalAirport) {
-        this.arrivalAirport = arrivalAirport;
+        this.arrival_airport = arrivalAirport;
     }
 
     public String getDepartureTime() {
-        return departureTime;
+        return departure_time;
     }
 
     public void setDepartureTime(String departureTime) {
-        this.departureTime = departureTime;
+        this.departure_time = departureTime;
     }
 
     public String getArrivalTime() {
-        return arrivalTime;
+        return arrival_time;
     }
 
     public void setArrivalTime(String arrivalTime) {
-        this.arrivalTime = arrivalTime;
+        this.arrival_time = arrivalTime;
     }
 
     public int getTravelTime() {
-        return travelTime;
+        return travel_time;
     }
 
     public void setTravelTime(int travelTime) {
-        this.travelTime = travelTime;
+        this.travel_time = travelTime;
     }
 
     public String getFlightNumber() {
-        return flightNumber;
+        return flight_number;
     }
 
     public void setFlightNumber(String flightNumber) {
-        this.flightNumber = flightNumber;
+        // emmm funciona... mal.
+        try {
+            this.setId(Integer.parseInt(flightNumber));
+        } catch (NumberFormatException nfe) {
+            this.setId(0);
+        }
+        this.flight_number = flightNumber;
     }
 
     public String getAirline() {

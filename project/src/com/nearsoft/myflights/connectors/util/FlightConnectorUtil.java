@@ -37,13 +37,12 @@ public class FlightConnectorUtil {
                 .equalsIgnoreCase("DIRECT") ? Flight.NON_STOP
                 : Flight.CONNECTION);
         List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
-        flight.setFlightDetail(new ArrayList<FlightDetail>());
-
+        flight.setFlightDetails(new ArrayList<FlightDetail>());
         StringBuilder sb = new StringBuilder();
         for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
             FlightDetail flightDetail = FlightConnectorUtil
                     .createFlightDetailFromFSFlightLeg(fsFlightLeg, fsAirlines);
-            flight.getFlightDetail().add(flightDetail);
+            flight.getFlightDetails().add(flightDetail);
             sb.append(flightDetail.getFlightNumber());
         }
         flight.setId(Long.parseLong(sb.toString()));

@@ -56,7 +56,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="flights">
-    {{#view App.FlightView id="flights" }}
+    {{#view App.FlightsView id="flights" }}
       <h3>{{title}}</h3>
       {{view App.FlightsListView id="flightsList"}}
     {{/view}}
@@ -64,10 +64,13 @@
 
   <script type="text/x-handlebars" data-template-name="flightsList">
     {{#each flight in flightResults}}
-      {{view App.FlightDetailView contentBinding=flight class="flightDetail"}}
+      {{view App.FlightView contentBinding=flight class="flightView"}}
     {{else}}
       <span>Loading flights</span>
     {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightRoute">
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">

@@ -15,13 +15,9 @@ public class Flight {
     private int travel_time;
     private int flight_type;
     private String airline;
-    private List<FlightDetail> flight_detail;
+    private List<FlightDetail> flight_details;
 
     public Flight() {}
-    
-    public Flight(List<FlightDetail> flightDetail) {
-        this.flight_detail = flightDetail;
-    }
     
     public Long getId() {
         return id;
@@ -79,12 +75,12 @@ public class Flight {
         this.airline = airline;
     }
 
-    public List<FlightDetail> getFlightDetail() {
-        return flight_detail;
+    public List<FlightDetail> getFlightDetails() {
+        return flight_details;
     }
 
-    public void setFlightDetail(List<FlightDetail> flightDetail) {
-        this.flight_detail = flightDetail;
+    public void setFlightDetails(List<FlightDetail> flight_details) {
+        this.flight_details = flight_details;
     }
 
 }

@@ -122,7 +122,7 @@ App.AutocompleteView = Ember.View.extend({
     }.property('controller.isAutoCompletedInvisible')
 });
 
-App.FlightView = Ember.View.extend({
+App.FlightsView = Ember.View.extend({
     classNameBindings:['isInvisible:invisible'],
     isInvisible: function() {
         return this.get('controller').get('isInvisible');
@@ -133,8 +133,8 @@ App.FlightsListView = Ember.View.extend({
     templateName: "flightsList"
 });
 
-App.FlightDetailView = Ember.View.extend({
-    templateName: "flightDetail",
+App.FlightView = Ember.View.extend({
+    templateName: "flightView",
 });
 
 App.BookButtonView = Ember.View.extend({
