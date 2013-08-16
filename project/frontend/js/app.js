@@ -134,7 +134,40 @@ App.FlightsListView = Ember.View.extend({
 });
 
 App.FlightView = Ember.View.extend({
-    templateName: "flightView",
+    tagName: 'div',
+    templateName: "flight",
+});
+
+App.FlightRouteView = Ember.View.extend({
+  tagName: 'div',
+  templateName: 'flightRoute',
+  didInsertElement: function() {
+    
+  }
+});
+
+App.FlightDetailView = Ember.View.extend({
+  tagName: 'div',
+  templateName: 'flightDetail',
+  didInsertElement: function() {
+    
+  }
+});
+
+App.FlightDetailRouteView = Ember.View.extend({
+  tagName: 'div',
+  templateName: 'flightDetailRoute',
+  didInsertElement: function() {
+    
+  }
+});
+
+App.FlightDetailAirlineView = Ember.View.extend({
+    tagName: 'div',
+    templateName: 'flightDetailAirline',
+    didInsertElement: function() {
+
+    }
 });
 
 App.BookButtonView = Ember.View.extend({

@@ -100,3 +100,30 @@ footer {
 .over-z{
     z-index: 4;
 }
+
+.flight-row {
+    display: block;
+    min-height: 4em;
+    width: 100%;
+}
+
+.flight-column {
+    position: relative;
+    height: 4em;
+    min-height: 4em;
+    min-width: 10em;
+    float:left;
+}
+
+.flight-column:nth-child(2) div {
+    font-size: normal;
+    line-height: 1.2em;
+}
+
+.vertical-align {
+    position: absolute;
+    top: 50%;
+    height: 2em;
+    min-height: 2em;
+    margin-top: -.65em
+}

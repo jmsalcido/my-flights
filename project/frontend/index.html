@@ -64,17 +64,35 @@
 
   <script type="text/x-handlebars" data-template-name="flightsList">
     {{#each flight in flightResults}}
-      {{view App.FlightView contentBinding=flight class="flightView"}}
+      {{view App.FlightView contentBinding=flight class="flight-row"}}
     {{else}}
       <span>Loading flights</span>
     {{/each}}
   </script>
 
+  <script type="text/x-handlebars" data-template-name="flight">
+    <div class="flight-column">{{view App.FlightRouteView contentBinding=view.content class="vertical-align flight-route"}}</div>
+    <div class="flight-column">{{view App.FlightDetailView contentBinding=view.content.flightDetails class="vertical-align flight-detail"}}</div>
+    <div class="flight-column">{{view App.BookButtonView contentBinding=view.content class="vertical-align flight-book" classBinding="isHover"}}</div>
+  </script>
+
   <script type="text/x-handlebars" data-template-name="flightRoute">
+    {{view.content.departureAirport}} - {{view.content.arrivalAirport}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
-    <p>{{view.content.departureAirport}} - {{view.content.arrivalAirport}} - {{view.content.flightDetail}} - {{view App.BookButtonView classBinding="isHover" contentBinding=view.content}}</p>
+    {{#each flightDetail in view.content}}
+      {{view App.FlightDetailRouteView contentBinding=flightDetail}}
+      {{view App.FlightDetailAirlineView contentBinding=flightDetail}}
+    {{/each}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightDetailRoute">
+    {{view.content.departureAirport}}<span> - </span>{{view.content.arrivalAirport}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightDetailAirline">
+    {{view.content.airline}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="bookButton">
