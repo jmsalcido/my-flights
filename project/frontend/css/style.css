@@ -101,23 +101,24 @@ footer {
     z-index: 4;
 }
 
-.flight-row {
+.row {
     display: block;
-    min-height: 4em;
+    height: 4em;
     width: 100%;
 }
 
-.flight-column {
-    position: relative;
-    height: 4em;
-    min-height: 4em;
-    min-width: 10em;
-    float:left;
+.column {
+    display: inline-block;
+    min-width: 100px;
+    text-align: center;
 }
 
-.flight-column:nth-child(2) div {
-    font-size: normal;
-    line-height: 1.2em;
+.inline-row {
+    min-width: 300px;
+}
+
+.inline-row .column: {
+    width: 45%;
 }
 
 .vertical-align {

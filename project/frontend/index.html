@@ -18,7 +18,7 @@
       {{render flights}}
     </div>
     <footer>
-      <p>Kill me please</p>
+      <p>Footer Incorporation :P</p>
     </footer>
   </script>
 
@@ -64,16 +64,16 @@
 
   <script type="text/x-handlebars" data-template-name="flightsList">
     {{#each flight in flightResults}}
-      {{view App.FlightView contentBinding=flight class="flight-row"}}
+      {{view App.FlightView contentBinding=flight class="row"}}
     {{else}}
       <span>Loading flights</span>
     {{/each}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flight">
-    <div class="flight-column">{{view App.FlightRouteView contentBinding=view.content class="vertical-align flight-route"}}</div>
-    <div class="flight-column">{{view App.FlightDetailView contentBinding=view.content.flightDetails class="vertical-align flight-detail"}}</div>
-    <div class="flight-column">{{view App.BookButtonView contentBinding=view.content class="vertical-align flight-book" classBinding="isHover"}}</div>
+    {{view App.FlightRouteView contentBinding=view.content class="column flight-route"}}
+    {{view App.FlightDetailView contentBinding=view.content.flightDetails class="column flight-detail"}}
+    {{view App.BookButtonView contentBinding=view.content class="column flight-book" classBinding="isHover"}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightRoute">
@@ -82,8 +82,10 @@
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
     {{#each flightDetail in view.content}}
-      {{view App.FlightDetailRouteView contentBinding=flightDetail}}
-      {{view App.FlightDetailAirlineView contentBinding=flightDetail}}
+    <div class="inline-row">
+      {{view App.FlightDetailRouteView contentBinding=flightDetail class="column"}}
+      {{view App.FlightDetailAirlineView contentBinding=flightDetail class="column"}}
+    </div>
     {{/each}}
   </script>
 
