@@ -26,8 +26,16 @@ import com.nearsoft.myflights.model.fs.FSFlightLeg;
 
 public class FlightConnectorUtil {
 
+    /**
+     * create a Flight object from a FSFlight object parsed from JSON
+     * @param fsFlight
+     * @param fsAirlines
+     * @param date
+     * @return
+     */
     public static Flight createFlightFromFSFlight(FSFlight fsFlight,
             Map<String, String> fsAirlines, Date date) {
+        
         Flight flight = new Flight();
         flight.setDate(date);
         flight.setDepartureAirport(fsFlight.getDepartureAirportFsCode());
@@ -36,8 +44,10 @@ public class FlightConnectorUtil {
         flight.setFlightType(fsFlight.getFlightType()
                 .equalsIgnoreCase("DIRECT") ? Flight.NON_STOP
                 : Flight.CONNECTION);
+        
         List<FSFlightLeg> fsFlightDetails = fsFlight.getFlightLegs();
         flight.setFlightDetails(new ArrayList<FlightDetail>());
+        
         StringBuilder sb = new StringBuilder();
         for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
             FlightDetail flightDetail = FlightConnectorUtil
@@ -45,12 +55,21 @@ public class FlightConnectorUtil {
             flight.getFlightDetails().add(flightDetail);
             sb.append(flightDetail.getFlightNumber());
         }
+        
+        // Id is set at last because is the concatenation of all the flight numbers
         flight.setId(Long.parseLong(sb.toString()));
         return flight;
     }
 
+    /**
+     * create a FlightDetail object from a FSFlightLeg object parsed from JSON
+     * @param flightLeg
+     * @param fsAirlines
+     * @return
+     */
     public static FlightDetail createFlightDetailFromFSFlightLeg(
             FSFlightLeg flightLeg, Map<String, String> fsAirlines) {
+        
         FlightDetail flightDetail = new FlightDetail();
         flightDetail.setArrivalAirport(flightLeg.getArrivalAirportFsCode());
         flightDetail.setDepartureAirport(flightLeg.getDepartureAirportFsCode());
@@ -58,13 +77,20 @@ public class FlightConnectorUtil {
         flightDetail.setArrivalTime(flightLeg.getArrivalTime());
         flightDetail.setTravelTime(flightLeg.getFlightDurationMinutes());
         
-        String airline = fsAirlines.get(flightLeg.getCarrierFsCode());
+        String airline_code = flightLeg.getCarrierFsCode();
+        String airline_name = fsAirlines.get(airline_code);
         
-        flightDetail.setAirline(airline);
+        flightDetail.setAirlineName(airline_name);
+        flightDetail.setAirlineCode(airline_code);
         flightDetail.setFlightNumber(flightLeg.getFlightNumber());
         return flightDetail;
     }
 
+    /**
+     * convert a FSAirline list into a Map<String, String> where the key is the code value of the airline and the value is the airline name
+     * @param fsAirlines
+     * @return
+     */
     public static Map<String, String> convertFSAirlinesListToMap(
             List<FSAirline> fsAirlines) {
         Map<String, String> returnMap = new HashMap<String, String>();
@@ -74,6 +100,15 @@ public class FlightConnectorUtil {
         return returnMap;
     }
 
+    /**
+     * obtain the JSON file from the specified URL
+     * @param url
+     * @return
+     * @throws URISyntaxException
+     * @throws ClientProtocolException
+     * @throws IOException
+     * @throws HttpException
+     */
     public static String getJsonFromUrl(URL url) throws URISyntaxException,
             ClientProtocolException, IOException, HttpException {
 

@@ -1,10 +1,7 @@
 package com.nearsoft.myflights.controllers;
 
-import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.google.gson.Gson;
-import com.nearsoft.myflights.model.Flight;
 import com.nearsoft.myflights.service.FlightService;
 
 @Controller
@@ -33,10 +29,6 @@ public class FlightController {
 
     @Autowired
     FlightService flightService;
-
-    public Flight flightByFsFlightId(int fsFlightId) {
-        return null;
-    }
     
     @RequestMapping(value = "search", method = { RequestMethod.GET })
     @ResponseBody
@@ -78,68 +70,6 @@ public class FlightController {
         Gson gson = new Gson();
         return new ResponseEntity<String>(gson.toJson(map), responseHeaders,
                 HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "help", method = { RequestMethod.GET })
-    @ResponseBody
-    public ResponseEntity<String> asd(HttpServletRequest request) {
-        logger.info(String.format("Incoming request from %s :)",
-                request.getLocalAddr()));
-        
-        Map<String, Object> map = new LinkedHashMap<String, Object>();
-        Map<String, Object> anotherMap = new LinkedHashMap<>();
-        List<Object> list = new ArrayList<>();
-        list.add(1);
-        list.add(2);
-        anotherMap.put("flight_ids", list);
-        map.put("search_flight", anotherMap);
-        list = new ArrayList<>();
-        list.add(new Flight(1));
-        list.add(new Flight(2));
-        map.put("flights", list);
-        // this could be on an util class for every controller that returns
-        // JSON.
-        HttpHeaders responseHeaders = new HttpHeaders();
-
-        Enumeration<String> headerNames = request.getHeaderNames();
-        while (headerNames.hasMoreElements()) {
-            String nextElement = (String) headerNames.nextElement();
-            responseHeaders.set(nextElement, request.getHeader(nextElement));
-        }
-
-        // populating the header required for CORS
-        responseHeaders.set("Access-Control-Allow-Origin", "*");
-        
-        Gson gson = new Gson();
-        return new ResponseEntity<String>(gson.toJson(map), responseHeaders,
-                HttpStatus.OK);
-    }
-    
-    public class Flight {
-        private Integer id;
-        private String code;
-        
-        public Flight(int id) {
-            this.id = id;
-            this.code = "ptm odio ember";
-        }
-
-        public void setId(Integer id){
-            this.id = id;
-        }
-        
-        public Integer getId() {
-            return this.id;
-        }
-        
-
-        public void setCode(String code){
-            this.code = code;
-        }
-        
-        public String getCode() {
-            return this.code;
-        }
     }
     
 }

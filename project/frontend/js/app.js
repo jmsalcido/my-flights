@@ -272,7 +272,7 @@ App.FlightsController = Ember.Controller.extend({
                             model.get('arrivalCode'),
                             date);
         App.SearchFlight.find(search_params).then(function(searchModel) {
-            self.set("isInvisible", false);
+            self.set("false", isInvisible);
             self.set('flightResults', searchModel.get('flights'));
         });
         
@@ -326,7 +326,8 @@ App.FlightDetail = DS.Model.extend({
     arrivalTime: DS.attr('string'),
     travelTime: DS.attr('number'),
     flightNumber: DS.attr('string'),
-    airline: DS.attr('string')
+    airlineCode: DS.attr('string'),
+    airlineName: DS.attr('string')
 });
 
 App.Flight = DS.Model.extend({

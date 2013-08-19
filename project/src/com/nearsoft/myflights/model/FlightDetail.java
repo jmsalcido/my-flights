@@ -10,7 +10,8 @@ public class FlightDetail {
     private String arrival_time;
     private int travel_time;
     private String flight_number;
-    private String airline;
+    private String airline_code;
+    private String airline_name;
     private String equipment;
 
     public Integer getId() {
@@ -66,7 +67,6 @@ public class FlightDetail {
     }
 
     public void setFlightNumber(String flightNumber) {
-        // emmm funciona... mal.
         try {
             this.setId(Integer.parseInt(flightNumber));
         } catch (NumberFormatException nfe) {
@@ -75,12 +75,20 @@ public class FlightDetail {
         this.flight_number = flightNumber;
     }
 
-    public String getAirline() {
-        return airline;
+    public String getAirlineCode() {
+        return airline_code;
     }
 
-    public void setAirline(String airline) {
-        this.airline = airline;
+    public void setAirlineCode(String airline_code) {
+        this.airline_code = airline_code;
+    }
+    
+    public String getAirlineName() {
+        return airline_name;
+    }
+
+    public void setAirlineName(String airline_name) {
+        this.airline_name = airline_name;
     }
 
     public String getEquipment() {

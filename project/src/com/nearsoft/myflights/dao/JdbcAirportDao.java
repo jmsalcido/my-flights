@@ -3,9 +3,7 @@ package com.nearsoft.myflights.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.sql.DataSource;
 
@@ -54,32 +52,16 @@ public class JdbcAirportDao implements AirportDao {
             ParameterizedRowMapper<Airport> {
 
         private final static String COLUMN_ID = "id";
-        private final static String COLUMN_FS = "fs"; // only flightsats?
-        private final static String COLUMN_IATA = "iata";
-        private final static String COLUMN_ICAO = "icao";
-        private final static String COLUMN_FAA = "faa";
+        private final static String COLUMN_FS = "fs"; // only flightsats code will be used.
         private final static String COLUMN_NAME = "name";
         private final static String COLUMN_CITY = "city";
         private final static String COLUMN_COUNTRY = "countryName";
-
-        public Map<String, String> createCodesMap(String fs, String iata,
-                String icao, String faa) {
-            Map<String, String> map = new HashMap<String, String>();
-            map.put(COLUMN_FS, fs);
-            map.put(COLUMN_IATA, iata);
-            map.put(COLUMN_ICAO, icao);
-            map.put(COLUMN_FAA, faa);
-            return map;
-        }
 
         @Override
         public Airport mapRow(ResultSet rs, int rowNum) throws SQLException {
 
             // ICAO, IATA and FAA are the most important.
             String fs = rs.getString(COLUMN_FS);
-            String iata = rs.getString(COLUMN_IATA);
-            String icao = rs.getString(COLUMN_ICAO);
-            String faa = rs.getString(COLUMN_FAA);
 
             Airport airport = new Airport();
             airport.setId(rs.getInt(COLUMN_ID));

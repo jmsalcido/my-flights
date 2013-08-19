@@ -105,12 +105,17 @@ footer {
     display: block;
     height: 4em;
     width: 100%;
+    margin-left: 5px;
 }
 
 .column {
     display: inline-block;
     min-width: 100px;
     text-align: center;
+}
+
+.flight-icon {
+    min-width: 32px;
 }
 
 .inline-row {

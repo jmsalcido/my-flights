@@ -14,7 +14,6 @@ public class Flight {
     private String arrival_airport;
     private int travel_time;
     private int flight_type;
-    private String airline;
     private List<FlightDetail> flight_details;
 
     public Flight() {}
@@ -65,14 +64,6 @@ public class Flight {
 
     public void setFlightType(int flightType) {
         this.flight_type = flightType;
-    }
-
-    public String getAirline() {
-        return airline;
-    }
-
-    public void setAirline(String airline) {
-        this.airline = airline;
     }
 
     public List<FlightDetail> getFlightDetails() {
