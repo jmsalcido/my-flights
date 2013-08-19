@@ -8,6 +8,14 @@ App.Router.map(function() {
     // if adding routes, add them here.
 });
 
+// ===============================
+// HELPERS.JS
+// ===============================
+
+Ember.Handlebars.helper('google-airline', function(airlineCode) {
+    var escaped = Handlebars.Utils.escapeExpression(airlineCode);
+    return new Handlebars.SafeString('<img src="https://www.gstatic.com/flights/airline_logos/16px/' + escaped +  '.png"');
+})
 
 // ===============================
 // VIEWS.JS
@@ -259,8 +267,10 @@ App.FlightsController = Ember.Controller.extend({
     isInvisible: true,
     flightResults: null,
     flightResultsObserver: function() {
+        console.log('so im going to search something huh...');
         var model = this.get('model');
         if(typeof model == 'undefined') {
+            console.log('i cant search that.');
             return;
         }
         var search,
@@ -271,8 +281,10 @@ App.FlightsController = Ember.Controller.extend({
                             model.get('departureCode'),
                             model.get('arrivalCode'),
                             date);
+        this.get('model').set('date', date);
         App.SearchFlight.find(search_params).then(function(searchModel) {
-            self.set("false", isInvisible);
+            console.log('finally!');
+            self.set("isInvisible", false);
             self.set('flightResults', searchModel.get('flights'));
         });
         

@@ -57,8 +57,9 @@
 
   <script type="text/x-handlebars" data-template-name="flights">
     {{#view App.FlightsView id="flights" }}
-      <h3>{{title}}</h3>
-      {{view App.FlightsListView id="flightsList"}}
+      <h2>{{title}}</h2>
+      <h3>{{model.departureCode}} to {{model.arrivalCode}} <span>{{model.date}}</span></h3>
+      <div style="display: inline-block;">{{view App.FlightsListView id="flightsList"}}</div>
     {{/view}}
   </script>
 
@@ -72,7 +73,6 @@
 
   <script type="text/x-handlebars" data-template-name="flight">
     <div class="column flight-icon"><img src="/img/flights.png" /></div>
-    {{view App.FlightRouteView contentBinding=view.content class="column flight-route"}}
     {{view App.FlightDetailView contentBinding=view.content.flightDetails class="column flight-detail"}}
     {{view App.BookButtonView contentBinding=view.content class="column flight-book" classBinding="isHover"}}
   </script>
@@ -89,7 +89,7 @@
     {{#each flightDetail in view.content}}
     <div class="inline-row">
       {{view App.FlightDetailRouteView contentBinding=flightDetail class="column"}}
-      {{view App.FlightDetailAirlineView contentBinding=flightDetail class="column"}}
+      {{view App.FlightDetailAirlineView contentBinding=flightDetail class="column airline"}}
     </div>
     {{/each}}
   </script>
@@ -99,7 +99,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetailAirline">
-    {{view.content.airlineCode}} - {{view.content.airlineName}}
+    {{google-airline view.content.airlineCode}} - {{view.content.airlineName}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="bookButton">

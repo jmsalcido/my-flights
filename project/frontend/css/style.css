@@ -108,10 +108,14 @@ footer {
     margin-left: 5px;
 }
 
+.row:nth-child(even) {
+    background-color: #F5EBEE;
+}
+
 .column {
     display: inline-block;
     min-width: 100px;
-    text-align: center;
+    /*text-align: center;*/
 }
 
 .flight-icon {
@@ -122,14 +126,7 @@ footer {
     min-width: 300px;
 }
 
-.inline-row .column: {
-    width: 45%;
+.inline-row .airline {
+    min-width: 100px;
 }
 
-.vertical-align {
-    position: absolute;
-    top: 50%;
-    height: 2em;
-    min-height: 2em;
-    margin-top: -.65em
-}
