@@ -50,8 +50,7 @@ public class FlightConnectorUtil {
         
         StringBuilder sb = new StringBuilder();
         for (FSFlightLeg fsFlightLeg : fsFlightDetails) {
-            FlightDetail flightDetail = FlightConnectorUtil
-                    .createFlightDetailFromFSFlightLeg(fsFlightLeg, fsAirlines);
+            FlightDetail flightDetail = createFlightDetailFromFSFlightLeg(fsFlightLeg, fsAirlines);
             flight.getFlightDetails().add(flightDetail);
             sb.append(flightDetail.getFlightNumber());
         }
