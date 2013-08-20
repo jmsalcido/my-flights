@@ -124,9 +124,9 @@ App.FlightView = Ember.View.extend({
     templateName: "flight",
 });
 
-App.FlightRouteView = Ember.View.extend({
+App.FlightTimesView = Ember.View.extend({
   tagName: 'div',
-  templateName: 'flightRoute',
+  templateName: 'flightTimes',
   didInsertElement: function() {
     
   }

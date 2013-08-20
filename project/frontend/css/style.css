@@ -103,7 +103,7 @@ footer {
 
 .row {
     display: block;
-    height: 4em;
+    min-height: 2em;
     width: 100%;
     margin-left: 5px;
 }

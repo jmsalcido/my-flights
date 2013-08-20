@@ -72,8 +72,10 @@ public class FlightConnectorUtil {
         FlightDetail flightDetail = new FlightDetail();
         flightDetail.setArrivalAirport(flightLeg.getArrivalAirportFsCode());
         flightDetail.setDepartureAirport(flightLeg.getDepartureAirportFsCode());
-        flightDetail.setDepartureTime(flightLeg.getDepartureTime());
-        flightDetail.setArrivalTime(flightLeg.getArrivalTime());
+        String departureTime = removeCharacters(flightLeg.getDepartureTime());
+        String arrivalTime = removeCharacters(flightLeg.getArrivalTime());
+        flightDetail.setDepartureTime(departureTime);
+        flightDetail.setArrivalTime(arrivalTime);
         flightDetail.setTravelTime(flightLeg.getFlightDurationMinutes());
         
         String airline_code = flightLeg.getCarrierFsCode();
@@ -84,6 +86,26 @@ public class FlightConnectorUtil {
         flightDetail.setFlightNumber(flightLeg.getFlightNumber());
         return flightDetail;
     }
+    
+    private static String formatTimeAMPM(String time) {
+        StringBuilder sb = new StringBuilder(time);
+        int hours = Integer.parseInt(sb.substring(0, 2));
+        String minutes = sb.substring(3,4);
+        int minutesInt = Integer.parseInt(minutes);
+        String ampm = hours >= 12 ? "pm" : "am";
+        hours = hours % 12;
+        hours = hours != 0 ? hours : 12;
+        minutes = minutesInt < 10 ? '0' + minutes : minutes;
+        sb = new StringBuilder();
+        sb.append(hours).append(":").append(minutes).append(" ").append(ampm);
+        return sb.toString();
+    }
+    
+    private static String removeCharacters(String string) {
+        int digits = 5;
+        StringBuilder sb = new StringBuilder(string);
+        return sb.substring(0, digits);
+    }
 
     /**
      * convert a FSAirline list into a Map<String, String> where the key is the code value of the airline and the value is the airline name
@@ -92,11 +114,11 @@ public class FlightConnectorUtil {
      */
     public static Map<String, String> convertFSAirlinesListToMap(
             List<FSAirline> fsAirlines) {
-        Map<String, String> returnMap = new HashMap<String, String>();
+        Map<String, String> airlinesMap = new HashMap<String, String>();
         for (FSAirline fsAirline : fsAirlines) {
-            returnMap.put(fsAirline.getFs(), fsAirline.getName());
+            airlinesMap.put(fsAirline.getFs(), fsAirline.getName());
         }
-        return returnMap;
+        return airlinesMap;
     }
 
     /**

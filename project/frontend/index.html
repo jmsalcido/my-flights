@@ -73,6 +73,7 @@
 
   <script type="text/x-handlebars" data-template-name="flight">
     <div class="column flight-icon"><img src="/img/flights.png" /></div>
+    {{view App.FlightTimesView contentBinding=view.content class="column flight-times"}}
     {{view App.FlightDetailView contentBinding=view.content.flightDetails class="column flight-detail"}}
     {{view App.BookButtonView contentBinding=view.content class="column flight-book" classBinding="isHover"}}
   </script>
@@ -81,8 +82,8 @@
     {{view.content.departureAirport}} - {{view.content.arrivalAirport}}
   </script>
 
-  <script type="text/x-handlebars" data-template-name="flightRoute">
-    {{view.content.departureAirport}} - {{view.content.arrivalAirport}}
+  <script type="text/x-handlebars" data-template-name="flightTimes">
+    {{flightDepartureTime view.content}} -{{flightTime view.content}}hr-> {{flightArrivalTime view.content}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
@@ -99,7 +100,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetailAirline">
-    {{google-airline view.content.airlineCode}} - {{view.content.airlineName}}
+    {{googleAirline view.content.airlineCode}} - {{view.content.airlineName}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="bookButton">
