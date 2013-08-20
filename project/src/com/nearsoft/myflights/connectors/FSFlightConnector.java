@@ -26,9 +26,9 @@ import com.nearsoft.myflights.model.fs.FSFlight;
 
 public class FSFlightConnector implements FlightConnector {
 
-    private final static String FS_APPID = "fddf4ecf";
-    private final static String FS_APPKEY = "d2a01014237e20af21d8c7a146e5bbf2";
-    private final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
+    public final static String FS_APPID = "fddf4ecf";
+    public final static String FS_APPKEY = "d2a01014237e20af21d8c7a146e5bbf2";
+    public final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
 
     private final static Log logger = LogFactory.getLog(FSFlightConnector.class);
 
@@ -41,12 +41,9 @@ public class FSFlightConnector implements FlightConnector {
     @Override
     public List<Flight> getFlights(String fromAirportCode, String toAirportCode, Date date)
             throws ClientProtocolException, URISyntaxException, IOException,
-            HttpException {
+            HttpException, NullPointerException {
         List<Flight> flightList = new ArrayList<>();
         String json = getJsonFromParameters(fromAirportCode, toAirportCode, date);
-        if (json == null) {
-            return null;
-        }
         FSConnection fsConn = getFSConnectionFromJson(json);
         
         Map<String, String> airlines = FlightConnectorUtil.convertFSAirlinesListToMap(fsConn.getAppendix().getAirlines());
@@ -57,7 +54,7 @@ public class FSFlightConnector implements FlightConnector {
         return flightList;
     }
 
-    public FSConnection getFSConnectionFromJson(String json) {
+    private FSConnection getFSConnectionFromJson(String json) {
         return gson.fromJson(json, FSConnection.class);
     }
 
@@ -65,6 +62,9 @@ public class FSFlightConnector implements FlightConnector {
             throws URISyntaxException, IOException,
             HttpException {
 
+    	if(fromAirport == null || toAirport == null || date == null) {
+    		throw new NullPointerException("null is not allowed.");
+    	}
         // get the date.
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);
