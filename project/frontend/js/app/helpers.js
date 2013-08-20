@@ -4,8 +4,11 @@ Ember.Handlebars.helper('googleAirline', function(airlineCode) {
 });
 
 Ember.Handlebars.helper('flightTime', function(flight) {
-    var travelTime = flight.get('travelTime');
-    return (travelTime / 60).toFixed(2);
+    var travelTime = flight.get('travelTime'),
+        travelHours = Math.floor(travelTime / 60),
+        travelMinutes = travelTime % 60;
+
+    return [travelHours, travelMinutes].join(':');
 });
 
 Ember.Handlebars.helper('flightDepartureTime', function(flight) {
