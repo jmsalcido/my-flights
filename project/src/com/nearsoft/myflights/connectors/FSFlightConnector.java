@@ -19,6 +19,7 @@ import org.apache.http.client.ClientProtocolException;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.nearsoft.myflights.connectors.util.FSFlightConnectorUtil;
 import com.nearsoft.myflights.connectors.util.FlightConnectorUtil;
 import com.nearsoft.myflights.model.Flight;
 import com.nearsoft.myflights.model.fs.FSConnection;
@@ -44,18 +45,14 @@ public class FSFlightConnector implements FlightConnector {
             HttpException, NullPointerException {
         List<Flight> flightList = new ArrayList<>();
         String json = getJsonFromParameters(fromAirportCode, toAirportCode, date);
-        FSConnection fsConn = getFSConnectionFromJson(json);
+        FSConnection fsConn = FSFlightConnectorUtil.getFSConnectionFromJson(gson, json);
         
-        Map<String, String> airlines = FlightConnectorUtil.convertFSAirlinesListToMap(fsConn.getAppendix().getAirlines());
+        Map<String, String> airlines = FSFlightConnectorUtil.convertFSAirlinesListToMap(fsConn.getAppendix().getAirlines());
         for (FSFlight fsFlight : fsConn.getFlights()) {
-            Flight flight = FlightConnectorUtil.createFlightFromFSFlight(fsFlight, airlines, date);
+            Flight flight = FSFlightConnectorUtil.createFlightFromFSFlight(fsFlight, airlines, date);
             flightList.add(flight);
         }
         return flightList;
-    }
-
-    private FSConnection getFSConnectionFromJson(String json) {
-        return gson.fromJson(json, FSConnection.class);
     }
 
     private String getJsonFromParameters(String fromAirport, String toAirport, Date date)

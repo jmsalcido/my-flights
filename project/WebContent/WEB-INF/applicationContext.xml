@@ -19,7 +19,7 @@
 		<property name="airportDao" ref="airportDao" />
 	</bean>
 
-	<bean id="flightConnector" class="com.nearsoft.myflights.connectors.FSFlightConnector">
+	<bean id="flightConnector" class="com.nearsoft.myflights.connectors.FSStubFlightConnector">
 	</bean>
 
 	<bean id="flightService" class="com.nearsoft.myflights.service.FSFlightService">

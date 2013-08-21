@@ -100,6 +100,11 @@ App.AutocompleteTextField = Ember.TextField.extend({
     }.observes('controller.arrivalText')
 });
 
+App.RouteTypeView = Ember.View.extend({
+    tagName: 'div',
+    templateName: "routeType"
+})
+
 App.AutocompleteView = Ember.View.extend({
     templateName: 'autocomplete',
     classNameBindings:['isInvisible:invisible'],
@@ -122,9 +127,24 @@ App.FlightsListView = Ember.View.extend({
 App.FlightView = Ember.View.extend({
     tagName: 'div',
     templateName: "flight",
+    classNameBindings: ['isHover:flight-over'],
+    isHover: false,
+    mouseEnter: function() {
+        this.set('isHover', true);
+    },
+    mouseLeave: function() {
+    this.set('isHover', false);  
+    },
+    click: function() {
+        var selectedFlights = this.get('controller').get('selectedFlights');
+
+        console.log(this.get('content').get('id'));
+        //selectedFlights.pushObject(this.get('content'));
+
+    }
 });
 
-App.FlightTimesView = Ember.View.extend({
+App.FlightScheduleView = Ember.View.extend({
   tagName: 'div',
   templateName: 'flightTimes',
   didInsertElement: function() {
@@ -144,7 +164,7 @@ App.FlightDetailRouteView = Ember.View.extend({
   tagName: 'div',
   templateName: 'flightDetailRoute',
   didInsertElement: function() {
-    
+
   }
 });
 
@@ -156,15 +176,7 @@ App.FlightDetailAirlineView = Ember.View.extend({
     }
 });
 
-App.BookButtonView = Ember.View.extend({
-    tagName: 'a',
-    templateName: "bookButton",
-    classNameBindings: ["isHover:btn"],
-    isHover: false,
-    mouseEnter: function() {
-        this.set('isHover', true);
-    },
-    mouseLeave: function() {
-        this.set('isHover', false);
-    }
+App.PriceView = Ember.View.extend({
+    tagName: 'div',
+    templateName: "price"
 });

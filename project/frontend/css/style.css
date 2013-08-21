@@ -26,6 +26,10 @@ footer {
     color: white;
 }
 
+#flights {
+    width: 100%;
+}
+
 .inline {
     display: inline;
 }
@@ -72,7 +76,6 @@ footer {
 .autocomplete div:hover {
     color: white;
     background-color: #03405D;
-    cursor: pointer;
 }
 
 .autocomplete span {
@@ -102,19 +105,32 @@ footer {
 }
 
 .row {
+    padding-top: .6em;
+    padding-bottom: .6em;
     display: block;
     min-height: 2em;
     width: 100%;
     margin-left: 5px;
+    border-top: solid;
+    border-color: #EDEDED;
+    border-width: 1px;
 }
 
 .row:nth-child(even) {
-    background-color: #F5EBEE;
+    /*background-color: #F5EBEE;*/
 }
 
 .column {
     display: inline-block;
     min-width: 100px;
+    padding-left: 1em;
+    /*text-align: center;*/
+}
+
+.column-header {
+    display: inline-block;
+    min-width: 150px;
+    padding-left: 1em;
     /*text-align: center;*/
 }
 
@@ -130,3 +146,11 @@ footer {
     min-width: 100px;
 }
 
+.flight-price {
+    text-align: center;
+}
+
+.flight-over {
+    background-color: #A4D9FC;
+    cursor: pointer;
+}

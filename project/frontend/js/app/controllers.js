@@ -28,6 +28,8 @@ App.RouterController = Ember.Controller.extend({
     isAutoCompletedFocused: false,
     arrivalDate: null,
     searchResults:  '',
+    routeTypes: ['One way', 'Roundtrip'],
+    routeType: 'oneway',
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
@@ -60,14 +62,31 @@ App.RouterController = Ember.Controller.extend({
             arrivalDate: this.get('arrivalDate')
         });
 
+        // TODO some validations here
+
         // set visible the flight view.
         this.get('controllers.flights').set('model', route);
-    }
+    },
+    removeOrDisplayRoute: function() {
+        var routeSelection = this.get('routeSelection'),
+            routeTypes = this.get('routeTypes');
+        console.log(routeSelection);
+
+        // Single must remove the "date" value from the arrivalDate
+        if(routeSelection === routeTypes[0]) {
+            // TODO remove the arrivalDate text :)
+            this.set('arrivalDate', null);
+            this.set('routeType', 'oneway');
+        } else {
+            this.set('routeType', 'roadtrip');
+        }
+    }.observes('routeSelection')
 });
 
 App.FlightsController = Ember.Controller.extend({
     needs: ['router'],
     title: 'Flights',
+    selectedFlights: [], // this will save the selected flights that will be "recorded"
     isInvisible: true,
     flightResults: null,
     flightResultsObserver: function() {
@@ -93,7 +112,7 @@ App.FlightsController = Ember.Controller.extend({
         });
         
     }.observes('model'),
-    testModel: function() {
-        console.log(this.get('model').get('departureCode'));
+    selectFlight: function(flight) {
+
     }
 });

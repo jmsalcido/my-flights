@@ -31,6 +31,7 @@
     {{#view App.RoutesView id="routes"}}
       <h3>{{title}}</h3>
       <div class="route-form">
+        {{view App.RouteTypeView }}
         {{view App.AutocompleteTextField valueBinding=departureText placeholder="Departure..." class="form-control"}}
         <span class="to"> to </span>
         {{view App.AutocompleteTextField valueBinding=arrivalText placeholder="Arrival..." class="form-control"}}
@@ -43,6 +44,12 @@
         <a class='btn btn-search' {{action "searchFlightsAction"}}>Search my flight</a>
       </div>
     {{/view}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="routeType">
+    {{view Bootstrap.Pills
+      contentBinding="routeTypes"
+      selectionBinding="routeSelection"}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="autocomplete">
@@ -64,18 +71,32 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightsList">
+    {{template _flightListTemplate}}
     {{#each flight in flightResults}}
-      {{view App.FlightView contentBinding=flight class="row"}}
+      {{view App.FlightView contentBinding=flight class="row" classBinding="isHover"}}
     {{else}}
       <span>Loading flights</span>
     {{/each}}
   </script>
 
+  <script type="text/x-handlebars" data-template-name="_flightListTemplate">
+    <div class="row">
+      <div class="column flight-icon"><img src="/img/flights.png" /></div>
+      <div class="column flight-schedule">Schedule</div>
+      <div class="column flight-detail">
+        <div class="inline-row">
+          <div class="column">Flight Details</div>
+          <div class="column">Airlines</div>
+        </div>
+      </div>
+      <div class="column flight-price">Price</div>
+    </div>
+  </script>
+
   <script type="text/x-handlebars" data-template-name="flight">
-    <div class="column flight-icon"><img src="/img/flights.png" /></div>
-    {{view App.FlightTimesView contentBinding=view.content class="column flight-times"}}
+    {{view App.FlightScheduleView contentBinding=view.content class="column flight-schedule"}}
     {{view App.FlightDetailView contentBinding=view.content.flightDetails class="column flight-detail"}}
-    {{view App.BookButtonView contentBinding=view.content class="column flight-book" classBinding="isHover"}}
+    {{view App.PriceView contentBinding=view.content class="column flight-price"}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightIcon">
@@ -103,8 +124,8 @@
     {{googleAirline view.content.airlineCode}} - {{view.content.airlineName}}
   </script>
 
-  <script type="text/x-handlebars" data-template-name="bookButton">
-    <span {{action "book" view.content}}>{{view.content.id}}</span>
+  <script type="text/x-handlebars" data-template-name="price">
+    <div>${{view.content.id}}</div>
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>
