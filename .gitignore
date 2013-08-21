@@ -47,3 +47,5 @@ Icon
 *.jar
 *.war
 *.ear
+
+project/WebContent/WEB-INF/classes/flights-json.txt
