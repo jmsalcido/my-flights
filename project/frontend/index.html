@@ -15,8 +15,8 @@
     </header>
     <div id="body">
       {{render router}}
-      {{render flights}}
       {{render flightInformation}}
+      {{render flights}}
     </div>
     <footer>
       <p>Footer Incorporation :P</p>
@@ -131,8 +131,13 @@
 
   <script type="text/x-handlebars" data-template-name="flightInformation">
     {{#view App.FlightInformationView id="information"}}
-      <h3>{{title}}</h3>
+      <h2>{{title}}</h2>
       {{#each flightInformation in content}}
+        {{#if flightInformation.isDeparture}}
+          <h3>You will leave:</h3>
+        {{else}}
+          <h3>You will back:</h3>
+        {{/if}}
         <strong>From:</strong> {{flightInformation.departureAirport.city}}<br/>
         <strong>To:</strong> {{flightInformation.arrivalAirport.city}}<br/>
         <strong>Date:</strong> {{formatFullDate flightInformation.flight.date}}
@@ -143,6 +148,7 @@
           <strong>You will board at:</strong> {{formatAMPM detail.departureTime}}<br/>
           <strong>Flying time:</strong> {{flightTime detail.travelTime}} hours<br/>
           <strong>You will unboard at:</strong> {{formatAMPM detail.arrivalTime}}<br/>
+          <strong>Flight Number:</strong> {{detail.flightNumber}}<br/>
           <strong>Airline:</strong> {{googleAirline detail.airlineCode}}{{detail.airlineName}}<br/>
           <hr>
         {{/each}}

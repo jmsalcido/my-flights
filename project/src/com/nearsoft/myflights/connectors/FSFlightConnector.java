@@ -27,8 +27,8 @@ import com.nearsoft.myflights.model.fs.FSFlight;
 
 public class FSFlightConnector implements FlightConnector {
 
-    public final static String FS_APPID = "fddf4ecf";
-    public final static String FS_APPKEY = "d2a01014237e20af21d8c7a146e5bbf2";
+    public final static String FS_APPID = "c2eb128c";
+    public final static String FS_APPKEY = "298a8715d0c24aab56b97850f2403a31";
     public final static String FS_URL = "https://api.flightstats.com/flex/connections/rest/v1/json/connecting/from/%s/to/%s/departing/%s/%s/%s?appId=%s&appKey=%s";
 
     private final static Log logger = LogFactory.getLog(FSFlightConnector.class);

@@ -7,3 +7,6 @@ App = Ember.Application.create({
 App.Router.map(function() {
     // if adding routes, add them here.
 });
+
+App.ONEWAYROUTE = "One way";
+App.ROUNDTRIP = "Roundtrip";

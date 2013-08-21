@@ -2,7 +2,7 @@ App.IndexController = Ember.Controller.extend({
 });
 
 App.RouterController = Ember.Controller.extend({
-    needs: ['flights'],
+    needs: ['flights', 'flightInformation'],
     searchAirports: function(text) {
         var self = this;
         if(!text || App.isEmpty(text)) {
@@ -32,14 +32,14 @@ App.RouterController = Ember.Controller.extend({
     isAutoCompletedFocused: false,
     arrivalDate: null,
     searchResults:  '',
-    routeTypes: ['One way', 'Roundtrip'],
-    routeType: 'oneway', // default behaviour
+    routeTypes: [App.ONEWAYROUTE, App.ROUNDTRIP],
+    routeType: App.ONEWAYROUTE, // default behaviour
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
-            return "Could not find airports with that keyword..."
+            return "Could not find airports with that keyword...";
         } else {
-            return "Loading..."
+            return "Loading...";
         }
     }.property(),
     selectAirport: function(airport) {
@@ -59,7 +59,13 @@ App.RouterController = Ember.Controller.extend({
         }
     },
     searchFlightsAction: function() {
-        var route;
+        var route, flightsController = this.get("controllers.flights"),
+            flightInformationController = this.get('controllers.flightInformation');
+
+        flightInformationController.set('isInvisible', true);
+        flightsController.set('selectedFlights', []);
+        flightInformationController.set('content', []);
+        flightsController.set('title', "Select your departure flight");
         // TODO some validations here
         // b4creating the route.
 
@@ -71,7 +77,7 @@ App.RouterController = Ember.Controller.extend({
         });
 
         // set visible the flight view.
-        this.get('controllers.flights').set('model', route);
+        flightsController.set('model', route);
     },
     removeOrDisplayRoute: function() {
         var routeSelection = this.get('routeSelection'),
@@ -79,12 +85,12 @@ App.RouterController = Ember.Controller.extend({
         console.log(routeSelection);
 
         // Single must remove the "date" value from the arrivalDate
-        if(routeSelection === routeTypes[0]) {
+        if(routeSelection === App.ONEWAYROUTE) {
             // TODO remove the arrivalDate text :)
             this.set('arrivalDate', null);
-            this.set('routeType', 'oneway');
+            this.set('routeType', App.ONEWAYROUTE);
         } else {
-            this.set('routeType', 'roadtrip');
+            this.set('routeType', App.ROUNDTRIP);
         }
     }.observes('routeSelection')
 });
@@ -96,7 +102,7 @@ App.FlightsController = Ember.Controller.extend({
     isInvisible: true,
     flightResults: null,
     flightResultsObserver: function() {
-        console.log('so im going to search something huh...');
+        console.log('searching...');
         var model = this.get('model');
         if(typeof model == 'undefined') {
             console.log('i cant search that.');
@@ -114,7 +120,7 @@ App.FlightsController = Ember.Controller.extend({
                             date);
         this.get('model').set('date', date);
         App.SearchFlight.find(search_params).then(function(searchModel) {
-            console.log('finally!');
+            console.log('done searching');
             self.set("isInvisible", false);
             self.set('flightResults', searchModel.get('flights'));
         });
@@ -124,34 +130,53 @@ App.FlightsController = Ember.Controller.extend({
         var router = this.get('controllers.router'),
             routeType = router.get('routeType'),
             model = this.get('model'),
-            aux = null,
+            backRoute = null,
             flightInformation = null,
             flightsInformation = [],
-            selectedFlights = this.get('selectedFlights');
+            selectedFlights = this.get('selectedFlights'),
+            self = this;
 
-        flightInformation = App.RouteModel.create({
+        flightInformation = App.FlightInformation.create({
+            routeType: routeType,
             departureAirport: model.get('departureAirport'),
             arrivalAirport: model.get('arrivalAirport'),
             flight: flight
         });
 
-        if(routeType = router.get('routeTypes')[0]) {
+        if(routeType === App.ONEWAYROUTE) {
             // single
             // should show the "an agent will contact you soon advertise (for the moment)".
             this.set("isInvisible", true);
-            this.get('controllers.flightInformation').send('addElement', flightInformation)
+            flightInformation.isDeparture = true;
+            this.get('controllers.flightInformation').send('addElement', flightInformation);
+
         } else {
             // roundtrip
 
             //check if is there any flightSelected.
-            //if(selectedFlights.length === 0){};
-            // flip the departure and arrival
-            selectedFlights.pushObject(flightInformation);
-            this.set("isInvisible", true);
-            aux = model.get('departureAirport');
-            model.set('departureAirport', model.get('arrivalAirport'));
-            model.set('arrivalAirport', aux);
-            //else{}
+            if(selectedFlights.length === 0){
+
+                backRoute = App.RouteModel.create({
+                    departureAirport: model.get('arrivalAirport'),
+                    arrivalAirport: model.get('departureAirport'),
+                    departureDate: model.get('arrivalDate'),
+                    arrivalDate: model.get('departureDate')
+                });
+
+                // flip the departure and arrival
+                flightInformation.isDeparture = true;
+                selectedFlights.pushObject(flightInformation);
+                this.set("isInvisible", true);
+                this.get('controllers.flightInformation').send('addElement', flightInformation);
+                this.set('title', "Select your return flight");
+                this.set('model', backRoute);
+            }
+            else{
+                // second selection
+                flightInformation.isDeparture = false;
+                this.set("isInvisible", true);
+                this.get('controllers.flightInformation').send('addElement', flightInformation);
+            }
         }
     }
 });
@@ -164,6 +189,6 @@ App.FlightInformationController = Ember.ArrayController.extend({
         this.get('content').pushObject(element);
     },
     showInformation: function() {
-        this.set('isInvisible', false);
+        this.set('isInvisible', this.get('content').length === 0);
     }.observes('content.@each')
 });

@@ -1,4 +1,5 @@
 App.RouteModel = Ember.Object.extend({
+    routeType: null,
     departureAirport: null,
     arrivalAirport: null,
     departureDate: null,
@@ -6,6 +7,7 @@ App.RouteModel = Ember.Object.extend({
 });
 
 App.FlightInformation = Ember.Object.extend({
+  isDeparture: null,
   departureAirport: null,
   arrivalAirport: null,
   flight: null
@@ -87,7 +89,7 @@ App.Store = DS.Store.extend({
       search_flight: App.SearchFlight,
       error: App.ErrorModel
   },
-  url: 'http://192.168.1.161:8080',
+  url: 'http://192.168.1.112:8080',
   namespace: 'MyFlights',
   serializer: App.RESTSerializer
   })
