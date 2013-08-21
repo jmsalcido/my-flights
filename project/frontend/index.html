@@ -16,6 +16,7 @@
     <div id="body">
       {{render router}}
       {{render flights}}
+      {{render flightInformation}}
     </div>
     <footer>
       <p>Footer Incorporation :P</p>
@@ -65,7 +66,7 @@
   <script type="text/x-handlebars" data-template-name="flights">
     {{#view App.FlightsView id="flights" }}
       <h2>{{title}}</h2>
-      <h3>{{model.departureCode}} to {{model.arrivalCode}} <span>{{model.date}}</span></h3>
+      <h3>{{model.departureAirport.city}} to {{model.arrivalAirport.city}} <span>{{model.date}}</span></h3>
       <div style="display: inline-block;">{{view App.FlightsListView id="flightsList"}}</div>
     {{/view}}
   </script>
@@ -126,6 +127,27 @@
 
   <script type="text/x-handlebars" data-template-name="price">
     <div>${{view.content.id}}</div>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="flightInformation">
+    {{#view App.FlightInformationView id="information"}}
+      <h3>{{title}}</h3>
+      {{#each flightInformation in content}}
+        <strong>From:</strong> {{flightInformation.departureAirport.city}}<br/>
+        <strong>To:</strong> {{flightInformation.arrivalAirport.city}}<br/>
+        <strong>Date:</strong> {{formatFullDate flightInformation.flight.date}}
+        <h4>Legs:</h4>
+        {{#each detail in flightInformation.flight.flightDetails}}
+          <strong>Departure:</strong> {{detail.departureAirport}}<br/>
+          <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
+          <strong>You will board at:</strong> {{detail.departureTime}}<br/>
+          <strong>You will unboard at:</strong> {{detail.arrivalTime}}<br/>
+          <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
+          <strong>Airline:</strong> {{googleAirline detail.airlineCode}}{{detail.airlineName}}<br/>
+          <hr>
+        {{/each}}
+      {{/each}}
+    {{/view}}
   </script>
 
   <script src="js/libs/jquery-1.9.1.js"></script>

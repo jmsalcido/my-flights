@@ -83,7 +83,7 @@ footer {
 }
 
 .invisible {
-    visibility: none;
+    display: none;
 }
 
 .airport {

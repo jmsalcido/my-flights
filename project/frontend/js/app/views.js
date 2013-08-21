@@ -179,6 +179,14 @@ App.PriceView = Ember.View.extend({
     templateName: "price"
 });
 
+App.FlightInformationView = Ember.View.extend({
+    classNameBindings:['isInvisible:invisible'],
+    isInvisible: function() {
+        return this.get('controller').get('isInvisible');
+    }.property('controller.isInvisible')
+});
+
 App.InformationView = Ember.View.extend({
-    
+    tagName: 'div',
+    templateName: 'flightInformation'
 })

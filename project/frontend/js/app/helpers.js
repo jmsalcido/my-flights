@@ -21,6 +21,10 @@ Ember.Handlebars.helper('flightDepartureTime', function(flight) {
 Ember.Handlebars.helper('flightArrivalTime', function(flight) {
     var flightDetails = flight.get('flightDetails'),
         lastFlight = flightDetails.get('lastObject');
-        
+
     return lastFlight.get('arrivalTime');
+});
+
+Ember.Handlebars.helper('formatFullDate', function(date) {
+    return moment(date).format('YYYY-MM-DD');
 });

@@ -4,6 +4,7 @@ App.IndexController = Ember.Controller.extend({
 App.RouterController = Ember.Controller.extend({
     needs: ['flights'],
     searchAirports: function(text) {
+        var self = this;
         if(!text || App.isEmpty(text)) {
             this.set('isAutoCompletedInvisible', true);
             return;
@@ -11,8 +12,9 @@ App.RouterController = Ember.Controller.extend({
             this.set('isAutoCompletedInvisible', false);
         }
         // server request
-        var airportSearch = App.SearchAirport.find(text);
-        this.set('searchResults', airportSearch.get('airports'));
+        var airportSearch = App.SearchAirport.find(text).then(function(model){
+            self.set('searchResults', model.get('airports'));
+        });
     },
     title: 'Select your route',
     isDeparture: null,
@@ -24,6 +26,8 @@ App.RouterController = Ember.Controller.extend({
     arrivalDate: null,
     departureCode: '',
     arrivalCode: '',
+    departureAirport: null,
+    arrivalAirport: null,
     isAutoCompletedInvisible: true,
     isAutoCompletedFocused: false,
     arrivalDate: null,
@@ -41,28 +45,30 @@ App.RouterController = Ember.Controller.extend({
     selectAirport: function(airport) {
         this.set('isAutoCompletedInvisible', true);
         var code = airport.get('code');
-        var selected = this.get('departureSelected');
-        var airport = null;
+        // var selected = this.get('departureSelected');
         if(this.get('isDeparture')) {
+            this.set('departureAirport', airport);
             this.set('departureCode', code);
             this.set('departureSelected', true);
             this.set('departureText', code);
         } else {
+            this.set('arrivalAirport', airport);
             this.set('arrivalCode', code);
             this.set('arrivalSelected', true);
             this.set('arrivalText', code);
         }
     },
     searchFlightsAction: function() {
+        var route;
+        // TODO some validations here
+        // b4creating the route.
 
-        var route = App.RouteModel.create({
-            departureCode: this.get('departureCode'),
-            arrivalCode: this.get('arrivalCode'),
+        route = App.RouteModel.create({
+            departureAirport: this.get('departureAirport'),
+            arrivalAirport: this.get('arrivalAirport'),
             departureDate: this.get('departureDate'),
             arrivalDate: this.get('arrivalDate')
         });
-
-        // TODO some validations here
 
         // set visible the flight view.
         this.get('controllers.flights').set('model', route);
@@ -84,7 +90,7 @@ App.RouterController = Ember.Controller.extend({
 });
 
 App.FlightsController = Ember.Controller.extend({
-    needs: ['router'],
+    needs: ['router', 'flightInformation'],
     title: 'Flights',
     selectedFlights: [], // this will save the selected flights that will be "recorded"
     isInvisible: true,
@@ -99,10 +105,12 @@ App.FlightsController = Ember.Controller.extend({
         var search,
             date = moment(model.get('departureDate')).format('YYYY-MM-DD'),
             self = this,
+            departureAirport = model.get('departureAirport'),
+            arrivalAirport = model.get('arrivalAirport'),
             search_params = "help",
             search_params = 'search?f=%@&t=%@&d=%@'.fmt(
-                            model.get('departureCode'),
-                            model.get('arrivalCode'),
+                            departureAirport.get('code'),
+                            arrivalAirport.get('code'),
                             date);
         this.get('model').set('date', date);
         App.SearchFlight.find(search_params).then(function(searchModel) {
@@ -116,19 +124,46 @@ App.FlightsController = Ember.Controller.extend({
         var router = this.get('controllers.router'),
             routeType = router.get('routeType'),
             model = this.get('model'),
-            aux = null;
+            aux = null,
+            flightInformation = null,
+            flightsInformation = [],
+            selectedFlights = this.get('selectedFlights');
+
+        flightInformation = App.RouteModel.create({
+            departureAirport: model.get('departureAirport'),
+            arrivalAirport: model.get('arrivalAirport'),
+            flight: flight
+        });
+
         if(routeType = router.get('routeTypes')[0]) {
             // single
             // should show the "an agent will contact you soon advertise (for the moment)".
-            console.log(flight);
             this.set("isInvisible", true);
+            this.get('controllers.flightInformation').send('addElement', flightInformation)
         } else {
             // roundtrip
-            // flip the departureCode and the arrivalCode
-            aux = model.get('departureCode');
-            model.set('departureCode', model.get('arrivalCode'));
-            model.set('arrivalCode', aux);
+
+            //check if is there any flightSelected.
+            //if(selectedFlights.length === 0){};
+            // flip the departure and arrival
+            selectedFlights.pushObject(flightInformation);
             this.set("isInvisible", true);
+            aux = model.get('departureAirport');
+            model.set('departureAirport', model.get('arrivalAirport'));
+            model.set('arrivalAirport', aux);
+            //else{}
         }
     }
+});
+
+App.FlightInformationController = Ember.ArrayController.extend({
+    content: [],
+    title: "Flight Information",
+    isInvisible: true,
+    addElement: function(element) {
+        this.get('content').pushObject(element);
+    },
+    showInformation: function() {
+        this.set('isInvisible', false);
+    }.observes('content.@each')
 });

@@ -1,11 +1,15 @@
 App.RouteModel = Ember.Object.extend({
-    departureCode: null,
-    arrivalCode: null,
+    departureAirport: null,
+    arrivalAirport: null,
     departureDate: null,
-    arrivalDate: null,
-    departureCityName: null,
-    arrivalCityName: null
+    arrivalDate: null
 });
+
+App.FlightInformation = Ember.Object.extend({
+  departureAirport: null,
+  arrivalAirport: null,
+  flight: null
+})
 
 App.RESTSerializer = DS.RESTSerializer.extend({
     init: function() {
