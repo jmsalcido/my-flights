@@ -3,9 +3,8 @@ Ember.Handlebars.helper('googleAirline', function(airlineCode) {
     return new Handlebars.SafeString('<img src="https://www.gstatic.com/flights/airline_logos/16px/' + escaped +  '.png"');
 });
 
-Ember.Handlebars.helper('flightTime', function(flight) {
-    var travelTime = flight.get('travelTime'),
-        travelHours = Math.floor(travelTime / 60),
+Ember.Handlebars.helper('flightTime', function(travelTime) {
+    var travelHours = Math.floor(travelTime / 60),
         travelMinutes = travelTime % 60;
 
     return [travelHours, travelMinutes].join(':');
@@ -27,4 +26,16 @@ Ember.Handlebars.helper('flightArrivalTime', function(flight) {
 
 Ember.Handlebars.helper('formatFullDate', function(date) {
     return moment(date).format('YYYY-MM-DD');
+});
+
+Ember.Handlebars.helper('formatAMPM', function(time) {
+    var hours, minutes, ampm, timeArray;
+    timeArray = time.split(":");
+    hours = parseInt(timeArray[0]);
+    minutes = parseInt(timeArray[1]);
+    ampm = hours >= 12 ? 'pm' : 'am';
+    hours = hours % 12;
+    hours = hours !== 0 ? hours : 12;
+    minutes = minutes < 10 ? '0'+minutes : minutes;
+    return hours + ':' + minutes + ' ' + ampm;
 });

@@ -105,7 +105,7 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightTimes">
-    {{flightDepartureTime view.content}} -{{flightTime view.content}}hr-> {{flightArrivalTime view.content}}
+    {{flightDepartureTime view.content}} -{{flightTime view.content.travelTime}}hr-> {{flightArrivalTime view.content}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="flightDetail">
@@ -136,13 +136,13 @@
         <strong>From:</strong> {{flightInformation.departureAirport.city}}<br/>
         <strong>To:</strong> {{flightInformation.arrivalAirport.city}}<br/>
         <strong>Date:</strong> {{formatFullDate flightInformation.flight.date}}
-        <h4>Legs:</h4>
+        <h4>Details:</h4>
         {{#each detail in flightInformation.flight.flightDetails}}
           <strong>Departure:</strong> {{detail.departureAirport}}<br/>
           <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
-          <strong>You will board at:</strong> {{detail.departureTime}}<br/>
-          <strong>You will unboard at:</strong> {{detail.arrivalTime}}<br/>
-          <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
+          <strong>You will board at:</strong> {{formatAMPM detail.departureTime}}<br/>
+          <strong>Flying time:</strong> {{flightTime detail.travelTime}} hours<br/>
+          <strong>You will unboard at:</strong> {{formatAMPM detail.arrivalTime}}<br/>
           <strong>Airline:</strong> {{googleAirline detail.airlineCode}}{{detail.airlineName}}<br/>
           <hr>
         {{/each}}
