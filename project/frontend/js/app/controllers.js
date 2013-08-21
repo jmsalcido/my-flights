@@ -31,6 +31,7 @@ App.RouterController = Ember.Controller.extend({
     isAutoCompletedInvisible: true,
     isAutoCompletedFocused: false,
     arrivalDate: null,
+    arrivalDateText: null,
     searchResults:  '',
     routeTypes: [App.ONEWAYROUTE, App.ROUNDTRIP],
     routeType: App.ONEWAYROUTE, // default behaviour
@@ -88,6 +89,7 @@ App.RouterController = Ember.Controller.extend({
         if(routeSelection === App.ONEWAYROUTE) {
             // TODO remove the arrivalDate text :)
             this.set('arrivalDate', null);
+            this.set('arrivalDateText', null);
             this.set('routeType', App.ONEWAYROUTE);
         } else {
             this.set('routeType', App.ROUNDTRIP);
@@ -190,7 +192,6 @@ App.FlightInformationController = Ember.ArrayController.extend({
         this.set('isInvisible', this.get('content').length === 0);
     }.observes('content.@each'),
     showConfirmationButton: function() {
-        debugger;
         if(this.get('content.lastObject.routeType') === App.ONEWAYROUTE) {
             return true;
         }
