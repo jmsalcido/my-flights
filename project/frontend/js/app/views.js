@@ -136,11 +136,9 @@ App.FlightView = Ember.View.extend({
     this.set('isHover', false);  
     },
     click: function() {
-        var selectedFlights = this.get('controller').get('selectedFlights');
-
-        console.log(this.get('content').get('id'));
-        //selectedFlights.pushObject(this.get('content'));
-
+        var flight = this.get('content'),
+            controller = this.get('controller');
+        controller.send('selectFlight', flight);
     }
 });
 
@@ -180,3 +178,7 @@ App.PriceView = Ember.View.extend({
     tagName: 'div',
     templateName: "price"
 });
+
+App.InformationView = Ember.View.extend({
+    
+})

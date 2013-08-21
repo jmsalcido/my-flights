@@ -83,7 +83,7 @@ App.Store = DS.Store.extend({
       search_flight: App.SearchFlight,
       error: App.ErrorModel
   },
-  url: 'http://localhost:8080',
+  url: 'http://192.168.1.161:8080',
   namespace: 'MyFlights',
   serializer: App.RESTSerializer
   })

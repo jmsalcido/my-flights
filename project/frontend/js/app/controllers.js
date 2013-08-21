@@ -29,7 +29,7 @@ App.RouterController = Ember.Controller.extend({
     arrivalDate: null,
     searchResults:  '',
     routeTypes: ['One way', 'Roundtrip'],
-    routeType: 'oneway',
+    routeType: 'oneway', // default behaviour
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
@@ -113,6 +113,22 @@ App.FlightsController = Ember.Controller.extend({
         
     }.observes('model'),
     selectFlight: function(flight) {
-
+        var router = this.get('controllers.router'),
+            routeType = router.get('routeType'),
+            model = this.get('model'),
+            aux = null;
+        if(routeType = router.get('routeTypes')[0]) {
+            // single
+            // should show the "an agent will contact you soon advertise (for the moment)".
+            console.log(flight);
+            this.set("isInvisible", true);
+        } else {
+            // roundtrip
+            // flip the departureCode and the arrivalCode
+            aux = model.get('departureCode');
+            model.set('departureCode', model.get('arrivalCode'));
+            model.set('arrivalCode', aux);
+            this.set("isInvisible", true);
+        }
     }
 });
