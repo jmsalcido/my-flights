@@ -64,7 +64,7 @@ App.RouterController = Ember.Controller.extend({
 
         flightInformationController.set('isInvisible', true);
         flightsController.set('selectedFlights', []);
-        flightInformationController.set('content', []);
+        flightInformationController.clear();
         flightsController.set('title', "Select your departure flight");
         // TODO some validations here
         // b4creating the route.
@@ -132,7 +132,6 @@ App.FlightsController = Ember.Controller.extend({
             model = this.get('model'),
             backRoute = null,
             flightInformation = null,
-            flightsInformation = [],
             selectedFlights = this.get('selectedFlights'),
             self = this;
 
@@ -182,13 +181,22 @@ App.FlightsController = Ember.Controller.extend({
 });
 
 App.FlightInformationController = Ember.ArrayController.extend({
-    content: [],
     title: "Flight Information",
     isInvisible: true,
     addElement: function(element) {
-        this.get('content').pushObject(element);
+        this.get('content').addObject(element);
     },
     showInformation: function() {
         this.set('isInvisible', this.get('content').length === 0);
+    }.observes('content.@each'),
+    showConfirmationButton: function() {
+        debugger;
+        if(this.get('content.lastObject.routeType') === App.ONEWAYROUTE) {
+            return true;
+        }
+        if(this.get('content.length') === 2) {
+            return true;
+        }
+        return false;
     }.observes('content.@each')
 });
