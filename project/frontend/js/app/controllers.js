@@ -80,6 +80,7 @@ App.RouterController = Ember.Controller.extend({
         // set visible the flight view.
         flightsController.set('model', route);
     },
+    routeSelection: App.ONEWAYROUTE,
     removeOrDisplayRoute: function() {
         var routeSelection = this.get('routeSelection'),
             routeTypes = this.get('routeTypes');
@@ -199,5 +200,5 @@ App.FlightInformationController = Ember.ArrayController.extend({
             return true;
         }
         return false;
-    }.observes('content.@each')
+    }.property('content.@each')
 });
