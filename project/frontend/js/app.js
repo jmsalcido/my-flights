@@ -5,7 +5,7 @@ App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-    // if adding routes, add them here.
+    this.resource('confirmation');
 });
 
 App.ONEWAYROUTE = "One way";

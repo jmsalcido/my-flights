@@ -67,7 +67,7 @@
     {{#view App.FlightsView id="flights" }}
       <h2>{{title}}</h2>
       <h3>{{model.departureAirport.city}} to {{model.arrivalAirport.city}} <span>{{model.date}}</span></h3>
-      <div style="display: inline-block;">{{view App.FlightsListView id="flightsList"}}</div>
+      <div class="grid">{{view App.FlightsListView id="flightsList"}}</div>
     {{/view}}
   </script>
 

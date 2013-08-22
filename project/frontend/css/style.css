@@ -146,6 +146,14 @@ footer {
     min-width: 100px;
 }
 
+.flight-detail{
+    width: 250px;
+}
+
+.flight-detail{
+    width: 250px;
+}
+
 .flight-price {
     text-align: center;
 }
@@ -153,4 +161,15 @@ footer {
 .flight-over {
     background-color: #A4D9FC;
     cursor: pointer;
+}
+
+.grid {
+    display: block;
+    width: 800px;
+}
+
+.flight-schedule{
+  width: 200px;
+  clear: none;
+  background-color: red;
 }
