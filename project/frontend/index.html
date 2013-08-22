@@ -14,13 +14,21 @@
       {{render header}}
     </header>
     <div id="body">
-      {{render router}}
-      {{render flightInformation}}
-      {{render flights}}
+      {{outlet}}
     </div>
     <footer>
       <p>Footer Incorporation :P</p>
     </footer>
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="index">
+    {{render router}}
+    {{render flightInformation}}
+    {{render flights}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="confirmation">
+    <h3>Flight Confirmation</h3>
   </script>
 
   <script type="text/x-handlebars" data-template-name="header">

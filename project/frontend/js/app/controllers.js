@@ -184,6 +184,7 @@ App.FlightsController = Ember.Controller.extend({
 });
 
 App.FlightInformationController = Ember.ArrayController.extend({
+    needs: ["router"],
     title: "Flight Information",
     isInvisible: true,
     addElement: function(element) {
@@ -193,12 +194,11 @@ App.FlightInformationController = Ember.ArrayController.extend({
         this.set('isInvisible', this.get('content').length === 0);
     }.observes('content.@each'),
     showConfirmationButton: function() {
-        if(this.get('content.lastObject.routeType') === App.ONEWAYROUTE) {
+        var routerController = this.get('controllers.router');
+        if(routerController.get('routeType') === App.ONEWAYROUTE) {
             return true;
+        } else {
+            return this.get('content.length') === 2;
         }
-        if(this.get('content.length') === 2) {
-            return true;
-        }
-        return false;
     }.property('content.@each')
 });
