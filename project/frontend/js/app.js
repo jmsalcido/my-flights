@@ -5,10 +5,7 @@ App = Ember.Application.create({
 });
 
 App.Router.map(function() {
-    this.resource('confirmation');
-});
-
-App.ConfirmationRoute = Ember.Route.extend({
+    this.route('confirmation');
 });
 
 App.ONEWAYROUTE = "One way";

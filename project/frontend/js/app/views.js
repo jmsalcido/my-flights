@@ -190,3 +190,17 @@ App.InformationView = Ember.View.extend({
     tagName: 'div',
     templateName: 'flightInformation'
 })
+
+App.ConfirmationView = Ember.View.extend({
+
+});
+
+App.ConfirmationSignUpView = Ember.View.extend({
+    classNames: ['signup-form'],
+    tagName: 'div',
+    templateName: 'signup'
+});
+
+App.SignUpTextField = Ember.TextField.extend({
+    classNames: ['form-control']
+});

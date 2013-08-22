@@ -28,7 +28,53 @@
   </script>
 
   <script type="text/x-handlebars" data-template-name="confirmation">
-    <h3>Flight Confirmation</h3>
+    <h2>{{title}}</h2>
+    <div>
+      {{#each item in controller}}
+        flight information:
+        {{item.flight.id}}
+      {{/each}}
+    </div>
+    {{view App.ConfirmationSignUpView}}
+  </script>
+
+  <script type="text/x-handlebars" data-template-name="signup">
+    <h3>Your data:</h3>
+    <form {{action "createReservation" on="submit"}}>
+      <div class="form-group">
+        <div class="signup-label">
+          <label>Your name</label>
+        </div>
+        <div class="textfield">
+          {{view App.SignUpTextField placeholder="ex: John"}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="signup-label">
+          <label>Your last-name</label>
+        </div>
+        <div class="textfield">
+          {{view App.SignUpTextField placeholder="ex: Doe"}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="signup-label">
+          <label>Your telephone</label>
+        </div>
+        <div class="textfield">
+          {{view App.SignUpTextField placeholder="ex: 6621181818"}}
+        </div>
+      </div>
+      <div class="form-group">
+        <div class="signup-label">
+          <label>Your e-mail</label>
+        </div>
+        <div class="textfield">
+          {{view App.SignUpTextField placeholder="ex: email@example.com"}}
+        </div>
+      </div>
+      <button type="submit" class="btn">I want to buy!</button>
+    </form>
   </script>
 
   <script type="text/x-handlebars" data-template-name="header">
@@ -161,7 +207,7 @@
         {{/each}}
       {{/each}}
       {{#if showConfirmationButton}}
-        <a href="#" class="btn btn-primary">CONFIRM!</a>
+        <a class="btn btn-primary" {{action "confirmFlight"}}>CONFIRM!</a>
       {{/if}}
     {{/view}}
   </script>
@@ -176,6 +222,7 @@
   <script src="js/libs/ember-bootstrap.js"></script>
   <script src="js/libs/ember-data.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/app/routes.js"></script>
   <script src="js/app/helpers.js"></script>
   <script src="js/app/views.js"></script>
   <script src="js/app/controllers.js"></script>

@@ -180,3 +180,17 @@ footer {
   padding-left: 20px;
   width: 195px;
 }
+
+.textfield .form-control {
+    display: inline;
+    width: 80%;
+}
+
+.signup-form {
+    display: inline-block;
+    width: 15em;
+}
+
+.signup-label label {
+    cursor: default;
+}

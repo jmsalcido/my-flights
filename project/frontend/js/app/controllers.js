@@ -200,5 +200,20 @@ App.FlightInformationController = Ember.ArrayController.extend({
         } else {
             return this.get('content.length') === 2;
         }
-    }.property('content.@each')
+    }.property('content.@each'),
+    confirmFlight: function() {
+        var content = this.get('content'),
+            confirmation = Ember.Object.create({
+                flightInformation: content
+            });
+        this.transitionToRoute('confirmation');
+    }
+});
+
+App.ConfirmationController = Ember.ArrayController.extend({
+
+});
+
+App.SignupController = Ember.Controller.extend({
+    
 });
