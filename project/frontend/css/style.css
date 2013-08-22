@@ -171,5 +171,12 @@ footer {
 .flight-schedule{
   width: 200px;
   clear: none;
-  background-color: red;
+}
+
+.header .flight-schedule {
+  background-image: url('/img/flights.png');
+  background-repeat: no-repeat;
+  background-position: 2px;
+  padding-left: 20px;
+  width: 195px;
 }
