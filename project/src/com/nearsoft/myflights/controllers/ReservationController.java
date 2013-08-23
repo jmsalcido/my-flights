@@ -20,14 +20,14 @@ import com.google.gson.Gson;
 import com.nearsoft.myflights.model.Reservation;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("reservations")
 public class ReservationController {
     
     private final Log logger = LogFactory.getLog(getClass());
     
     @RequestMapping(headers ={"Accept=application/json"},
                     method = { RequestMethod.POST },
-                    value = "reservations")
+                    value = "/")
     @ResponseBody
     public ResponseEntity<String> createReservation(@RequestBody final Reservation reservation, HttpServletRequest request, HttpServletResponse response) {
         logger.info(reservation);

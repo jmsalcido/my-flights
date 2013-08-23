@@ -174,7 +174,7 @@ footer {
 }
 
 .header .flight-schedule {
-  background-image: url('/img/flights.png');
+  background-image: url('/MyFlights/pages/resources/img/flights.png');
   background-repeat: no-repeat;
   background-position: 2px;
   padding-left: 20px;

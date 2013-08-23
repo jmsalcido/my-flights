@@ -23,7 +23,7 @@ import com.google.gson.Gson;
 import com.nearsoft.myflights.service.AirportService;
 
 @Controller
-@RequestMapping("/")
+@RequestMapping("search_airports")
 public class AirportController {
 
     private final Log logger = LogFactory.getLog(getClass());
@@ -34,7 +34,7 @@ public class AirportController {
     public AirportController() {
     }
 
-    @RequestMapping(value = { "search_airports/{word}" }, method = { RequestMethod.GET })
+    @RequestMapping(value = { "{word}" }, method = { RequestMethod.GET })
     @ResponseBody
     public ResponseEntity<String> listAirportsByKeyword(@PathVariable String word,
             HttpServletRequest request) {
