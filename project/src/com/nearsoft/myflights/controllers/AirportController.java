@@ -38,7 +38,6 @@ public class AirportController {
     @ResponseBody
     public ResponseEntity<String> listAirportsByKeyword(@PathVariable String word,
             HttpServletRequest request) {
-        // TODO filter words.
         logger.info(String.format("Incoming request from %s :)",request.getLocalAddr()));
         logger.info(String.format("Word received: %s", word));
         Map<String, Object> responseMap = new HashMap<String, Object>();

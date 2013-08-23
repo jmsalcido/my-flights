@@ -26,4 +26,19 @@
 
     <bean id="airportService" class="com.nearsoft.myflights.service.JdbcAirportService">
     </bean>
+
+    <bean class="org.springframework.web.servlet.view.ContentNegotiatingViewResolver">
+        <property name="mediaTypes">
+            <map>
+                <entry key="json" value="application/json"/>
+            </map>
+        </property>
+        <property name="defaultViews">
+            <list>
+                <bean class="org.springframework.web.servlet.view.json.MappingJacksonJsonView">
+                    <property name="prefixJson" value="true"/>
+                </bean>
+            </list>
+        </property>
+    </bean>
 </beans>
