@@ -32,6 +32,11 @@ project/target/*
 .LSOverride
 Icon
 
+# Intellij
+.idea/
+*.iml
+*.iws
+*.ipr
 
 # Thumbnails
 ._*
@@ -47,5 +52,9 @@ Icon
 *.jar
 *.war
 *.ear
+
+# Maven
+log/
+target/
 
 project/WebContent/WEB-INF/classes/flights-json.txt
