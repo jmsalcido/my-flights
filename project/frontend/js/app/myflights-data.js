@@ -59,7 +59,15 @@ App.Flight = DS.Model.extend({
 });
 
 App.Reservation = DS.Model.extend({
-  
+  price: DS.attr('number'),
+  name: DS.attr('string'),
+  lastName: DS.attr('string'),
+  telephone: DS.attr('string'),
+  email: DS.attr('string'),
+  departure: DS.attr('string'),
+  arrival: DS.attr('string'),
+  departureDate: DS.attr('string'),
+  arrivalDate: DS.attr('string')
 })
 
 DS.RESTAdapter.configure("plurals", {

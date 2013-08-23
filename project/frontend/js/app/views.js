@@ -197,8 +197,7 @@ App.ConfirmationView = Ember.View.extend({
 
 App.ConfirmationSignUpView = Ember.View.extend({
     classNames: ['signup-form'],
-    tagName: 'div',
-    templateName: 'signup'
+    tagName: 'div'
 });
 
 App.SignUpTextField = Ember.TextField.extend({

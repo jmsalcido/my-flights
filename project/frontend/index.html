@@ -35,46 +35,48 @@
         {{item.flight.id}}
       {{/each}}
     </div>
-    {{view App.ConfirmationSignUpView}}
+    {{render signup}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="signup">
-    <h3>Your data:</h3>
-    <form {{action "createReservation" on="submit"}}>
-      <div class="form-group">
-        <div class="signup-label">
-          <label>Your name</label>
+    {{#view App.ConfirmationSignUpView}}
+      <h3>Your data:</h3>
+      <form {{action "createReservation" on="submit"}}>
+        <div class="form-group">
+          <div class="signup-label">
+            <label>Your name</label>
+          </div>
+          <div class="textfield">
+            {{view App.SignUpTextField valueBinding=nameText placeholder="ex: John"}}
+          </div>
         </div>
-        <div class="textfield">
-          {{view App.SignUpTextField placeholder="ex: John"}}
+        <div class="form-group">
+          <div class="signup-label">
+            <label>Your last-name</label>
+          </div>
+          <div class="textfield">
+            {{view App.SignUpTextField valueBinding=lastNameText placeholder="ex: Doe"}}
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="signup-label">
-          <label>Your last-name</label>
+        <div class="form-group">
+          <div class="signup-label">
+            <label>Your telephone</label>
+          </div>
+          <div class="textfield">
+            {{view App.SignUpTextField valueBinding=telephoneText placeholder="ex: 6621181818"}}
+          </div>
         </div>
-        <div class="textfield">
-          {{view App.SignUpTextField placeholder="ex: Doe"}}
+        <div class="form-group">
+          <div class="signup-label">
+            <label>Your e-mail</label>
+          </div>
+          <div class="textfield">
+            {{view App.SignUpTextField valueBinding=emailText placeholder="ex: email@example.com"}}
+          </div>
         </div>
-      </div>
-      <div class="form-group">
-        <div class="signup-label">
-          <label>Your telephone</label>
-        </div>
-        <div class="textfield">
-          {{view App.SignUpTextField placeholder="ex: 6621181818"}}
-        </div>
-      </div>
-      <div class="form-group">
-        <div class="signup-label">
-          <label>Your e-mail</label>
-        </div>
-        <div class="textfield">
-          {{view App.SignUpTextField placeholder="ex: email@example.com"}}
-        </div>
-      </div>
-      <button type="submit" class="btn">I want to buy!</button>
-    </form>
+        <button type="submit" class="btn">I want to buy!</button>
+      </form>
+    {{/view}}
   </script>
 
   <script type="text/x-handlebars" data-template-name="header">

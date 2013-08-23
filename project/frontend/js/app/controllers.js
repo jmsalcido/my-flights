@@ -215,5 +215,10 @@ App.ConfirmationController = Ember.ArrayController.extend({
 });
 
 App.SignupController = Ember.Controller.extend({
-    
+
+    createReservation: function() {
+        var reservation = App.Reservation.createRecord();
+        reservation.set('price', 1000);
+        reservation.get('transaction').commit();
+    }
 });
