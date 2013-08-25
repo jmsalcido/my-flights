@@ -4,7 +4,15 @@ my-flights
 My Flights:
 Look up flights searching your departure and arrival airport, select your flight and confirm your reservation.
 
-Dependencies:
+Uses
+==========
+* EmberJS
+* SpringMVC
+* Jackson & GSON
+* Maven
+
+Dependencies
+==========
 * requests - python
 * MySQLdb - python
 * MySQL
