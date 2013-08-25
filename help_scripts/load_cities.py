@@ -6,6 +6,7 @@ import sys
 import MySQLdb
 import requests
 import json
+import getopt
 
 appId = "c2eb128c"
 appKey = "298a8715d0c24aab56b97850f2403a31"
@@ -16,13 +17,13 @@ def connect(host, user, passwd, db):
     db = MySQLdb.connect(host=host, user=user, passwd=passwd, db=db)
     return db
 
-def doConnection():
+def doConnection(usr, pwd):
     print "[[TRYING TO CONNECT...]]"
     print "========================"
     database_name = "myflights"
     database_host = "localhost"
-    database_user = "root"
-    database_passwd = "pwd"
+    database_user = usr
+    database_passwd = pwd
     try:
         db = connect(database_host, database_user, database_passwd, database_name)
     except MySQLdb.Error, e:
@@ -59,8 +60,18 @@ def createInsertQueries(airport_list):
         _list.append(_airport)
     return _list
 
-def main():
-    db = doConnection()
+def main(argv):
+    try:
+        opts, args = getopt.getopt(argv, "u:p:")
+    except getopt.GetoptError:
+        print "try -u root -p yourpwd";
+        sys.exit(1);
+    for opt, arg in opts:
+        if opt == "-u":
+            usr = arg
+        elif opt == "-p":
+            pwd = arg
+    db = doConnection(usr, pwd)
     fopen = open(create_tables_file, "r")
     queries = fopen.read().split(";")
     queries.pop() # remove the last element
@@ -75,5 +86,5 @@ if __name__ == "__main__":
     print "==========================================================="
     print "[[INFO]] appId = %s" % appId
     print "[[INFO]] appKey = %s" % appKey
-    main()
+    main(sys.argv[1:])
     print "[[DONE]]"
