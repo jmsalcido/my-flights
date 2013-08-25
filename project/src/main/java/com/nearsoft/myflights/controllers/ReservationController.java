@@ -22,4 +22,9 @@ public class ReservationController {
     
     private final Log logger = LogFactory.getLog(getClass());
 
+    @RequestMapping(value = "reservations", method = {RequestMethod.POST})
+    public String sayHi(@RequestBody ReservationRequest reservation, HttpServletRequest request) {
+        logger.info(reservation);
+        return "";
+    }
 }
