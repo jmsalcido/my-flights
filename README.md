@@ -19,6 +19,8 @@ Dependencies
 
 To use the application you must create a database in MySQL named: "myflights" and modify the file: jdbc.properties under project/src/main/resources.
 
+Running the project
+==========
 To run the application you must use maven and python:
 
     python help_scripts/load_cities.py -u "mysql_user" -p "mysql_pwd" && mvn tomcat:run
