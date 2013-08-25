@@ -1,0 +1,196 @@
+/* Put your CSS here */
+html, body {
+    margin: 0;
+    height: 100%;
+    min-height:100%;
+    position:relative;
+}
+
+header {
+    padding: 20px;
+    padding-bottom: 0;
+}
+
+#body {
+    padding-left: 20px;
+    height: 100%;
+    padding-bottom: 100px;
+}
+
+footer {
+    position: relative;
+    bottom: 0;
+    height: 100px;
+    width: 100%;
+    background-color: #2C3145;
+    color: white;
+}
+
+#flights {
+    width: 100%;
+}
+
+.inline {
+    display: inline;
+}
+
+.route-form {
+    font-size: 14px;
+}
+
+.to {
+    font-size: 18px;
+}
+
+.btn {
+    margin-bottom: 0.9em;
+}
+
+.date-picker {
+    width: 103px;
+}
+
+.autocomplete-view {
+    position: relative;
+}
+
+.autocomplete {
+    position: absolute;
+    z-index:3;
+    background-color: white;
+    border-color: #DCE5D2;
+    border-width: 0.1em;
+    border-style: solid;
+    min-width: 303px;
+    min-height: 50px;
+}
+
+.autocomplete div {
+    background-color: white;
+}
+
+.autocomplete a {
+    width: 100%;
+}
+
+.autocomplete div:hover {
+    color: white;
+    background-color: #03405D;
+}
+
+.autocomplete span {
+    height: 100px;
+}
+
+.invisible {
+    display: none;
+}
+
+.airport {
+    font-weight: bold;
+    font-size: 1em;
+    height: 2em;
+    padding: 0.3em;
+}
+
+.form-control {
+    display: inline;
+    width: 103px;
+    min-width: 103px;
+    border-radius: 0;
+}
+
+.over-z{
+    z-index: 4;
+}
+
+.row {
+    padding-top: .6em;
+    padding-bottom: .6em;
+    display: block;
+    min-height: 2em;
+    width: 100%;
+    margin-left: 5px;
+    border-top: solid;
+    border-color: #EDEDED;
+    border-width: 1px;
+}
+
+.row:nth-child(even) {
+    /*background-color: #F5EBEE;*/
+}
+
+.column {
+    display: inline-block;
+    min-width: 100px;
+    padding-left: 1em;
+    /*text-align: center;*/
+}
+
+.column-header {
+    display: inline-block;
+    min-width: 150px;
+    padding-left: 1em;
+    /*text-align: center;*/
+}
+
+.flight-icon {
+    min-width: 32px;
+}
+
+.inline-row {
+    min-width: 300px;
+}
+
+.inline-row .airline {
+    min-width: 100px;
+}
+
+.flight-detail{
+    width: 250px;
+}
+
+.flight-detail{
+    width: 250px;
+}
+
+.flight-price {
+    text-align: center;
+}
+
+.flight-over {
+    background-color: #A4D9FC;
+    cursor: pointer;
+}
+
+.grid {
+    display: block;
+    width: 610px;
+}
+
+.flight-schedule{
+  width: 200px;
+  clear: none;
+}
+
+.header .flight-schedule {
+  background-image: url('/MyFlights/pages/resources/img/flights.png');
+  background-repeat: no-repeat;
+  background-position: 2px;
+  padding-left: 20px;
+  width: 195px;
+}
+
+.textfield .form-control {
+    display: inline;
+    width: 80%;
+}
+
+.signup-form {
+    display: inline-block;
+    width: 15em;
+}
+
+.signup-label label {
+    cursor: default;
+}
