@@ -48,7 +48,7 @@ def executeQueries(db, queries):
 
 def getAirports():
     url = apiUrl % (appId, appKey)
-    print "[[REQUEST]] I will request the airports from US to %s" % url
+    print "[[REQUEST]] I will request the airports from the WORLD to %s" % url
     req = requests.get(url)
     print "[[REQUEST]] DONE"
     return req.content
