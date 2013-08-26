@@ -4,7 +4,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
- * Created with IntelliJ IDEA.
+ * Created by Jose Miguel Salcido
  * User: jsalcido
  * Date: 8/23/13
  * Time: 12:48 PM

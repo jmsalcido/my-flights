@@ -29,18 +29,32 @@ public class JdbcReservationDao implements ReservationDao {
     }
 
     @Override
-    public Reservation saveReservation(Reservation reservation) {
-
-        return null;
+    public Reservation saveReservation(Reservation reservation) throws Exception {
+        final String sql = "INSERT INTO reservations VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        jdbcTemplate = new JdbcTemplate(dataSource);
+        Object[] params = new Object[] {
+                reservation.getPrice(),
+                reservation.getName(),
+                reservation.getLast_name(),
+                reservation.getTelephone(),
+                reservation.getEmail(),
+                reservation.getDeparture(),
+                reservation.getArrival(),
+                reservation.getDeparture_date(),
+                reservation.getArrival_date()
+        };
+        long id = jdbcTemplate.update(sql, params);
+        reservation.setId(id);
+        return reservation;
     }
 
     @Override
-    public Reservation retrieveReservation(long id) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Reservation retrieveReservation(long id) throws Exception {
+        throw new UnsupportedOperationException("This method is not yet supported");
     }
 
     @Override
-    public Reservation updateReservation(Reservation reservation) {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public Reservation updateReservation(Reservation reservation) throws Exception {
+        throw new UnsupportedOperationException("This method is not yet supported");
     }
 }

@@ -215,17 +215,29 @@ App.ConfirmationController = Ember.ArrayController.extend({
 });
 
 App.SignupController = Ember.Controller.extend({
-
+    nameText: null,
+    lastNameText: null,
+    telephoneText: null,
+    emailText: null,
     createReservation: function() {
         var reservation = App.Reservation.createRecord();
         reservation.on('didCreate', function() {
                     console.log("Reservation created!");
                 });
-                reservation.on('becameInvalid', function() {
-                    console.log("Fuck YOU!");
-                });
+        reservation.on('becameInvalid', function() {
+            console.log("Fuck YOU!");
+        });
+        reservation.set('name', this.get('nameText'));
+        reservation.set('lastName', this.get('lastNameText'));
+        reservation.set('email', this.get('emailText'));
+        reservation.set('telephone', this.get('telephoneText'));
+
+        // TODO hardcoded
+        reservation.set('departure', 'MEX');
+        reservation.set('arrival', 'CUL');
+        reservation.set('departureDate', new Date());
+        reservation.set('arrivalDate', new Date());
         reservation.set('price', 1000);
-//        reservation.get('transaction').commit();
         reservation.save();
     }
 });

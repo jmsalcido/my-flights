@@ -11,13 +11,21 @@
 
 	<!-- the parent application context definition for the springapp application -->
 
-	<bean id="airportDao" class="com.nearsoft.myflights.dao.JdbcAirportDao">
-		<property name="dataSource" ref="dataSource" />
-	</bean>
+    <bean id="reservationDao" class="com.nearsoft.myflights.dao.JdbcReservationDao">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
 
-	<bean id="airportService" class="com.nearsoft.myflights.service.JdbcAirportService">
-		<property name="airportDao" ref="airportDao" />
-	</bean>
+    <bean id="airportDao" class="com.nearsoft.myflights.dao.JdbcAirportDao">
+        <property name="dataSource" ref="dataSource" />
+    </bean>
+
+    <bean id="airportService" class="com.nearsoft.myflights.service.JdbcAirportService">
+        <property name="airportDao" ref="airportDao" />
+    </bean>
+
+    <bean id="reservationService" class="com.nearsoft.myflights.service.EmberReservationService">
+        <property name="reservationDao" ref="reservationDao" />
+    </bean>
 
 	<bean id="flightConnector" class="com.nearsoft.myflights.connectors.FSStubFlightConnector">
 	</bean>

@@ -10,7 +10,7 @@ import com.nearsoft.myflights.model.Reservation;
  */
 public interface ReservationDao {
 
-    public Reservation saveReservation(Reservation reservation);
-    public Reservation retrieveReservation(long id);
-    public Reservation updateReservation(Reservation reservation);
+    public Reservation saveReservation(Reservation reservation) throws Exception;
+    public Reservation retrieveReservation(long id) throws Exception;
+    public Reservation updateReservation(Reservation reservation) throws Exception;
 }
