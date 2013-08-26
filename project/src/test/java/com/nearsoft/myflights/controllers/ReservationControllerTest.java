@@ -24,7 +24,7 @@ public class ReservationControllerTest {
         ReservationRequest reservation = mapper.readValue(str, ReservationRequest.class);
 
         assertNotNull(reservation);
-        assertEquals(1000, reservation.getReservation().getPrice());
+        assertEquals(new Integer(1000), reservation.getReservation().getPrice());
 
     }
 }

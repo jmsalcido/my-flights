@@ -10,7 +10,7 @@ public class Reservation implements Serializable {
      */
     private static final long serialVersionUID = -6322475916639593551L;
 
-    private Integer id;
+    private Long id;
     private Integer price;
     private String name;
     private String last_name;
@@ -21,15 +21,15 @@ public class Reservation implements Serializable {
     private Date departure_date;
     private Date arrival_date;
     
-    public int getId() {
+    public Long getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(Long id) {
         this.id = id;
     }
     
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
     
@@ -99,6 +99,43 @@ public class Reservation implements Serializable {
 
     public void setArrival_date(Date arrival_date) {
         this.arrival_date = arrival_date;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Reservation that = (Reservation) o;
+
+        if (arrival != null ? !arrival.equals(that.arrival) : that.arrival != null) return false;
+        if (arrival_date != null ? !arrival_date.equals(that.arrival_date) : that.arrival_date != null) return false;
+        if (departure != null ? !departure.equals(that.departure) : that.departure != null) return false;
+        if (departure_date != null ? !departure_date.equals(that.departure_date) : that.departure_date != null)
+            return false;
+        if (email != null ? !email.equals(that.email) : that.email != null) return false;
+        if (id != null ? !id.equals(that.id) : that.id != null) return false;
+        if (last_name != null ? !last_name.equals(that.last_name) : that.last_name != null) return false;
+        if (name != null ? !name.equals(that.name) : that.name != null) return false;
+        if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (telephone != null ? !telephone.equals(that.telephone) : that.telephone != null) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id != null ? id.hashCode() : 0;
+        result = 31 * result + (price != null ? price.hashCode() : 0);
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        result = 31 * result + (last_name != null ? last_name.hashCode() : 0);
+        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
+        result = 31 * result + (email != null ? email.hashCode() : 0);
+        result = 31 * result + (departure != null ? departure.hashCode() : 0);
+        result = 31 * result + (arrival != null ? arrival.hashCode() : 0);
+        result = 31 * result + (departure_date != null ? departure_date.hashCode() : 0);
+        result = 31 * result + (arrival_date != null ? arrival_date.hashCode() : 0);
+        return result;
     }
 
     @Override

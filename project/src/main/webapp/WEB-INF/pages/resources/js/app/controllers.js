@@ -218,7 +218,14 @@ App.SignupController = Ember.Controller.extend({
 
     createReservation: function() {
         var reservation = App.Reservation.createRecord();
+        reservation.on('didCreate', function() {
+                    console.log("Reservation created!");
+                });
+                reservation.on('becameInvalid', function() {
+                    console.log("Fuck YOU!");
+                });
         reservation.set('price', 1000);
-        reservation.get('transaction').commit();
+//        reservation.get('transaction').commit();
+        reservation.save();
     }
 });

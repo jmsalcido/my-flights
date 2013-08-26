@@ -53,6 +53,9 @@ Icon
 *.war
 *.ear
 
+# Python
+*.pyc
+
 # Maven
 log/
 target/
