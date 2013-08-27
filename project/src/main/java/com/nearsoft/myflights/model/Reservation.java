@@ -3,12 +3,7 @@ package com.nearsoft.myflights.model;
 import java.io.Serializable;
 import java.util.Date;
 
-public class Reservation implements Serializable {
-
-    /**
-     * 
-     */
-    private static final long serialVersionUID = -6322475916639593551L;
+public class Reservation implements Serializable{
 
     private Long id;
     private Integer price;
@@ -20,6 +15,7 @@ public class Reservation implements Serializable {
     private String arrival;
     private Date departure_date;
     private Date arrival_date;
+    private Long reservation_number;
     
     public Long getId() {
         return id;
@@ -101,6 +97,15 @@ public class Reservation implements Serializable {
         this.arrival_date = arrival_date;
     }
 
+
+    public Long getReservation_number() {
+        return reservation_number;
+    }
+
+    public void setReservation_number(Long reservation_number) {
+        this.reservation_number = reservation_number;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -118,6 +123,8 @@ public class Reservation implements Serializable {
         if (last_name != null ? !last_name.equals(that.last_name) : that.last_name != null) return false;
         if (name != null ? !name.equals(that.name) : that.name != null) return false;
         if (price != null ? !price.equals(that.price) : that.price != null) return false;
+        if (reservation_number != null ? !reservation_number.equals(that.reservation_number) : that.reservation_number != null)
+            return false;
         if (telephone != null ? !telephone.equals(that.telephone) : that.telephone != null) return false;
 
         return true;
@@ -135,18 +142,24 @@ public class Reservation implements Serializable {
         result = 31 * result + (arrival != null ? arrival.hashCode() : 0);
         result = 31 * result + (departure_date != null ? departure_date.hashCode() : 0);
         result = 31 * result + (arrival_date != null ? arrival_date.hashCode() : 0);
+        result = 31 * result + (reservation_number != null ? reservation_number.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        return "Reservation [id=" + id + ", price=" + price + ", name=" + name
-                + ", last_name=" + last_name + ", telephone=" + telephone
-                + ", email=" + email + ", departure=" + departure
-                + ", arrival=" + arrival + ", departure_date=" + departure_date
-                + ", arrival_date=" + arrival_date + "]";
+        return "\"reservation\": {" +
+                "id=" + id +
+                ", price=" + price +
+                ", name='" + name + '\'' +
+                ", last_name='" + last_name + '\'' +
+                ", telephone='" + telephone + '\'' +
+                ", email='" + email + '\'' +
+                ", departure='" + departure + '\'' +
+                ", arrival='" + arrival + '\'' +
+                ", departure_date=" + departure_date +
+                ", arrival_date=" + arrival_date +
+                ", reservation_number=" + reservation_number +
+                '}';
     }
-    
-    
-
 }

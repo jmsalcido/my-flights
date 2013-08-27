@@ -22,7 +22,9 @@ public class EmberReservationService implements ReservationService {
     @Override
     public Reservation saveReservation(Reservation reservation) throws Exception {
         try {
-            return reservationDao.saveReservation(reservation);
+            reservation = reservationDao.saveReservation(reservation);
+            reservation.setReservation_number(reservation.getId());
+            return reservation;
         } catch (Exception e) {
             logger.warn(e.getMessage());
             throw new Exception("There was a problem connecting to the database", e.getCause());

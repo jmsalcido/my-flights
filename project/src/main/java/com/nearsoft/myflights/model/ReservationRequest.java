@@ -1,5 +1,7 @@
 package com.nearsoft.myflights.model;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: jsalcido
@@ -7,7 +9,7 @@ package com.nearsoft.myflights.model;
  * Time: 2:31 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ReservationRequest {
+public class ReservationRequest implements Serializable {
 
     private Reservation reservation;
 

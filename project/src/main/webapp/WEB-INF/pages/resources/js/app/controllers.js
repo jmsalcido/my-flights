@@ -232,18 +232,15 @@ App.SignupController = Ember.Controller.extend({
             this.set('isLoading', status);
         }
     },
-    didCreateReservation: function(controller) {
-        console.log('Reservation created');
-        controller.changeLoadingStatus(null);
-        // Redirect here.
-    },
-    createReservationRecord: function() {
-        var reservation = App.Reservation.createRecord(),
-            self = this;
+    bindReservationEvents: function(reservation) {
+        var self = this;
 
         // callbacks
         reservation.on('didCreate', function() {
-            self.didCreateReservation(self);
+            console.log('Reservation created');
+            self.changeLoadingStatus(null);
+            console.log(reservation.get('reservationNumber'));
+            self.transitionToRoute('confirmed', reservation);
         });
 
         reservation.on('becameInvalid', function() {
@@ -260,16 +257,13 @@ App.SignupController = Ember.Controller.extend({
             isLoading = this.get('isLoading'),
             confirmationController = this.get('controllers.confirmation');
 
-        if(confirmationController.get('content')) {
-
-        }
-        if(isLoading) {
+        if(!confirmationController.get('content') || isLoading) {
             return;
         }
 
         // create the reservation record
-        reservation = this.createReservationRecord();
-
+        reservation = App.Reservation.createRecord();
+        this.bindReservationEvents(reservation);
         // set the reservation data
         reservation.set('name', this.get('nameText'));
         reservation.set('lastName', this.get('lastNameText'));
@@ -282,7 +276,8 @@ App.SignupController = Ember.Controller.extend({
         reservation.set('departureDate', new Date());
         reservation.set('arrivalDate', new Date());
         reservation.set('price', 1000);
-        reservation.save();
+        reservation.get('store').commit();
+
         this.changeLoadingStatus(true);
     }
 });

@@ -9,3 +9,14 @@ App.ConfirmationRoute = Ember.Route.extend({
         controller.set('content', content);
     }
 });
+
+App.ConfirmedRoute = Ember.Route.extend({
+    setupController: function(controller, model) {
+        debugger;
+        controller.set('model', model);
+    }
+});
+
+App.ConfirmedController = Ember.Controller.extend({
+
+});

@@ -3,9 +3,15 @@ package com.nearsoft.myflights.dao;
 import com.nearsoft.myflights.model.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.PreparedStatementCreator;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
+import org.springframework.jdbc.support.KeyHolder;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 
 /**
  * Created by Jose Salcido
@@ -29,9 +35,12 @@ public class JdbcReservationDao implements ReservationDao {
     }
 
     @Override
-    public Reservation saveReservation(Reservation reservation) throws Exception {
+    public Reservation saveReservation(final Reservation reservation) throws Exception {
         final String sql = "INSERT INTO reservations VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbcTemplate = new JdbcTemplate(dataSource);
+
+        // keyHolder will have the generated key from the database
+        KeyHolder keyHolder = new GeneratedKeyHolder();
         Object[] params = new Object[] {
                 reservation.getPrice(),
                 reservation.getName(),
@@ -43,9 +52,32 @@ public class JdbcReservationDao implements ReservationDao {
                 reservation.getDeparture_date(),
                 reservation.getArrival_date()
         };
-        long id = jdbcTemplate.update(sql, params);
+        PreparedStatementCreator statementCreator = returnPreparedStatementCreatorGeneratedKeys(sql, params);
+        jdbcTemplate.update(statementCreator, keyHolder);
+        Long id = (Long) keyHolder.getKey();
         reservation.setId(id);
         return reservation;
+    }
+
+    /**
+     * return a PreparedStatementCreator that will return generated keys from the sql database.
+     * @param sql
+     * @param params
+     * @return
+     */
+    private PreparedStatementCreator returnPreparedStatementCreatorGeneratedKeys(final String sql, final Object[] params) {
+        PreparedStatementCreator statementCreator = new PreparedStatementCreator() {
+
+            @Override
+            public PreparedStatement createPreparedStatement(Connection con) throws SQLException {
+                PreparedStatement ps = con.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS);
+                for(int i = 0; i < params.length; i+=1) {
+                    ps.setObject(i+1, params[i]);
+                }
+                return ps;
+            }
+        };
+        return statementCreator;
     }
 
     @Override
