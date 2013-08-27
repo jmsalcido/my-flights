@@ -2,6 +2,8 @@ package com.nearsoft.myflights.service;
 
 import com.nearsoft.myflights.dao.ReservationDao;
 import com.nearsoft.myflights.model.Reservation;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 /**
@@ -12,6 +14,8 @@ import org.springframework.beans.factory.annotation.Autowired;
  */
 public class EmberReservationService implements ReservationService {
 
+    private final static Log logger = LogFactory.getLog(EmberReservationService.class.getClass());
+
     @Autowired
     private ReservationDao reservationDao;
 
@@ -20,7 +24,8 @@ public class EmberReservationService implements ReservationService {
         try {
             return reservationDao.saveReservation(reservation);
         } catch (Exception e) {
-            throw new Exception(e.getMessage(), e.getCause());
+            logger.warn(e.getMessage());
+            throw new Exception("There was a problem connecting to the database", e.getCause());
         }
     }
 

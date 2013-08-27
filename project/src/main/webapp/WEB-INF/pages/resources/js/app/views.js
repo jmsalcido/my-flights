@@ -188,7 +188,8 @@ App.FlightInformationView = Ember.View.extend({
 
 App.InformationView = Ember.View.extend({
     tagName: 'div',
-    templateName: 'flightInformation'
+    classNames: ['flight-information'],
+    templateName: 'flightInformationContent'
 })
 
 App.ConfirmationView = Ember.View.extend({
@@ -202,4 +203,26 @@ App.ConfirmationSignUpView = Ember.View.extend({
 
 App.SignUpTextField = Ember.TextField.extend({
     classNames: ['form-control']
+});
+
+App.SignUpSubmit = Ember.View.extend({
+    classNames: ['btn'],
+    tagName: "button",
+    attributeBindings: ['disabled'],
+    templateName: "signUpButton",
+    disabled: null,
+    disabledObserver: function() {
+        var controller = this.get('controller'),
+            result = null;
+        if(controller !== null) {
+            result = controller.get('isLoading');
+        }
+        this.set('disabled', result);
+    }.observes('controller.isLoading')
+});
+
+App.ConfirmationFlightView = Ember.View.extend({
+    tagName: 'div',
+    classNames: ['confirmation-flight'],
+    templateName: 'confirmationFlight'
 });

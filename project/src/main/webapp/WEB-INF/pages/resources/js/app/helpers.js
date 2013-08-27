@@ -39,3 +39,20 @@ Ember.Handlebars.helper('formatAMPM', function(time) {
     minutes = minutes < 10 ? '0'+minutes : minutes;
     return hours + ':' + minutes + ' ' + ampm;
 });
+
+Ember.Handlebars.helper('departureOrArrival', function(isDeparture){
+    if(isDeparture) {
+        return "Departure";
+    }
+    return "Arrival";
+});
+
+Ember.Handlebars.helper('totalPrice', function(content){
+    var totalPrice = 0,
+        i = 0;
+    for(i = 0; content.length; i += 1) {
+        // TODO price at model is not yet created.
+        totalPrice = content.get('flight').get('id');
+    }
+    return totalPrice;
+});

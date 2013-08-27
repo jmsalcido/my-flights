@@ -37,6 +37,7 @@ public class ReservationController {
             mapResponse.put(reservationKey, gson.toJson(reservation));
         } catch(Exception e) {
             mapResponse.put("error", e.getMessage());
+            logger.warn(e.getMessage());
         }
         return mapResponse;
     }

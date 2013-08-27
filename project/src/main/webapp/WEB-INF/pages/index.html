@@ -17,7 +17,7 @@
         {{outlet}}
     </div>
     <footer>
-        <p>Footer Incorporation :P</p>
+        <p>My Flights footer.</p>
     </footer>
 </script>
 
@@ -29,13 +29,19 @@
 
 <script type="text/x-handlebars" data-template-name="confirmation">
     <h2>{{title}}</h2>
-    <div>
+    <div id="confirmation">
         {{#each item in controller}}
-        flight information:
-        {{item.flight.id}}
+            {{view App.InformationView contentBinding=item}}
         {{/each}}
     </div>
+    <div>
+    </div>
     {{render signup}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="confirmationFlight">
+    <h3>{{departureOrArrival view.content.isDeparture}}</h3>
+    <p>Departure: {{airportInformation view.content.departureAirport}}</p>
 </script>
 
 <script type="text/x-handlebars" data-template-name="signup">
@@ -74,13 +80,17 @@
             {{view App.SignUpTextField valueBinding=emailText placeholder="ex: email@example.com"}}
         </div>
     </div>
-    <button type="submit" class="btn">Yes, contact me.</button>
+    {{view App.SignUpSubmit attrtype="submit"}}
     </form>
     {{/view}}
 </script>
 
+<script type="text/x-handlebars" data-template-name="signUpButton">
+    Yes, contact me.
+</script>
+
 <script type="text/x-handlebars" data-template-name="header">
-    <h1>My Flights</h1>
+    <h1 class="header-link" {{action 'redirection'}}>My Flights</h1>
     {{view Bootstrap.AlertMessage type="warning" message="<p>MyFlights with <a href='http://emberjs.com'>Ember.js</a>- This is a very early build!</p><p>Look at the code at <a href='http://github.com/jmsalcido/my-flights'>GitHub</a></p>"}}
 </script>
 
@@ -186,32 +196,36 @@
 
 <script type="text/x-handlebars" data-template-name="flightInformation">
     {{#view App.FlightInformationView id="information"}}
-    <h2>{{title}}</h2>
-    {{#each flightInformation in content}}
-    {{#if flightInformation.isDeparture}}
-    <h3><img src="resources/img/flights.png" /> You shall leave:</h3>
-    {{else}}
-    <h3><img src="resources/img/flights.png" /> You shall return:</h3>
-    {{/if}}
-    <strong>From:</strong> {{flightInformation.departureAirport.city}}<br/>
-    <strong>To:</strong> {{flightInformation.arrivalAirport.city}}<br/>
-    <strong>Date:</strong> {{formatFullDate flightInformation.flight.date}}
-    <h4>Details:</h4>
-    {{#each detail in flightInformation.flight.flightDetails}}
-    <strong>Departure:</strong> {{detail.departureAirport}}<br/>
-    <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
-    <strong>You will board at:</strong> {{formatAMPM detail.departureTime}}<br/>
-    <strong>Flying time:</strong> {{flightTime detail.travelTime}} hours<br/>
-    <strong>You will unboard at:</strong> {{formatAMPM detail.arrivalTime}}<br/>
-    <strong>Flight Number:</strong> {{detail.flightNumber}}<br/>
-    <strong>Airline:</strong> {{googleAirline detail.airlineCode}}{{detail.airlineName}}<br/>
-    <hr>
-    {{/each}}
-    {{/each}}
-    {{#if showConfirmationButton}}
-    <a class="btn btn-primary" {{action "confirmFlight"}}>CONFIRM!</a>
-    {{/if}}
+        <h2>{{title}}</h2>
+        {{#each flightInformation in content}}
+            {{view App.InformationView contentBinding=flightInformation}}
+            <hr>
+        {{/each}}
+        {{#if showConfirmationButton}}
+            <a class="btn btn-primary" {{action "confirmFlight"}}>This is my flight!</a>
+        {{/if}}
     {{/view}}
+</script>
+
+<script type="text/x-handlebars" data-template-name="flightInformationContent">
+    {{#if view.content.isDeparture}}
+        <h3><img src="resources/img/flights.png" /> You shall leave:</h3>
+    {{else}}
+        <h3><img src="resources/img/flights.png" /> You shall return:</h3>
+    {{/if}}
+    <strong>From:</strong> {{view.content.departureAirport.city}}<br/>
+    <strong>To:</strong> {{view.content.arrivalAirport.city}}<br/>
+    <strong>Date:</strong> {{formatFullDate view.content.flight.date}}
+    <h4>Details:</h4>
+    {{#each detail in view.content.flight.flightDetails}}
+        <strong>Departure:</strong> {{detail.departureAirport}}<br/>
+        <strong>Arrival:</strong> {{detail.arrivalAirport}}<br/>
+        <strong>You will board at:</strong> {{formatAMPM detail.departureTime}}<br/>
+        <strong>Flying time:</strong> {{flightTime detail.travelTime}} hours<br/>
+        <strong>You will unboard at:</strong> {{formatAMPM detail.arrivalTime}}<br/>
+        <strong>Flight Number:</strong> {{detail.flightNumber}}<br/>
+        <strong>Airline:</strong> {{googleAirline detail.airlineCode}}{{detail.airlineName}}<br/>
+    {{/each}}
 </script>
 
 <script src="resources/js/libs/jquery-1.9.1.js"></script>

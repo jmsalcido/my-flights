@@ -194,3 +194,13 @@ footer {
 .signup-label label {
     cursor: default;
 }
+
+.header-link{
+    display: inline-block;
+    cursor: pointer;
+}
+
+#confirmation .flight-information {
+    display: inline-block;
+    margin-right: 7em;
+}
