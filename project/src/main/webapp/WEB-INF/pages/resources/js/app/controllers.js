@@ -237,13 +237,14 @@ App.SignupController = Ember.Controller.extend({
 
         reservation.addObserver('id', function() {
             self.changeLoadingStatus(null);
-            console.log(reservation.get('id'));
-            //self.transitionToRoute('confirmed', reservation);
-        })
+            console.log("obtained the reservation id");
+            self.set('model', reservation);
+            self.transitionToRoute('confirmed');
+        });
 
         reservation.addObserver('reservationNumber', function() {
-            console.log('reservationNumber did change');
-        })
+            console.log('obtained the reservation number');
+        });
 
         // callbacks
         reservation.on('didUpdate', function() {

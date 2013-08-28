@@ -11,12 +11,22 @@ App.ConfirmationRoute = Ember.Route.extend({
 });
 
 App.ConfirmedRoute = Ember.Route.extend({
-    setupController: function(controller, model) {
+    setupController: function(controller) {
         debugger;
+        var model = this.controllerFor('signup').get('model'),
+            signupController = this.controllerFor('signup');
+        signupController.set('model', null);
         controller.set('model', model);
     }
 });
 
 App.ConfirmedController = Ember.Controller.extend({
+    modelChanged: function() {
+        console.log('model has changed.');
+    }.observes('model')
+});
 
+App.ConfirmedView = Ember.View.extend({
+    tagName: "div",
+    templateName: "confirmed"
 });
