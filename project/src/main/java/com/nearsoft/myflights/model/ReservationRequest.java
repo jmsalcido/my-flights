@@ -20,4 +20,11 @@ public class ReservationRequest implements Serializable {
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
     }
+
+    @Override
+    public String toString() {
+        return "ReservationRequest{" +
+                "\"reservation\":" + reservation +
+                '}';
+    }
 }

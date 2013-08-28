@@ -10,8 +10,6 @@ import com.nearsoft.myflights.service.ReservationService;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,10 +30,10 @@ public class ReservationController {
                                                 HttpServletRequest request,
                                                 HttpServletResponse response) {
         Reservation reservation = null;
+        logger.info(reservationRequest);
         String reservationKey = "reservation";
         Map<String, Object> mapResponse = new HashMap<>();
         Gson gson = new Gson();
-        logger.info(reservationRequest);
         try {
             reservation = reservationService.saveReservation(reservationRequest.getReservation());
             mapResponse.put(reservationKey, reservation);
@@ -43,8 +41,7 @@ public class ReservationController {
             mapResponse.put("error", e.getMessage());
             logger.warn(e.getMessage());
         }
-        ResponseEntity<String> responseEntity = new ResponseEntity<>(gson.toJson(mapResponse), HttpStatus.OK);
-        logger.info(responseEntity.getBody());
+        logger.info(mapResponse);
         return gson.toJson(mapResponse);
     }
 }

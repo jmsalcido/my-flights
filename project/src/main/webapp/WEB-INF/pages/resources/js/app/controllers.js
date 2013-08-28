@@ -235,12 +235,20 @@ App.SignupController = Ember.Controller.extend({
     bindReservationEvents: function(reservation) {
         var self = this;
 
-        // callbacks
-        reservation.on('didCreate', function() {
-            console.log('Reservation created');
+        reservation.addObserver('id', function() {
             self.changeLoadingStatus(null);
-            console.log(reservation.get('reservationNumber'));
-            self.transitionToRoute('confirmed', reservation);
+            console.log(reservation.get('id'));
+            //self.transitionToRoute('confirmed', reservation);
+        })
+
+        reservation.addObserver('reservationNumber', function() {
+            console.log('reservationNumber did change');
+        })
+
+        // callbacks
+        reservation.on('didUpdate', function() {
+            console.log('Reservation created');
+            console.log(reservation.get('isDirty'));
         });
 
         reservation.on('becameInvalid', function() {
