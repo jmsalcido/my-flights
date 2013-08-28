@@ -30,3 +30,7 @@ App.ConfirmedView = Ember.View.extend({
     tagName: "div",
     templateName: "confirmed"
 });
+
+App.CheckReservationView = Ember.View.extend({
+    
+});

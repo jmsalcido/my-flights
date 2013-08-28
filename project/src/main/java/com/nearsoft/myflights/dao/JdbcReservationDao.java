@@ -36,7 +36,7 @@ public class JdbcReservationDao implements ReservationDao {
 
     @Override
     public Reservation saveReservation(final Reservation reservation) throws Exception {
-        final String sql = "INSERT INTO reservations VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
+        final String sql = "INSERT INTO reservations VALUES(null, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
         jdbcTemplate = new JdbcTemplate(dataSource);
 
         // keyHolder will have the generated key from the database
@@ -50,7 +50,8 @@ public class JdbcReservationDao implements ReservationDao {
                 reservation.getDeparture(),
                 reservation.getArrival(),
                 reservation.getDeparture_date(),
-                reservation.getArrival_date()
+                reservation.getArrival_date(),
+                reservation.getStatus()
         };
         PreparedStatementCreator statementCreator = returnPreparedStatementCreatorGeneratedKeys(sql, params);
         jdbcTemplate.update(statementCreator, keyHolder);

@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS airports;
+DROP TABLE IF EXISTS reservations;
 CREATE TABLE reservations(
 	id INT AUTO_INCREMENT PRIMARY KEY,
 	price INT NOT NULL,
@@ -9,7 +10,8 @@ CREATE TABLE reservations(
 	departure VARCHAR(5) NOT NULL,
 	arrival VARCHAR(5) NOT NULL,
 	departureDate DATE NOT NULL,
-	arrivalDate DATE NOT NULL
+	arrivalDate DATE NOT NULL,
+	status TINYINT NOT NULL
 );
 CREATE TABLE airports (
 	id INT AUTO_INCREMENT PRIMARY KEY,

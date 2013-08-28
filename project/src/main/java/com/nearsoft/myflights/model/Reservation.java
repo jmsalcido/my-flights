@@ -16,6 +16,7 @@ public class Reservation implements Serializable{
     private Date departure_date;
     private Date arrival_date;
     private Long reservation_number;
+    private short status;
     
     public Long getId() {
         return id;
@@ -106,6 +107,14 @@ public class Reservation implements Serializable{
         this.reservation_number = reservation_number;
     }
 
+    public short getStatus() {
+        return status;
+    }
+
+    public void setStatus(short status) {
+        this.status = status;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -113,6 +122,7 @@ public class Reservation implements Serializable{
 
         Reservation that = (Reservation) o;
 
+        if (status != that.status) return false;
         if (arrival != null ? !arrival.equals(that.arrival) : that.arrival != null) return false;
         if (arrival_date != null ? !arrival_date.equals(that.arrival_date) : that.arrival_date != null) return false;
         if (departure != null ? !departure.equals(that.departure) : that.departure != null) return false;
@@ -143,12 +153,13 @@ public class Reservation implements Serializable{
         result = 31 * result + (departure_date != null ? departure_date.hashCode() : 0);
         result = 31 * result + (arrival_date != null ? arrival_date.hashCode() : 0);
         result = 31 * result + (reservation_number != null ? reservation_number.hashCode() : 0);
+        result = 31 * result + (int) status;
         return result;
     }
 
     @Override
     public String toString() {
-        return "\"reservation\": {" +
+        return "Reservation{" +
                 "id=" + id +
                 ", price=" + price +
                 ", name='" + name + '\'' +
@@ -160,6 +171,7 @@ public class Reservation implements Serializable{
                 ", departure_date=" + departure_date +
                 ", arrival_date=" + arrival_date +
                 ", reservation_number=" + reservation_number +
+                ", status=" + status +
                 '}';
     }
 }

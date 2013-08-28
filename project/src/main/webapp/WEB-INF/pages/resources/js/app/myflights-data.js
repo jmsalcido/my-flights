@@ -68,7 +68,8 @@ App.Reservation = DS.Model.extend({
   arrival: DS.attr('string'),
   departureDate: DS.attr('date'),
   arrivalDate: DS.attr('date'),
-  reservationNumber: DS.attr('number')
+  reservationNumber: DS.attr('number'),
+  status: DS.attr('number')
 })
 
 DS.RESTAdapter.configure("plurals", {

@@ -278,12 +278,15 @@ App.SignupController = Ember.Controller.extend({
         reservation.set('lastName', this.get('lastNameText'));
         reservation.set('email', this.get('emailText'));
         reservation.set('telephone', this.get('telephoneText'));
+        reservation.set('status', 2);
 
         // TODO hardcoded
         reservation.set('departure', 'MEX');
         reservation.set('arrival', 'CUL');
         reservation.set('departureDate', new Date());
         reservation.set('arrivalDate', new Date());
+
+        // THIS PLEASE.
         reservation.set('price', 1000);
         reservation.get('store').commit();
 
