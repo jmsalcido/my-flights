@@ -7,6 +7,7 @@ App = Ember.Application.create({
 App.Router.map(function() {
     this.route('confirmation');
     this.route('confirmed');
+    this.route('checkReservation', {path: "/check"});
 });
 
 App.ONEWAYROUTE = "One way";

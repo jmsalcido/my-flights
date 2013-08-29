@@ -1,6 +1,3 @@
-App.IndexController = Ember.Controller.extend({
-});
-
 App.HeaderController = Ember.Controller.extend({
     redirection: function() {
         this.transitionToRoute('index');
@@ -9,6 +6,24 @@ App.HeaderController = Ember.Controller.extend({
 
 App.RouterController = Ember.Controller.extend({
     needs: ['flights', 'flightInformation'],
+    setUp: function() {
+        this.set('isDeparture', null);
+        this.set('departureText', null);
+        this.set('arrivalText', null);
+        this.set('departureSelected', false);
+        this.set('arrivalSelected', false);
+        this.set('departureDate', new Date());
+        this.set('arrivalDate', null);
+        this.set('departureCode', '');
+        this.set('arrivalCode', '');
+        this.set('isAutoCompletedInvisible', true);
+        this.set('isAutoCompletedFocused', false);
+        this.set('arrivalDate', null);
+        this.set('arrivalDateText', null);
+        this.set('searchResults', '');
+        this.set('routeType', App.ONEWAYROUTE);
+    },
+    routeTypes: [App.ONEWAYROUTE, App.ROUNDTRIP],
     searchAirports: function(text) {
         var self = this;
         if(!text || App.isEmpty(text)) {
@@ -23,24 +38,6 @@ App.RouterController = Ember.Controller.extend({
         });
     },
     title: 'Select your route',
-    isDeparture: null,
-    departureText: null,
-    arrivalText: null,
-    departureSelected: false,
-    arrivalSelected: false,
-    departureDate: new Date(),
-    arrivalDate: null,
-    departureCode: '',
-    arrivalCode: '',
-    departureAirport: null,
-    arrivalAirport: null,
-    isAutoCompletedInvisible: true,
-    isAutoCompletedFocused: false,
-    arrivalDate: null,
-    arrivalDateText: null,
-    searchResults:  '',
-    routeTypes: [App.ONEWAYROUTE, App.ROUNDTRIP],
-    routeType: App.ONEWAYROUTE, // default behaviour
     searchResultsAlternativeText: function() {
         var search = this.get('searchResults');
         if(!search) {
@@ -291,5 +288,20 @@ App.SignupController = Ember.Controller.extend({
         reservation.get('store').commit();
 
         this.changeLoadingStatus(true);
+    }
+});
+
+App.ConfirmedController = Ember.Controller.extend({
+    modelChanged: function() {
+        console.log('model has changed.');
+    }.observes('model')
+});
+
+App.CheckReservationController = Ember.Controller.extend({
+    title: "Please tell us your reservation number",
+    reservationNumber: null,
+    checkReservation: function() {
+        var id = parseInt(this.get('reservationNumber'));
+        this.transitionToRoute('', id);
     }
 });

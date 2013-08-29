@@ -10,27 +10,17 @@ App.ConfirmationRoute = Ember.Route.extend({
     }
 });
 
+App.IndexRoute = Ember.Route.extend({
+    setupController: function() {
+        this.controllerFor('router').setUp();
+    }
+});
+
 App.ConfirmedRoute = Ember.Route.extend({
     setupController: function(controller) {
-        debugger;
         var model = this.controllerFor('signup').get('model'),
             signupController = this.controllerFor('signup');
         signupController.set('model', null);
         controller.set('model', model);
     }
-});
-
-App.ConfirmedController = Ember.Controller.extend({
-    modelChanged: function() {
-        console.log('model has changed.');
-    }.observes('model')
-});
-
-App.ConfirmedView = Ember.View.extend({
-    tagName: "div",
-    templateName: "confirmed"
-});
-
-App.CheckReservationView = Ember.View.extend({
-    
 });

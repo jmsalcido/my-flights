@@ -62,8 +62,7 @@ App.RoutesView = Ember.View.extend({});
 App.AutocompleteTextField = Ember.TextField.extend({
     attributeBindings: ['accept', 'autocomplete', 'autofocus', 'name', 'required'],
     focusOut: function(e) {
-        // TODO
-        // this kills the event at the controller.
+        // this kills the event at the controller...
         // this.get('controller').set('isAutoCompletedInvisible', true);
     },
     keyUp: function(e) {
@@ -205,11 +204,11 @@ App.SignUpTextField = Ember.TextField.extend({
     classNames: ['form-control']
 });
 
-App.SignUpSubmit = Ember.View.extend({
+App.SubmitButton = Ember.View.extend({
     classNames: ['btn'],
     tagName: "button",
     attributeBindings: ['disabled'],
-    templateName: "signUpButton",
+    templateName: "submitButton",
     disabled: null,
     disabledObserver: function() {
         var controller = this.get('controller'),
@@ -225,4 +224,18 @@ App.ConfirmationFlightView = Ember.View.extend({
     tagName: 'div',
     classNames: ['confirmation-flight'],
     templateName: 'confirmationFlight'
+});
+
+App.ConfirmedView = Ember.View.extend({
+    tagName: "div",
+    templateName: "confirmed"
+});
+
+App.CheckReservationView = Ember.View.extend({
+    tagName: "div",
+});
+
+App.ReservationNumberTextField = Ember.TextField.extend({
+    type: 'number',
+    attributeBindings: ["min", "max", "step"]
 });

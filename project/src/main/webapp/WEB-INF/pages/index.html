@@ -80,13 +80,13 @@
             {{view App.SignUpTextField valueBinding=emailText placeholder="ex: email@example.com"}}
         </div>
     </div>
-    {{view App.SignUpSubmit attrtype="submit"}}
+    {{view App.SubmitButton attrtype="submit" contentBinding="Yes, contact me"}}
     </form>
     {{/view}}
 </script>
 
-<script type="text/x-handlebars" data-template-name="signUpButton">
-    Yes, contact me.
+<script type="text/x-handlebars" data-template-name="submitButton">
+    Submit
 </script>
 
 <script type="text/x-handlebars" data-template-name="header">
@@ -230,6 +230,16 @@
 
 <script type="text/x-handlebars" data-template-name="confirmed">
     <h3>Hey {{model.name}} your reservation number is: <span class="label">{{model.id}}</span></h3>
+</script>
+
+<script type="text/x-handlebars" data-template-name="checkReservation">
+    <h2>{{title}}</h2>
+    <form {{action "checkReservation" on="submit"}}>
+        <div class="form-group">
+            {{view App.ReservationNumberTextField valueBinding=reservationNumber min="1" placeholder="Reservation Number"}}
+        </div>
+        {{view App.SubmitButton attrtype="submit" contentBinding="Check status"}}
+    </form>
 </script>
 
 <script src="resources/js/libs/jquery-1.9.1.js"></script>
