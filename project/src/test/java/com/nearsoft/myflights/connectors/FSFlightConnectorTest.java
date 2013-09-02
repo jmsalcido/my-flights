@@ -20,17 +20,17 @@ public class FSFlightConnectorTest {
         connector = new FSFlightConnector();
     }
     
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetFlightsWithNullParameters() throws Exception{
 		connector.getFlights(null, null, null);
     }
     
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetFlightsWithNullAirportCodes() throws Exception {
     	connector.getFlights(null, null, new Date());
     }
     
-    @Test(expected = NullPointerException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testGetFlightsWithNullDate() throws Exception {
     	connector.getFlights("CUL", "MEX", null);
     }

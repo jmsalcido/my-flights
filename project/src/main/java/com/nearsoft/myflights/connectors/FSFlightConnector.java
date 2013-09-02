@@ -41,8 +41,7 @@ public class FSFlightConnector implements FlightConnector {
 
     @Override
     public List<Flight> getFlights(String fromAirportCode, String toAirportCode, Date date)
-            throws ClientProtocolException, URISyntaxException, IOException,
-            HttpException, NullPointerException {
+            throws URISyntaxException, IOException, HttpException, IllegalArgumentException {
         List<Flight> flightList = new ArrayList<>();
         String json = getJsonFromParameters(fromAirportCode, toAirportCode, date);
         FSConnection fsConn = FSFlightConnectorUtil.getFSConnectionFromJson(gson, json);
@@ -60,7 +59,7 @@ public class FSFlightConnector implements FlightConnector {
             HttpException {
 
     	if(fromAirport == null || toAirport == null || date == null) {
-    		throw new NullPointerException("null is not allowed.");
+    		throw new IllegalArgumentException("null is not allowed.");
     	}
         // get the date.
         Calendar calendar = new GregorianCalendar();
