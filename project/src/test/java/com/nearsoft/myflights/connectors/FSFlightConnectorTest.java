@@ -34,14 +34,14 @@ public class FSFlightConnectorTest {
     public void testGetFlightsWithNullDate() throws Exception {
     	connector.getFlights("CUL", "MEX", null);
     }
-    
+
+    @Test(expected = IllegalArgumentException.class)
     public void testGetFlightsWithTheSameAirportCode() throws Exception {
-    	List<Flight> flightList = connector.getFlights("CUL", "MEX", new Date());
-    	assertNotNull(flightList);
+    	List<Flight> flightList = connector.getFlights("CUL", "CUL", new Date());
     }
-    
+
     public void testGetFlightsWithAirportCodeWithNoRoutes() throws Exception {
-    	
+
     }
     
     public void testGetFlightsWithNonExistentAirportCodes() throws Exception {

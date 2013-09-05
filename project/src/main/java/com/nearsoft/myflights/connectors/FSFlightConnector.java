@@ -42,6 +42,12 @@ public class FSFlightConnector implements FlightConnector {
     @Override
     public List<Flight> getFlights(String fromAirportCode, String toAirportCode, Date date)
             throws URISyntaxException, IOException, HttpException, IllegalArgumentException {
+        if(fromAirportCode == null || toAirportCode == null || date == null) {
+            throw new IllegalArgumentException("null is not allowed.");
+        }
+        if(fromAirportCode.equalsIgnoreCase(toAirportCode)) {
+            throw new IllegalArgumentException(String.format("from airport: %s is the same as to airport: %s, there was something wrong.", fromAirportCode, toAirportCode));
+        }
         List<Flight> flightList = new ArrayList<>();
         String json = getJsonFromParameters(fromAirportCode, toAirportCode, date);
         FSConnection fsConn = FSFlightConnectorUtil.getFSConnectionFromJson(gson, json);
@@ -57,10 +63,6 @@ public class FSFlightConnector implements FlightConnector {
     private String getJsonFromParameters(String fromAirport, String toAirport, Date date)
             throws URISyntaxException, IOException,
             HttpException {
-
-    	if(fromAirport == null || toAirport == null || date == null) {
-    		throw new IllegalArgumentException("null is not allowed.");
-    	}
         // get the date.
         Calendar calendar = new GregorianCalendar();
         calendar.setTime(date);

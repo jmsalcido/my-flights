@@ -44,7 +44,7 @@ public class FlightController {
                 arrivalAirportCode));
         logger.info(String.format("Date received: %s", date));
 
-        Map<String, Object> map = new HashMap<String, Object>();
+        Map<String, Object> map = new HashMap<>();
 
         try {
             map = flightService.getFlights(departureAirportCode,
@@ -68,7 +68,7 @@ public class FlightController {
         responseHeaders.set("Access-Control-Allow-Origin", "*");
         
         Gson gson = new Gson();
-        return new ResponseEntity<String>(gson.toJson(map), responseHeaders,
+        return new ResponseEntity<>(gson.toJson(map), responseHeaders,
                 HttpStatus.OK);
     }
     

@@ -7,14 +7,12 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 /**
- * Created with IntelliJ IDEA.
+ * Created by
  * User: jsalcido
  * Date: 8/23/13
  * Time: 4:14 PM
- * To change this template use File | Settings | File Templates.
  */
 public class ReservationControllerTest {
-
 
     @Test
     public void testSerialize() throws Exception {

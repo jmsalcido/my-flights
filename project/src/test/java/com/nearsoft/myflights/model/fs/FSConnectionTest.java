@@ -11,7 +11,6 @@ import com.nearsoft.myflights.util.JsonUtils;
 
 public class FSConnectionTest {
 
-    private FSConnection conn;
     private Gson gson;
     private String json;
 
@@ -24,7 +23,7 @@ public class FSConnectionTest {
 
     @Test
     public void testParseFromJSONFile() {
-        conn = gson.fromJson(json, FSConnection.class);
+        FSConnection conn = gson.fromJson(json, FSConnection.class);
         Assert.assertNotNull(conn);
     }
 

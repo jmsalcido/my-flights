@@ -40,7 +40,7 @@ public class AirportController {
             HttpServletRequest request) {
         logger.info(String.format("Incoming request from %s :)",request.getLocalAddr()));
         logger.info(String.format("Word received: %s", word));
-        Map<String, Object> responseMap = new HashMap<String, Object>();
+        Map<String, Object> responseMap = new HashMap<>();
         if (StringUtils.isEmpty(word)) {
             responseMap.put("error", "'word' can't be empty");
         } else {
@@ -52,7 +52,7 @@ public class AirportController {
 
         Enumeration<String> headerNames = request.getHeaderNames();
         while (headerNames.hasMoreElements()) {
-            String nextElement = (String) headerNames.nextElement(); 
+            String nextElement = headerNames.nextElement();
             responseHeaders.set(nextElement, request.getHeader(nextElement));
         }
 
@@ -60,7 +60,7 @@ public class AirportController {
         responseHeaders.set("Access-Control-Allow-Origin", "*");
 
         Gson gson = new Gson();        
-        return new ResponseEntity<String>(gson.toJson(responseMap), responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(gson.toJson(responseMap), responseHeaders, HttpStatus.OK);
     }
 
 }

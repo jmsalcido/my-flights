@@ -29,7 +29,7 @@ public class JdbcAirportService implements AirportService {
 
     @Override
     public Map<String,Object> getAirportsByKeyword(String keyword) {
-        Map<String, Object> filtered_map = new LinkedHashMap<String, Object>();
+        Map<String, Object> filtered_map = new LinkedHashMap<>();
         List<Airport> airportList = airportDao.getAirportsByKeyword(keyword);
         List<Integer> idAirportList = new ArrayList<>();
         Map<String, Object> search_map = new HashMap<>();

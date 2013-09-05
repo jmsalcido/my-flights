@@ -94,7 +94,7 @@ public class FSFlightConnectorUtil {
      */
     public static Map<String, String> convertFSAirlinesListToMap(
             List<FSAirline> fsAirlines) {
-        Map<String, String> airlinesMap = new HashMap<String, String>();
+        Map<String, String> airlinesMap = new HashMap<>();
         for (FSAirline fsAirline : fsAirlines) {
             airlinesMap.put(fsAirline.getFs(), fsAirline.getName());
         }
