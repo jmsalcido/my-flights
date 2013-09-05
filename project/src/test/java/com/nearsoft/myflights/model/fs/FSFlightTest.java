@@ -104,7 +104,7 @@ public class FSFlightTest {
 
     @Test
     public void testParseFromJsonFile() throws IOException {
-        String json = JsonUtils.createJsonString(getClass(),
+        String json = JsonUtils.createString(getClass(),
                 "flights-json.txt");
         fsFlight = gson.fromJson(json, FSFlight.class);
         assertNotNull(fsFlight);

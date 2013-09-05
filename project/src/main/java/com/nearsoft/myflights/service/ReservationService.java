@@ -12,5 +12,5 @@ public interface ReservationService {
 
     public Reservation saveReservation(Reservation reservation) throws Exception;
     public Reservation retrieveReservation(Reservation reservation) throws Exception;
-    public Reservation updateReservation(Reservation reservation) throws Exception;
+//    public Reservation updateReservation(Reservation reservation) throws Exception;
 }

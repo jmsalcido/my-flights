@@ -18,7 +18,7 @@ public class FSConnectionTest {
     @Before
     public void setUp() throws IOException {
         gson = new Gson();
-        json = JsonUtils.createJsonString(this.getClass(),
+        json = JsonUtils.createString(this.getClass(),
                 "flights-json.txt");
     }
 

@@ -1,12 +1,9 @@
 package com.nearsoft.myflights.controllers;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import com.google.gson.Gson;
 import com.nearsoft.myflights.model.Reservation;
 import com.nearsoft.myflights.model.ReservationRequest;
 import com.nearsoft.myflights.service.ReservationService;
+import com.nearsoft.myflights.util.JsonUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,14 +23,11 @@ public class ReservationController {
 
     @RequestMapping(value = "reservations", method = {RequestMethod.POST})
     @ResponseBody
-    public String createReservation(@RequestBody ReservationRequest reservationRequest,
-                                                HttpServletRequest request,
-                                                HttpServletResponse response) {
+    public String createReservation(@RequestBody ReservationRequest reservationRequest) {
         Reservation reservation = null;
         logger.info(reservationRequest);
         String reservationKey = "reservation";
         Map<String, Object> mapResponse = new HashMap<>();
-        Gson gson = new Gson();
         try {
             reservation = reservationService.saveReservation(reservationRequest.getReservation());
             mapResponse.put(reservationKey, reservation);
@@ -42,6 +36,26 @@ public class ReservationController {
             logger.warn(e.getMessage());
         }
         logger.info(mapResponse);
-        return gson.toJson(mapResponse);
+        return JsonUtils.convertObjectToJSON(mapResponse);
+    }
+
+    @RequestMapping(value = "reservations", method = {RequestMethod.GET})
+    @ResponseBody
+    public String getReservation(@RequestParam(value = "id") long id,
+                                 @RequestParam(value = "email") String email) {
+        Map<String, Reservation> reservationMapResponse;
+        Map<String, String> errorMapResponse;
+        Reservation reservation = new Reservation();
+        reservation.setId(id);
+        reservation.setEmail(email);
+        try {
+            reservationMapResponse = new HashMap<>();
+            reservationMapResponse.put("reservation", reservationService.retrieveReservation(reservation));
+            return JsonUtils.convertObjectToJSON(reservationMapResponse);
+        } catch(Exception ex) {
+            errorMapResponse = new HashMap<>();
+            errorMapResponse.put("error", ex.getMessage());
+            return JsonUtils.convertObjectToJSON(errorMapResponse);
+        }
     }
 }

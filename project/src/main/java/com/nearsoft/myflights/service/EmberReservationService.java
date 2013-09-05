@@ -34,16 +34,7 @@ public class EmberReservationService implements ReservationService {
     @Override
     public Reservation retrieveReservation(Reservation reservation) throws Exception {
         try {
-            return reservationDao.retrieveReservation(reservation.getId());
-        } catch (Exception e) {
-            throw new Exception(e.getMessage(), e.getCause());
-        }
-    }
-
-    @Override
-    public Reservation updateReservation(Reservation reservation) throws Exception {
-        try {
-            return reservationDao.updateReservation(reservation);
+            return reservationDao.retrieveReservation(reservation.getId(), reservation.getEmail());
         } catch (Exception e) {
             throw new Exception(e.getMessage(), e.getCause());
         }
