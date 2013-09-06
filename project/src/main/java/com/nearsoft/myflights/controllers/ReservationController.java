@@ -43,6 +43,7 @@ public class ReservationController {
     @ResponseBody
     public String getReservation(@RequestParam(value = "id") long id,
                                  @RequestParam(value = "email") String email) {
+        logger.info(String.format("id received: %d and email received: %s", id, email));
         Map<String, Reservation> reservationMapResponse;
         Map<String, String> errorMapResponse;
         Reservation reservation = new Reservation();
